@@ -1,0 +1,669 @@
+/* ===============================
+   ADMIN THEME VARIABLES - updated for closer match
+================================ */
+:root {
+  --admin-bg: #fdfcf9;
+  /* very light warm cream */
+  --admin-sidebar: #f9f7f2;
+  /* slightly warmer sidebar */
+  --admin-card: #ffffff;
+  /* pure white cards */
+  --admin-border: #e9e5dc;
+  /* soft border */
+  --admin-text: #2d2d2d;
+  --admin-muted: #6b7280;
+  --admin-accent: #4a704a;
+  /* deeper soft green */
+  --admin-accent-light: #e8f5e8;
+  /* very light green hover */
+  --admin-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================
+   GLOBAL / LAYOUT
+================================ */
+.admin-layout {
+  background-color: var(--admin-bg);
+  min-height: 100vh;
+  display: flex;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===============================
+   SIDEBAR - improved spacing & hover
+================================ */
+.admin-sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  background-color: var(--admin-sidebar);
+  border-right: 1px solid var(--admin-border);
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  overflow-y: auto;
+}
+
+.admin-sidebar .avatar-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--admin-accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.admin-sidebar nav a,
+.admin-sidebar nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 2px 0;
+  border-radius: 12px;
+  color: var(--admin-text);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.18s ease;
+}
+
+.admin-sidebar nav a:hover,
+.admin-sidebar nav button:hover {
+  background-color: var(--admin-accent-light);
+  color: var(--admin-accent);
+}
+
+.admin-sidebar nav a.active {
+  background-color: var(--admin-accent);
+  color: white;
+}
+
+/* Bottom actions */
+.admin-sidebar .bottom-actions a,
+.admin-sidebar .bottom-actions button {
+  color: var(--admin-muted);
+}
+
+.admin-sidebar .bottom-actions button {
+  color: #dc2626;
+}
+
+/* ===============================
+   MAIN CONTENT AREA
+================================ */
+.admin-main {
+  margin-left: 260px;
+  flex: 1;
+  padding: 48px 40px;
+  background: var(--admin-bg);
+}
+
+/* ===============================
+   TYPOGRAPHY
+================================ */
+.admin-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.admin-subtitle {
+  font-size: 1.1rem;
+  color: var(--admin-muted);
+  font-weight: 400;
+}
+
+/* ===============================
+   CARDS & STAT BLOCKS - closer to screenshot
+================================ */
+.admin-section {
+  margin-bottom: 48px;
+}
+
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.admin-metric-card {
+  background: var(--admin-card);
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: var(--admin-shadow);
+  border: 1px solid var(--admin-border);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.admin-metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.admin-metric-card .admin-card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--admin-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+}
+
+.admin-metric-card .admin-card-value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--admin-accent);
+  line-height: 1;
+}
+
+/* Special emphasis on important numbers */
+.admin-stats-grid>div:nth-child(2) .admin-card-value,
+.admin-stats-grid>div:nth-child(6) .admin-card-value {
+  color: #2f855a;
+  /* bit darker green for contrast */
+}
+
+/* ===============================
+   HEADINGS INSIDE SECTIONS
+================================ */
+.admin-section h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: 24px;
+}
+
+/* ===============================
+   ADMIN HEADINGS – FORCE BLACK
+================================ */
+.admin-main h1,
+.admin-main h2,
+.admin-main h3 {
+  color: #000000 !important;
+}
+
+/* ===============================
+   FORM LABELS
+================================ */
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2e2e2e;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ===============================
+   INPUTS
+================================ */
+.admin-main input,
+.admin-main textarea {
+  background-color: #ffffff;
+  border: 1px solid #d6d6d6;
+  font-size: 15px;
+}
+
+.admin-main input:focus,
+.admin-main textarea:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+/* ===============================
+   IMAGE DROP ZONE
+================================ */
+.admin-image-drop {
+  height: 220px;
+  border: 2px dashed #cfcfcf;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #9c9c9c;
+  background: #fafafa;
+}
+
+/* ===============================
+   SECTION CARDS
+================================ */
+.admin-section {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+}
+
+/* ===============================
+   ADMIN PAGE SPACING FIX
+================================ */
+
+/* Whole form vertical rhythm */
+.admin-main {
+  padding-bottom: 80px;
+}
+
+/* Page title spacing */
+.admin-main h1 {
+  margin-bottom: 12px;
+}
+
+.admin-main>div>p {
+  margin-bottom: 40px;
+}
+
+/* Section blocks */
+.admin-section,
+.admin-main .bg-white {
+  margin-bottom: 48px;
+}
+
+/* Section headings */
+.admin-section h2,
+.admin-main h2 {
+  margin-bottom: 28px;
+}
+
+/* Label spacing */
+.label {
+  margin-bottom: 10px;
+}
+
+/* Inputs spacing */
+.admin-main input,
+.admin-main textarea {
+  margin-bottom: 26px;
+}
+
+/* Textarea height */
+.admin-main textarea {
+  min-height: 140px;
+}
+
+/* Variant buttons spacing */
+.admin-main .flex.flex-wrap.gap-3,
+.admin-main .flex.flex-wrap.gap-4 {
+  margin-bottom: 32px;
+}
+
+/* Pricing grid spacing */
+.admin-main .grid {
+  row-gap: 32px;
+}
+
+/* Image upload box spacing */
+.admin-image-drop {
+  margin-bottom: 32px;
+}
+
+/* Bottom action buttons */
+.admin-main .justify-end {
+  margin-top: 64px;
+}
+
+/* ===============================
+   ADMIN CLEAN UNIFORM THEME
+================================ */
+
+/* Force single background everywhere */
+.admin-main,
+.admin-main * {
+  background-color: transparent;
+  color: #000000;
+}
+
+/* Main page background */
+.admin-main {
+  background-color: #f6f1e8;
+  padding: 48px 64px;
+}
+
+/* Form container */
+.admin-main>div {
+  background-color: #f6f1e8;
+}
+
+/* Section cards – ONE consistent look */
+.admin-section,
+.admin-main .bg-white {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 40px;
+  margin-bottom: 56px;
+}
+
+/* Section headings */
+.admin-main h1,
+.admin-main h2,
+.admin-main h3,
+.admin-main h4 {
+  color: #000000 !important;
+  margin-bottom: 24px;
+}
+
+/* Labels */
+.label {
+  color: #000000;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Inputs & textarea */
+.admin-main input,
+.admin-main textarea {
+  background-color: #ffffff;
+  border: 1px solid #cfcfcf;
+  color: #000000;
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 28px;
+}
+
+/* Remove alternating strip look */
+.admin-main section,
+.admin-main div {
+  background-image: none !important;
+}
+
+/* Textarea height */
+.admin-main textarea {
+  min-height: 160px;
+}
+
+/* Size buttons */
+.admin-main button {
+  color: #000000;
+}
+
+/* Image upload box */
+.admin-image-drop {
+  background-color: #ffffff;
+  border: 2px dashed #cfcfcf;
+  border-radius: 16px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: 32px;
+}
+
+/* Bottom action bar spacing */
+.admin-main .justify-end {
+  margin-top: 80px;
+}
+
+.admin-table th {
+  padding: 14px;
+  font-size: 13px;
+  color: #000;
+  border-bottom: 1px solid #e5e1d8;
+}
+
+.admin-table td {
+  padding: 16px 14px;
+  border-bottom: 1px solid #f0ede6;
+}
+
+/* TABLE CLEANUP */
+.admin-table th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #000;
+  padding: 14px;
+  border-bottom: 1px solid #e6e2da;
+}
+
+.admin-table td {
+  padding: 16px 14px;
+  border-bottom: 1px solid #f1eee7;
+  vertical-align: middle;
+}
+
+/* REMOVE CENTERED LOOK */
+.admin-main>div {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: 100% !important;
+}
+
+.admin-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+  color: #000;
+}
+
+.admin-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: black;
+}
+
+/* ===============================
+   PREMIUM ADMIN – PRODUCTS PAGE
+================================ */
+
+/* Page background */
+.admin-main {
+  background: #f6f6f6;
+}
+
+/* Card container */
+.admin-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* Search bar */
+.admin-search {
+  max-width: 420px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.admin-search:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Table */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table thead {
+  background: #fafafa;
+}
+
+.admin-table th {
+  padding: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #000;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+/* Row hover */
+.admin-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* Product image */
+.admin-product-img {
+  width: 52px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+/* Actions */
+.admin-action {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.admin-action.edit {
+  color: #000;
+}
+
+.admin-action.delete {
+  color: #dc2626;
+}
+
+/* Pagination */
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.admin-page-btn {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 14px;
+}
+
+.admin-page-btn.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.admin-page-btn:disabled {
+  opacity: 0.4;
+}
+
+/* ===============================
+   PREMIUM TABLE ADDONS
+================================ */
+
+/* Skeleton */
+.skeleton {
+  background: linear-gradient(90deg,
+      #f0f0f0 25%,
+      #e6e6e6 37%,
+      #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* Image preview modal */
+.preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.preview-img {
+  max-width: 420px;
+  max-height: 520px;
+  border-radius: 16px;
+  background: white;
+  padding: 12px;
+}
+
+/* Bulk checkbox */
+.bulk-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* ===============================
+   INVENTORY STATUS COLORS
+================================ */
+.stock-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.stock-status.in-stock {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.stock-status.low-stock {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.stock-status.out-of-stock {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.inventory-edit-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.inventory-edit-btn:hover {
+  border-color: #000;
+  background: #fafafa;
+}
