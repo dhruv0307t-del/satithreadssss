@@ -39,19 +39,19 @@ export default function UserMenu() {
                 <User size={20} />
                 <ChevronDown
                     size={14}
-                    className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    className={`transition-transform hidden sm:block ${isOpen ? "rotate-180" : ""}`}
                 />
             </button>
 
             {/* Dropdown Menu */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                <div className="absolute right-[-10px] sm:right-0 mt-3 w-[260px] sm:w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-[3000] overflow-hidden">
                     {/* User Info */}
-                    <div className="px-4 py-3 border-b border-gray-200">
-                        <p className="text-sm font-medium text-gray-900">
+                    <div className="px-5 py-4 border-b border-gray-50 bg-gray-50/30">
+                        <p className="text-sm font-semibold text-gray-900 leading-tight">
                             {session.user.name}
                         </p>
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-gray-500 truncate mt-0.5">
                             {session.user.email}
                         </p>
                     </div>
@@ -59,11 +59,11 @@ export default function UserMenu() {
                     {/* Menu Items */}
                     <Link
                         href="/my-orders"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition"
+                        className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition active:bg-gray-100"
                         onClick={() => setIsOpen(false)}
                     >
                         <Package size={18} className="text-gray-600" />
-                        <span className="text-sm text-gray-900">My Orders</span>
+                        <span className="text-sm font-medium text-gray-800">My Orders</span>
                     </Link>
 
                     {/* Logout */}
@@ -72,10 +72,10 @@ export default function UserMenu() {
                             signOut({ callbackUrl: "/home" });
                             setIsOpen(false);
                         }}
-                        className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition text-red-600"
+                        className="flex items-center gap-3 w-full px-5 py-3.5 hover:bg-gray-50 transition active:bg-gray-100 text-red-600 border-t border-gray-50 mt-1"
                     >
                         <LogOut size={18} />
-                        <span className="text-sm">Logout</span>
+                        <span className="text-sm font-semibold">Logout</span>
                     </button>
                 </div>
             )}

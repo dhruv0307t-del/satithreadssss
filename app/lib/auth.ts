@@ -47,12 +47,21 @@ export const authOptions: NextAuthOptions = {
                     id: user._id.toString(),
                     email: user.email,
                     name: user.name,
+                    role: user.role,
                 };
             },
         }),
     ],
 
     callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = (user as any).id;
+                token.role = (user as any).role;
+            }
+            return token;
+        },
+
         async signIn({ user }) {
             await connectDB();
 
@@ -74,6 +83,7 @@ export const authOptions: NextAuthOptions = {
             if (dbUser) {
                 // 👇 EXTREMELY IMPORTANT
                 (session.user as any).id = dbUser._id.toString();
+                (session.user as any).role = dbUser.role || "user";
             }
 
             return session;

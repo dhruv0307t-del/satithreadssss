@@ -1,7 +1,6 @@
 /* ============= HEADER ============= */
 .page-header {
-    background: linear-gradient(135deg, rgba(61, 36, 21, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
-    padding: 60px 0 40px 0;
+    padding: 20px 0;
     text-align: center;
     position: relative;
     overflow: hidden;
