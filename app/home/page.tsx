@@ -63,8 +63,24 @@ const ChevronRightIcon = () => (
   </svg>
 );
 
+const MenuIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
 export default function HomePage() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const router = useRouter();
   const { openCart } = useCart();
@@ -109,32 +125,38 @@ export default function HomePage() {
   return (
     <>
       {/* 🧭 NAVBAR */}
-      <nav className={`navbar ${isLoaded ? "nav-visible" : "nav-hidden"}`}>
-        {/* LEFT */}
+      <nav className={`navbar ${isLoaded ? "nav-visible" : "nav-hidden"} ${isMenuOpen ? "menu-active" : ""}`}>
+        {/* MOBILE MENU TRIGGER */}
+        <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+        </button>
+
+        {/* LEFT (LOGO) */}
         <div className="nav-left">
-          <Image src="/logo1.png" alt="Satithreads" width={120} height={40} />
+          <Image src="/logo1.png" alt="Satithreads" width={120} height={40} className="mobile-logo-adjust" />
         </div>
 
         {/* CENTER */}
-        <ul className="nav-links">
-          <li onClick={() => router.push("/products?category=new")}>New Arrivals</li>
+        <ul className={`nav-links ${isMenuOpen ? "show" : ""}`}>
+          <li onClick={() => { router.push("/products?category=new"); setIsMenuOpen(false); }}>New Arrivals</li>
           <li
-            onClick={() =>
+            onClick={() => {
               document
                 .getElementById("categories-section")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
+                ?.scrollIntoView({ behavior: "smooth" });
+              setIsMenuOpen(false);
+            }}
           >
             Categories
           </li>
-          <li onClick={() => router.push("/products?category=festive")}>Festive</li>
-          <li onClick={openCouponModal}>Offers</li>
-          <li>About</li>
+          <li onClick={() => { router.push("/products?category=festive"); setIsMenuOpen(false); }}>Festive</li>
+          <li onClick={() => { openCouponModal(); setIsMenuOpen(false); }}>Offers</li>
+          <li onClick={() => setIsMenuOpen(false)}>About</li>
         </ul>
 
         {/* RIGHT */}
         <div className="nav-right">
-          <div className="nav-icon"><SearchIcon /></div>
+          <div className="nav-icon search-hide-mobile"><SearchIcon /></div>
           <div className="nav-icon" onClick={openCart}><CartIcon /></div>
 
           {session ? (
@@ -148,15 +170,31 @@ export default function HomePage() {
               <UserIcon />
             </div>
           )}
-          <div className="nav-icon"><HelpIcon /></div>
-          <div className="nav-icon"><PhoneIcon /></div>
+          <div className="nav-icon help-hide-mobile"><HelpIcon /></div>
+          <div className="nav-icon phone-hide-mobile"><PhoneIcon /></div>
         </div>
       </nav>
 
-      {/* 🌄 HERO */}
+      {/* 🌄 HERO - DIFFERENT IMAGES FOR MOBILE/DESKTOP */}
       {isLoaded && (
         <section className="hero-banner">
-          <Image src="/Banner.png" alt="Hero" fill priority className="hero-image" />
+          {/* Desktop Image */}
+          <Image
+            src="/Banner.png"
+            alt="Hero Desktop"
+            fill
+            priority
+            className="hero-image hide-mobile"
+          />
+
+          {/* Mobile Image - Upload this as /public/mobile-banner.jpg */}
+          <Image
+            src="/Mobile Banner.jpg"
+            alt="Hero Mobile - The नूर परिधान"
+            fill
+            priority
+            className="hero-image show-mobile"
+          />
 
           <div className="hero-luxury-overlay">
             <div className="hero-copy">
@@ -169,7 +207,15 @@ export default function HomePage() {
       {/* ================= CATEGORIES CAROUSEL ================= */}
       {isLoaded && (
         <section id="categories-section" className="categories-section">
-          <h2 className="categories-title">Shop by Category</h2>
+          <div className="section-image-heading">
+            <Image
+              src="/Shop By Category.png"
+              alt="Shop by Category"
+              width={1920}
+              height={200}
+              className="full-width-heading"
+            />
+          </div>
 
           <div className="categories-carousel-container">
             <div className="categories-carousel-box">

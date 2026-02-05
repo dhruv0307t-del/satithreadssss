@@ -431,7 +431,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
                         <div className="recommendations-grid">
                             {recommendations.map((rec) => (
                                 <Link
-                                    href={`/product/${rec._id}`}
+                                    href={`/products/${rec._id}`}
                                     className="product-card"
                                     key={rec._id}
                                 >

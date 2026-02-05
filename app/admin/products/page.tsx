@@ -80,14 +80,22 @@ export default function ProductsPage() {
             <p className="text-black/60">Premium product management</p>
           </div>
 
-          {selected.length > 0 && (
-            <button
-              onClick={bulkDelete}
-              className="px-6 py-3 rounded-xl bg-red-600 text-white"
-            >
-              Delete Selected ({selected.length})
-            </button>
-          )}
+          <div className="flex gap-4">
+            <Link href="/admin/products/upload">
+              <button className="px-6 py-3 rounded-xl bg-[#3b1f23] text-white hover:bg-black transition-all shadow-md">
+                Bulk Upload
+              </button>
+            </Link>
+
+            {selected.length > 0 && (
+              <button
+                onClick={bulkDelete}
+                className="px-6 py-3 rounded-xl bg-red-600 text-white shadow-md"
+              >
+                Delete Selected ({selected.length})
+              </button>
+            )}
+          </div>
         </div>
 
         {/* SEARCH + SORT */}

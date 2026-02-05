@@ -146,7 +146,7 @@ export default async function UserDetailsPage({ params }: { params: Promise<{ id
                 {user.likedProducts?.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {user.likedProducts.map((product: any) => (
-                            <Link href={`/product/${product._id}`} key={product._id} className="group block border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                            <Link href={`/products/${product._id}`} key={product._id} className="group block border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
                                 <div className="relative aspect-[3/4] bg-gray-100">
                                     {product.mainImage ? (
                                         <Image src={product.mainImage} alt={product.name} fill className="object-cover" />
@@ -172,7 +172,7 @@ export default async function UserDetailsPage({ params }: { params: Promise<{ id
                 {user.wishlist?.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {user.wishlist.map((product: any) => (
-                            <Link href={`/product/${product._id}`} key={product._id} className="group block border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                            <Link href={`/products/${product._id}`} key={product._id} className="group block border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
                                 <div className="relative aspect-[3/4] bg-gray-100">
                                     {product.mainImage ? (
                                         <Image src={product.mainImage} alt={product.name} fill className="object-cover" />

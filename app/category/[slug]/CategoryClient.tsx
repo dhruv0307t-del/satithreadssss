@@ -66,7 +66,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* IMAGE CONTAINER */}
       <div
         className="cp-product-image-container"
-        onClick={() => router.push(`/product/${product._id}`)}
+        onClick={() => router.push(`/products/${product._id}`)}
       >
         {isSoldOut ? (
           <span className="cp-product-badge sold-out">Sold Out</span>
@@ -93,7 +93,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             title="Quick View"
             onClick={(e) => {
               e.stopPropagation();
-              router.push(`/product/${product._id}`);
+              router.push(`/products/${product._id}`);
             }}
           >
             👁️
@@ -127,7 +127,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <div className="cp-product-info">
         <h3
           className="cp-product-title"
-          onClick={() => router.push(`/product/${product._id}`)}
+          onClick={() => router.push(`/products/${product._id}`)}
         >
           {product.name}
         </h3>

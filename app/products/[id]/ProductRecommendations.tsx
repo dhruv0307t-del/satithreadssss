@@ -49,7 +49,7 @@ export default function ProductRecommendations({ products }: ProductRecommendati
                     {products.slice(0, 4).map((product) => (
                         <Link
                             key={product._id}
-                            href={`/product/${product._id}`}
+                            href={`/products/${product._id}`}
                             className="product-card"
                         >
                             <div className="product-image-container">

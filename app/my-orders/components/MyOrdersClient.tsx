@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCart } from "@/app/context/CartContext";
 import { toggleWishlist, toggleLiked } from "@/app/actions/user";
+import Image from "next/image";
 import "../../my-orders.css";
 
 export default function MyOrdersClient({ orders, wishlist, likedProducts }: any) {
@@ -97,10 +98,15 @@ export default function MyOrdersClient({ orders, wishlist, likedProducts }: any)
         <>
             {/* Page Header */}
             <section className="page-header">
-                <div className="cherry-blossom left"></div>
-                <div className="cherry-blossom right"></div>
-                <h1 className="page-title">My Account</h1>
-                <p className="page-subtitle">Orders, Wishlist & Favorites</p>
+                <div className="section-image-heading">
+                    <Image
+                        src="/My Account.png"
+                        alt="My Account"
+                        width={1920}
+                        height={200}
+                        className="full-width-heading"
+                    />
+                </div>
             </section>
 
             {/* Main Content */}
