@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import Product from "@/app/models/Product";
-import { connectToDB } from "@/app/utils/database";
+import { connectDB } from "@/app/lib/db";
 
 export async function POST(req: Request) {
     try {
-        await connectToDB();
+        await connectDB();
 
         const data = await req.json();
         const products = data.products;
