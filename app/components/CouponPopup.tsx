@@ -8,23 +8,57 @@ import { useCouponModal } from "../context/CouponModalContext";
 export default function CouponPopup() {
     const { isOpen, closeModal, openModal } = useCouponModal();
     const [coupon, setCoupon] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasAutoShown, setHasAutoShown] = useState(false);
 
-    // Auto-open on first load if we have a coupon
+    // Fetch coupons on mount
     useEffect(() => {
+        console.log("CouponPopup: Fetching coupons...");
+        setIsLoading(true);
+
         fetch("/api/coupons")
-            .then(res => res.json())
+            .then(res => {
+                console.log("CouponPopup: API response status:", res.status);
+                return res.json();
+            })
             .then(data => {
+                console.log("CouponPopup: Fetched data:", data);
                 // Find latest active coupon with an image
                 const latest = data.find((c: any) => c.isActive && c.imageUrl);
+                console.log("CouponPopup: Found active coupon with image:", latest);
+
                 if (latest) {
                     setCoupon(latest);
-                    setTimeout(() => {
-                        openModal();
-                    }, 1500);
+                } else {
+                    console.log("CouponPopup: No active coupon with image found");
                 }
+                setIsLoading(false);
             })
-            .catch(err => console.error("Failed to fetch coupons", err));
-    }, [openModal]);
+            .catch(err => {
+                console.error("CouponPopup: Failed to fetch coupons", err);
+                setIsLoading(false);
+            });
+    }, []);
+
+    // Auto-show popup only once on first visit
+    useEffect(() => {
+        if (!coupon || hasAutoShown) return;
+
+        // Check if popup has been shown before
+        const hasShownBefore = localStorage.getItem("couponPopupShown");
+
+        if (!hasShownBefore) {
+            console.log("CouponPopup: Auto-showing popup for first time");
+            setTimeout(() => {
+                openModal();
+                localStorage.setItem("couponPopupShown", "true");
+                setHasAutoShown(true);
+            }, 1500);
+        } else {
+            console.log("CouponPopup: Popup already shown before, skipping auto-show");
+            setHasAutoShown(true);
+        }
+    }, [coupon, hasAutoShown, openModal]);
 
     useEffect(() => {
         if (isOpen) {
@@ -50,13 +84,14 @@ export default function CouponPopup() {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                zIndex: 9998,
+                zIndex: 99999,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 backgroundColor: "rgba(0, 0, 0, 0.75)",
                 backdropFilter: "blur(10px)",
                 animation: "fadeIn 0.3s ease-in-out",
+                padding: "1rem",
             }}
         >
             <style jsx>{`
@@ -76,14 +111,102 @@ export default function CouponPopup() {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
         }
+        
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+          .coupon-modal-container {
+            max-width: 95vw !important;
+            margin: 0 !important;
+          }
+          
+          .coupon-header {
+            padding: 12px 16px !important;
+          }
+          
+          .coupon-title {
+            font-size: 18px !important;
+          }
+          
+          .coupon-content {
+            padding: 12px !important;
+          }
+          
+          .coupon-image-container {
+            max-height: 150px !important;
+            margin-bottom: 12px !important;
+          }
+          
+          .coupon-code {
+            font-size: 14px !important;
+            padding: 8px 16px !important;
+          }
+          
+          .coupon-code span {
+            font-size: 16px !important;
+          }
+          
+          .coupon-footer {
+            padding: 8px !important;
+            font-size: 11px !important;
+            margin-top: 12px !important;
+          }
+          
+          .use-code-text {
+            font-size: 14px !important;
+            margin-bottom: 8px !important;
+          }
+          
+          .copy-text {
+            font-size: 11px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .coupon-modal-container {
+            max-width: calc(100vw - 20px) !important;
+          }
+          
+          .coupon-header {
+            padding: 10px 12px !important;
+          }
+          
+          .coupon-title {
+            font-size: 16px !important;
+          }
+          
+          .coupon-content {
+            padding: 10px !important;
+          }
+          
+          .coupon-code {
+            font-size: 12px !important;
+            padding: 6px 12px !important;
+          }
+          
+          .coupon-code span {
+            font-size: 14px !important;
+          }
+          
+          .coupon-image-container {
+            max-height: 130px !important;
+          }
+          
+          .close-button {
+            width: 28px !important;
+            height: 28px !important;
+            top: 8px !important;
+            right: 8px !important;
+          }
+        }
       `}</style>
 
             <div
+                className="coupon-modal-container"
                 style={{
                     position: "relative",
                     width: "100%",
                     maxWidth: "600px",
-                    margin: "0 1rem",
+                    margin: "0 auto",
                     backgroundColor: "#F5F1E8",
                     borderRadius: "20px",
                     overflow: "hidden",
@@ -94,6 +217,7 @@ export default function CouponPopup() {
             >
                 {/* Header */}
                 <div
+                    className="coupon-header"
                     style={{
                         background: "linear-gradient(135deg, #8B4513 0%, #CD853F 50%, #8B4513 100%)",
                         padding: "30px 24px",
@@ -105,6 +229,7 @@ export default function CouponPopup() {
                     {/* Close button */}
                     <button
                         onClick={closeModal}
+                        className="close-button"
                         style={{
                             position: "absolute",
                             top: "16px",
@@ -127,6 +252,7 @@ export default function CouponPopup() {
                     </button>
 
                     <h2
+                        className="coupon-title"
                         style={{
                             fontSize: "28px",
                             fontWeight: "700",
@@ -137,21 +263,26 @@ export default function CouponPopup() {
                     >
                         ✨ Exclusive Offer ✨
                     </h2>
-                    <p style={{ color: "rgba(255,255,255,0.9)" }}>Limited time only</p>
+                    <p style={{ color: "rgba(255,255,255,0.9)", margin: 0 }}>Limited time only</p>
                 </div>
 
                 {/* Coupon Image */}
-                <div style={{ padding: "24px" }}>
+                <div className="coupon-content" style={{ padding: "24px" }}>
                     <div
+                        className="coupon-image-container"
                         style={{
                             borderRadius: "12px",
                             overflow: "hidden",
                             boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
                             border: "2px solid #CD853F",
                             width: "100%",
+                            minHeight: "120px",
                             height: "auto",
                             backgroundColor: "#F5F5DC",
-                            marginBottom: "20px"
+                            marginBottom: "20px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
                         }}
                     >
                         <img
@@ -160,16 +291,18 @@ export default function CouponPopup() {
                             style={{
                                 display: "block",
                                 width: "100%",
+                                height: "auto",
                                 maxHeight: "300px",
-                                objectFit: "cover",
+                                objectFit: "contain",
                             }}
                         />
                     </div>
 
                     <div className="text-center space-y-2">
-                        <p className="font-bold text-gray-800 text-lg">Use Code:</p>
+                        <p className="font-bold text-gray-800 text-lg use-code-text">Use Code:</p>
                         <div
-                            className="inline-block bg-white border-2 border-dashed border-[#CD853F] px-8 py-3 rounded-xl cursor-pointer hover:bg-gray-50 transition"
+                            className="inline-block bg-white border-2 border-dashed border-[#CD853F] rounded-xl cursor-pointer hover:bg-gray-50 transition coupon-code"
+                            style={{ padding: "12px 32px" }}
                             onClick={() => {
                                 navigator.clipboard.writeText(coupon.code);
                                 alert("Code copied!");
@@ -177,11 +310,12 @@ export default function CouponPopup() {
                         >
                             <span className="text-2xl font-mono font-bold tracking-widest text-[#8B4513]">{coupon.code}</span>
                         </div>
-                        <p className="text-sm text-gray-500 mt-2">Click to copy code</p>
+                        <p className="text-sm text-gray-500 mt-2 copy-text">Click to copy code</p>
                     </div>
 
                     {/* Footer instruction */}
                     <div
+                        className="coupon-footer"
                         style={{
                             display: "flex",
                             alignItems: "center",
