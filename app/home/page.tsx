@@ -151,12 +151,12 @@ export default function HomePage() {
           </li>
           <li onClick={() => { router.push("/products?category=festive"); setIsMenuOpen(false); }}>Festive</li>
           <li onClick={() => { openCouponModal(); setIsMenuOpen(false); }}>Offers</li>
-          <li onClick={() => setIsMenuOpen(false)}>About</li>
+          <li onClick={() => { router.push("/about"); setIsMenuOpen(false); }}>About</li>
         </ul>
 
         {/* RIGHT */}
         <div className="nav-right">
-          <div className="nav-icon search-hide-mobile"><SearchIcon /></div>
+          <div className="nav-icon search-hide-mobile" onClick={() => router.push("/products")} style={{ cursor: "pointer" }}><SearchIcon /></div>
           <div className="nav-icon" onClick={openCart}><CartIcon /></div>
 
           {session ? (

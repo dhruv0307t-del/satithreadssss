@@ -13,6 +13,7 @@ import {
   Plus,
   Palette,
   ClipboardList,
+  MessageSquare,
 } from "lucide-react";
 
 const menu = [
@@ -25,6 +26,7 @@ const menu = [
   { label: "Users", href: "/admin/users", icon: Users },
   { label: "Coupons", href: "/admin/coupons", icon: TicketPercent },
   { label: "Add Coupon", href: "/admin/coupons/add", icon: Plus },
+  { label: "Contact Messages", href: "/admin/contact-messages", icon: MessageSquare },
   { label: "Website Update", href: "/admin/website-update", icon: Palette },
 ];
 

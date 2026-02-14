@@ -116,6 +116,24 @@ export default function AdminDashboard() {
               ₹{stats.totalRevenue.toLocaleString("en-IN")}
             </p>
           </div>
+
+          <div className="admin-metric-card relative group">
+            <p className="admin-card-title">Contact Messages</p>
+            <p className="admin-card-value">
+              {stats.contactMessages || 0}
+              {stats.newContactMessages > 0 && (
+                <span style={{ fontSize: '14px', color: '#dc2626', marginLeft: '8px' }}>
+                  ({stats.newContactMessages} new)
+                </span>
+              )}
+            </p>
+            <Link
+              href="/admin/contact-messages"
+              className="absolute top-4 right-4 text-xs font-bold text-black/40 hover:text-black opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1"
+            >
+              View
+            </Link>
+          </div>
         </section>
       </main>
     </div>

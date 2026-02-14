@@ -3,6 +3,7 @@ import { connectDB } from "@/app/lib/db";
 import Product from "@/app/models/Product";
 import User from "@/app/models/User";
 import Order from "@/app/models/Order";
+import ContactMessage from "@/app/models/ContactMessage";
 
 export async function GET() {
   try {
@@ -14,6 +15,10 @@ export async function GET() {
       totalOrders,
       revenueAgg,
       lowStockProducts,
+      subscribedUsers,
+      newUsersThisWeek,
+      contactMessages,
+      newContactMessages,
     ] = await Promise.all([
       Product.countDocuments(),
       User.countDocuments(),
@@ -26,6 +31,18 @@ export async function GET() {
       ]),
 
       Product.countDocuments({ quantity: { $lte: 5 } }),
+
+      // subscribed users
+      User.countDocuments({ subscribe: true }),
+
+      // users created in last 7 days
+      User.countDocuments({
+        createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
+      }),
+
+      // contact messages stats
+      ContactMessage.countDocuments(),
+      ContactMessage.countDocuments({ status: "new" }),
     ]);
 
     return NextResponse.json({
@@ -34,6 +51,10 @@ export async function GET() {
       totalOrders,
       totalRevenue: revenueAgg[0]?.total || 0,
       lowStockProducts,
+      subscribedUsers,
+      newUsersThisWeek,
+      contactMessages,
+      newContactMessages,
     });
   } catch (error: any) {
     console.error("❌ DASHBOARD ERROR:", error.message);

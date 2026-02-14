@@ -157,94 +157,31 @@ export default function CheckoutModal() {
     return (
         <div
             onClick={handleBackdropClick}
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 9999,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                backdropFilter: "blur(8px)",
-            }}
+            className="checkout-modal-overlay"
         >
-            <div
-                style={{
-                    position: "relative",
-                    width: "75%",
-                    maxWidth: "900px",
-                    margin: "0 1rem",
-                    backgroundColor: "#F5F1E8",
-                    borderRadius: "16px",
-                    padding: "48px 40px",
-                    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
-                    maxHeight: "90vh",
-                    overflowY: "auto",
-                }}
-            >
+            <div className="checkout-modal-content">
                 {/* Close Button */}
                 <button
                     onClick={handleClose}
-                    style={{
-                        position: "absolute",
-                        top: "20px",
-                        right: "20px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "#4A5568",
-                        transition: "color 0.2s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#1A202C")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "#4A5568")}
+                    className="checkout-close-btn"
                 >
                     <X size={24} />
                 </button>
 
                 {/* Title */}
-                <h1
-                    style={{
-                        fontSize: "32px",
-                        fontWeight: "600",
-                        textAlign: "center",
-                        marginBottom: "32px",
-                        color: "#1A202C",
-                        letterSpacing: "-0.5px",
-                    }}
-                >
+                <h1 className="checkout-title">
                     Checkout
                 </h1>
 
                 {/* Error Message */}
                 {error && (
-                    <div
-                        style={{
-                            marginBottom: "20px",
-                            padding: "12px 16px",
-                            backgroundColor: "#FEE2E2",
-                            border: "1px solid #FCA5A5",
-                            borderRadius: "8px",
-                            color: "#991B1B",
-                            fontSize: "14px",
-                        }}
-                    >
+                    <div className="checkout-error">
                         {error}
                     </div>
                 )}
 
                 {/* Order Summary */}
-                <div
-                    style={{
-                        marginBottom: "32px",
-                        padding: "20px",
-                        backgroundColor: "#FFFFFF",
-                        borderRadius: "12px",
-                        border: "1px solid #D1D5DB",
-                    }}
-                >
+                <div className="checkout-order-summary">
                     <h3
                         style={{
                             fontSize: "18px",
@@ -336,25 +273,14 @@ export default function CheckoutModal() {
                 </h3>
 
                 <form onSubmit={(e) => { e.preventDefault(); placeOrder(); }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                    <div className="checkout-form-grid">
                         {/* Full Name */}
                         <input
                             type="text"
                             placeholder="Full Name"
                             value={address.name}
                             onChange={(e) => setAddress({ ...address, name: e.target.value })}
-                            style={{
-                                padding: "14px 16px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px",
-                                fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
-                                color: "#1F2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                            }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            className="checkout-input"
                         />
 
                         {/* Phone */}
@@ -363,18 +289,7 @@ export default function CheckoutModal() {
                             placeholder="Phone Number"
                             value={address.phone}
                             onChange={(e) => setAddress({ ...address, phone: e.target.value })}
-                            style={{
-                                padding: "14px 16px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px",
-                                fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
-                                color: "#1F2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                            }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            className="checkout-input"
                         />
 
                         {/* Address - Full Width */}
@@ -383,19 +298,7 @@ export default function CheckoutModal() {
                             placeholder="Street Address"
                             value={address.address}
                             onChange={(e) => setAddress({ ...address, address: e.target.value })}
-                            style={{
-                                gridColumn: "1 / -1",
-                                padding: "14px 16px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px",
-                                fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
-                                color: "#1F2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                            }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            className="checkout-input checkout-input-full"
                         />
 
                         {/* City */}
@@ -404,18 +307,7 @@ export default function CheckoutModal() {
                             placeholder="City"
                             value={address.city}
                             onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                            style={{
-                                padding: "14px 16px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px",
-                                fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
-                                color: "#1F2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                            }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            className="checkout-input"
                         />
 
                         {/* State */}
@@ -424,18 +316,7 @@ export default function CheckoutModal() {
                             placeholder="State"
                             value={address.state}
                             onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                            style={{
-                                padding: "14px 16px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px",
-                                fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
-                                color: "#1F2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                            }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            className="checkout-input"
                         />
 
                         {/* Pincode - Full Width */}
@@ -444,19 +325,7 @@ export default function CheckoutModal() {
                             placeholder="Pincode"
                             value={address.pincode}
                             onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
-                            style={{
-                                gridColumn: "1 / -1",
-                                padding: "14px 16px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px",
-                                fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
-                                color: "#1F2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                            }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            className="checkout-input checkout-input-full"
                         />
                     </div>
 
@@ -464,31 +333,7 @@ export default function CheckoutModal() {
                     <button
                         type="submit"
                         disabled={loading || !isAddressValid}
-                        style={{
-                            width: "100%",
-                            marginTop: "32px",
-                            padding: "16px",
-                            backgroundColor: "#2C3E50",
-                            color: "#FFFFFF",
-                            border: "none",
-                            borderRadius: "8px",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            letterSpacing: "0.5px",
-                            cursor: loading || !isAddressValid ? "not-allowed" : "pointer",
-                            opacity: loading || !isAddressValid ? 0.6 : 1,
-                            transition: "all 0.2s",
-                        }}
-                        onMouseEnter={(e) => {
-                            if (!loading && isAddressValid) {
-                                e.currentTarget.style.backgroundColor = "#1a252f";
-                            }
-                        }}
-                        onMouseLeave={(e) => {
-                            if (!loading && isAddressValid) {
-                                e.currentTarget.style.backgroundColor = "#2C3E50";
-                            }
-                        }}
+                        className="checkout-submit-btn"
                     >
                         {loading ? "Placing Order..." : "Place Order (COD)"}
                     </button>

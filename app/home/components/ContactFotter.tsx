@@ -2,13 +2,20 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function ContactFooter() {
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const router = useRouter();
 
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
+  const categories = [
+    { title: "Kurta Sets", slug: "kurta-sets" },
+    { title: "Dupatta Sets", slug: "dupatta-sets" },
+    { title: "Skirts", slug: "skirts" },
+    { title: "Cord Sets", slug: "cord-sets" },
+    { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets" },
+    { title: "Tops", slug: "tops" },
+    { title: "Short Kurtis", slug: "short-kurtis" },
+  ];
 
   return (
     <section className="contact-footer">
@@ -17,16 +24,14 @@ export default function ContactFooter() {
         <div className="contact-brand">
           <Image
             src="/logo1.png"
-            alt="Jonaya"
+            alt="SatiThreads"
             width={140}
             height={80}
             className="footer-logo"
           />
 
           <p className="brand-text">
-            Welcome to JONAYA, a homegrown brand based in Jaipur.
-            <br />
-            Jonaya is a brand by <strong>DIAMOND</strong>.
+            Welcome to SatiThreads - A Traditional Brand of India
           </p>
 
           {/* Social */}
@@ -36,102 +41,65 @@ export default function ContactFooter() {
             </a>
           </div>
 
-          {/* Accordion Items */}
-          <div className="accordion">
-            <div
-              onClick={() => toggleSection("address")}
-              className={`accordion-trigger ${expandedSection === "address" ? "expanded" : ""}`}
-            >
-              <span>📍 Physical Address</span>
-              <span className="arrow">▼</span>
+          {/* Contact Details - Always Visible */}
+          <div className="contact-details">
+            <div className="contact-item">
+              <span className="contact-icon">📍</span>
+              <p>Plot No. 148-149 Om Shiv Residency in front of RIICO Residential Colony, Sitapura, Jaipur</p>
             </div>
-            {expandedSection === "address" && (
-              <div className="accordion-content">
-                <p>123 Fashion Street, Jaipur, Rajasthan 302001</p>
-              </div>
-            )}
 
-            <div
-              onClick={() => toggleSection("email")}
-              className={`accordion-trigger ${expandedSection === "email" ? "expanded" : ""}`}
-            >
-              <span>✉️ Drop us an email</span>
-              <span className="arrow">▼</span>
+            <div className="contact-item">
+              <span className="contact-icon">✉️</span>
+              <p>
+                <a href="mailto:support@satithreads.com">support@satithreads.com</a>
+              </p>
             </div>
-            {expandedSection === "email" && (
-              <div className="accordion-content">
-                <p>
-                  <a href="mailto:support@jonaya.in">support@jonaya.in</a>
-                </p>
-              </div>
-            )}
 
-            <div
-              onClick={() => toggleSection("phone")}
-              className={`accordion-trigger ${expandedSection === "phone" ? "expanded" : ""}`}
-            >
-              <span>📞 Call us anytime</span>
-              <span className="arrow">▼</span>
+            <div className="contact-item">
+              <span className="contact-icon">📞</span>
+              <p>
+                <a href="tel:+919351903011">+91 93519 03011</a>
+              </p>
             </div>
-            {expandedSection === "phone" && (
-              <div className="accordion-content">
-                <p>
-                  <a href="tel:+919876543210">+91 98765 43210</a>
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Action Buttons */}
           <div className="footer-actions">
-            <button className="filled">About us</button>
-            <button className="outline">Contact us</button>
+            <button className="filled" onClick={() => router.push("/about")}>
+              About us
+            </button>
+            <button className="outline" onClick={() => router.push("/contact")}>
+              Contact us
+            </button>
           </div>
         </div>
 
         {/* CENTER - CATEGORIES */}
         <div className="footer-links">
-          <h4
-            onClick={() => toggleSection("categories")}
-            className={`accordion-header ${expandedSection === "categories" ? "expanded" : ""}`}
-          >
-            CATEGORIES
-            <span className="arrow">▼</span>
-          </h4>
-          <ul className={expandedSection === "categories" ? "mobile-show" : "mobile-hide"}>
-            <li>New Arrivals</li>
-            <li>Farshi Salwar Set</li>
-            <li>Premium Kurta Sets</li>
-            <li>Kurta Sets</li>
-            <li>Dresses</li>
-            <li>Straight Kurta Sets</li>
-            <li>Kameez Sets</li>
-            <li>Aesthetic Skirts</li>
-            <li>Kurtis</li>
-            <li>Peplum Tops</li>
-            <li>Track Your Order</li>
+          <h4 className="footer-heading">CATEGORIES</h4>
+          <ul>
+            {categories.map((cat) => (
+              <li
+                key={cat.slug}
+                onClick={() => router.push(`/category/${cat.slug}`)}
+              >
+                {cat.title}
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* RIGHT - POLICIES */}
         <div className="footer-links">
-          <h4
-            onClick={() => toggleSection("policies")}
-            className={`accordion-header ${expandedSection === "policies" ? "expanded" : ""}`}
-          >
-            POLICIES
-            <span className="arrow">▼</span>
-          </h4>
-          <ul className={expandedSection === "policies" ? "mobile-show" : "mobile-hide"}>
-            <li>Search</li>
-            <li>About Us</li>
-            <li>Privacy Policy</li>
-            <li>Terms and Conditions</li>
-            <li>Refund Policy</li>
-            <li>Shipping Policy</li>
-            <li>Return & Exchange Policy</li>
-            <li>Become a Affiliate</li>
-            <li>Exchange portal</li>
+          <h4 className="footer-heading">POLICIES</h4>
+          <ul>
+            <li onClick={() => router.push("/products")}>Search</li>
+            <li onClick={() => router.push("/about")}>About Us</li>
+            <li onClick={() => router.push("/privacy-policy")}>Privacy Policy</li>
+            <li onClick={() => router.push("/terms-conditions")}>Terms and Conditions</li>
+            <li onClick={() => router.push("/privacy-policy")}>Refund Policy</li>
+            <li onClick={() => router.push("/shipping-policy")}>Shipping Policy</li>
+            <li onClick={() => router.push("/shipping-policy")}>Return & Exchange Policy</li>
           </ul>
         </div>
       </div>
@@ -162,10 +130,6 @@ export default function ContactFooter() {
           margin-bottom: 20px;
         }
 
-        .brand-text strong {
-          color: #8b7355;
-        }
-
         .social {
           margin: 20px 0;
           display: flex;
@@ -194,86 +158,41 @@ export default function ContactFooter() {
           transform: scale(1.1);
         }
 
-        .accordion {
+        .contact-details {
           margin: 30px 0;
+          text-align: left;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
         }
 
-        .accordion-trigger {
-          padding: 16px;
-          border-bottom: 1px solid #e0e0e0;
+        .contact-item {
           display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: 16px;
-          color: #333;
-          cursor: pointer;
-          transition: background 0.2s ease;
-        }
-
-        .accordion-trigger:hover {
-          background: #f9f9f9;
-        }
-
-        .accordion-trigger.expanded {
-          background: #f5f5f5;
-        }
-
-        .accordion-header {
-          font-size: 16px;
-          color: #8b7355;
-          margin-bottom: 20px;
-          font-weight: 600;
-          letter-spacing: 1px;
-          padding-bottom: 12px;
+          gap: 12px;
+          align-items: flex-start;
+          padding: 16px 0;
           border-bottom: 1px solid #e0e0e0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          cursor: pointer;
-          transition: all 0.3s ease;
         }
 
-        .arrow {
-          font-size: 12px;
-          color: #999;
-          transition: transform 0.3s ease;
+        .contact-icon {
+          font-size: 20px;
+          min-width: 24px;
         }
 
-        .expanded .arrow {
-          transform: rotate(180deg);
-        }
-
-        .accordion-content {
-          padding: 16px;
-          background: #fafafa;
-          border-bottom: 1px solid #e0e0e0;
-          animation: slideDown 0.3s ease;
-        }
-
-        .accordion-content p {
+        .contact-item p {
           margin: 0;
           color: #666;
           font-size: 14px;
+          line-height: 1.6;
         }
 
-        .accordion-content a {
+        .contact-item a {
           color: #8b7355;
           text-decoration: none;
         }
 
-        .accordion-content a:hover {
+        .contact-item a:hover {
           text-decoration: underline;
-        }
-
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            max-height: 0;
-          }
-          to {
-            opacity: 1;
-            max-height: 200px;
-          }
         }
 
         .footer-actions {
@@ -318,6 +237,17 @@ export default function ContactFooter() {
           padding: 0 10px;
         }
 
+        .footer-heading {
+          font-size: 16px;
+          color: white;
+          background: #c4a5a5;
+          margin-bottom: 20px;
+          font-weight: 600;
+          letter-spacing: 1px;
+          padding: 12px 16px;
+          border-radius: 4px;
+        }
+
         .footer-links ul {
           list-style: none;
           padding: 0;
@@ -343,18 +273,6 @@ export default function ContactFooter() {
           .contact-grid {
             grid-template-columns: 1fr 1fr 1fr;
           }
-
-          .accordion-header {
-            cursor: default;
-          }
-
-          .accordion-header .arrow {
-            display: none;
-          }
-
-          .footer-links ul.mobile-hide {
-            display: block !important;
-          }
         }
 
         /* Tablet specific layout */
@@ -372,36 +290,6 @@ export default function ContactFooter() {
         @media (max-width: 768px) {
           .contact-grid {
             grid-template-columns: 1fr;
-          }
-
-          .accordion-header {
-            background: #8b7355; /* Jonaya Brown */
-            color: white !important;
-            padding: 16px 20px;
-            border-radius: 8px;
-            border-bottom: none;
-            margin-bottom: 10px;
-            display: flex !important;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-          }
-
-          .accordion-header .arrow {
-            color: white;
-          }
-
-          .footer-links ul.mobile-hide {
-            display: none;
-          }
-
-          .footer-links ul.mobile-show {
-            display: block;
-            padding: 10px 16px;
-            background: #fafafa;
-            border-radius: 0 0 8px 8px;
-            margin-top: -10px;
-            margin-bottom: 20px;
           }
 
           .footer-actions {
