@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     const auth = await verifyMasterAdmin();
     if (!auth.authorized) {
@@ -16,7 +16,7 @@ export async function PATCH(
 
     try {
         await connectDB();
-        const { id } = params;
+        const { id } = await params;
         const body = await req.json();
         const { action, password, newRole } = body;
 
@@ -101,7 +101,7 @@ export async function PATCH(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     const auth = await verifyMasterAdmin();
     if (!auth.authorized) {
@@ -110,7 +110,7 @@ export async function DELETE(
 
     try {
         await connectDB();
-        const { id } = params;
+        const { id } = await params;
 
         // Prevent master admin from deleting themselves
         if (id === auth.user.id) {

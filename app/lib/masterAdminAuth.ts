@@ -5,12 +5,12 @@ export async function verifyMasterAdmin() {
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
-        return { authorized: false, error: "Unauthorized" };
+        return { authorized: false as const, error: "Unauthorized", user: null };
     }
 
     if (session.user.role !== "master_admin") {
-        return { authorized: false, error: "Access denied. Master admin privileges required." };
+        return { authorized: false as const, error: "Access denied. Master admin privileges required.", user: null };
     }
 
-    return { authorized: true, user: session.user };
+    return { authorized: true as const, user: session.user };
 }
