@@ -1,95 +1,137 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   Package,
-  Users,
-  TicketPercent,
+  ClipboardList,
+  Plus,
   ShoppingCart,
   IndianRupee,
-  LogOut,
-  ExternalLink,
-  Plus,
-  Palette,
-  ClipboardList,
+  Users,
+  TicketPercent,
   MessageSquare,
+  Palette,
+  KeyRound,
+  Shield,
+  ExternalLink,
+  LogOut,
 } from "lucide-react";
 
-const menu = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "View Products", href: "/admin/products", icon: Package },
-  { label: "Inventory", href: "/admin/inventory", icon: ClipboardList },
-  { label: "Add Product", href: "/admin/products/add", icon: Plus },
-  { label: "Orders", href: "/admin/orders", icon: ShoppingCart },
-  { label: "Revenue", href: "/admin/revenue", icon: IndianRupee },
-  { label: "Users", href: "/admin/users", icon: Users },
-  { label: "Coupons", href: "/admin/coupons", icon: TicketPercent },
-  { label: "Add Coupon", href: "/admin/coupons/add", icon: Plus },
-  { label: "Contact Messages", href: "/admin/contact-messages", icon: MessageSquare },
-  { label: "Website Update", href: "/admin/website-update", icon: Palette },
+const groups = [
+  {
+    label: "Overview",
+    items: [
+      { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { label: "Orders", href: "/admin/orders", icon: ShoppingCart },
+      { label: "View Products", href: "/admin/products", icon: Package },
+      { label: "Inventory", href: "/admin/inventory", icon: ClipboardList },
+    ],
+  },
+  {
+    label: "Manage",
+    items: [
+      { label: "Users", href: "/admin/users", icon: Users },
+      { label: "Revenue", href: "/admin/revenue", icon: IndianRupee },
+      { label: "Coupons", href: "/admin/coupons", icon: TicketPercent },
+      { label: "Contact Messages", href: "/admin/contact-messages", icon: MessageSquare },
+      { label: "Website Update", href: "/admin/website-update", icon: Palette },
+    ],
+  },
+  {
+    label: "Quick Actions",
+    items: [
+      { label: "Add Product", href: "/admin/products/add", icon: Plus },
+      { label: "Add Coupon", href: "/admin/coupons/add", icon: Plus },
+      { label: "Settings", href: "/admin/settings", icon: KeyRound },
+    ],
+  },
 ];
 
-export default function Sidebar({ userName = "Admin" }: { userName?: string }) {
-  return (
-    <aside className="admin-sidebar">
-      {/* Top section */}
-      <div>
-        {/* Avatar + Brand */}
-        <div className="flex items-center gap-3 mb-10">
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white text-xl"
-            style={{ backgroundColor: "var(--admin-accent)" }}
-          >
-            {userName?.charAt(0)?.toUpperCase() || "A"}
-          </div>
-          <span
-            className="font-semibold text-xl"
-            style={{ color: "var(--admin-text)" }}
-          >
-            Admin
-          </span>
-        </div>
+export default function Sidebar({
+  userName = "Admin",
+  userRole,
+}: {
+  userName?: string;
+  userRole?: string;
+}) {
+  const pathname = usePathname();
+  const { data: session } = useSession();
+  const displayName = session?.user?.name || userName;
+  const initial = displayName?.charAt(0)?.toUpperCase() || "A";
 
-        {/* Navigation links */}
-        <nav className="space-y-1.5">
-          {menu.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[14px] transition-colors"
-                style={{
-                  color: "var(--admin-text)",
-                }}
-              >
-                <Icon size={18} strokeWidth={1.8} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+  return (
+    <aside className="adm-sidebar">
+      {/* Logo */}
+      <div className="adm-logo">
+        <div className="adm-logo-mark">{initial}</div>
+        <span className="adm-logo-text">Admin</span>
       </div>
 
-      {/* Bottom section */}
-      <div className="space-y-2 mt-8">
-        <Link
-          href="/"
-          className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[14px] transition-colors"
-          style={{ color: "var(--admin-text)" }}
-        >
-          <ExternalLink size={18} strokeWidth={1.8} />
-          <span>Visit Website</span>
-        </Link>
+      {/* Nav Groups */}
+      <div className="adm-nav-scroll">
+        {groups.map((group) => (
+          <div className="adm-nav-group" key={group.label}>
+            <div className="adm-nav-label">{group.label}</div>
+            {group.items.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                item.href === "/admin"
+                  ? pathname === "/admin"
+                  : pathname?.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`adm-nav-item${isActive ? " active" : ""}`}
+                >
+                  <Icon size={15} strokeWidth={2} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
 
+        {/* Master Admin — only for master_admin */}
+        {userRole === "master_admin" && (
+          <>
+            <div className="adm-nav-divider" />
+            <div className="adm-nav-group">
+              <Link href="/admin/master-admin" className={`adm-nav-item adm-master${pathname === "/admin/master-admin" ? " active" : ""}`}>
+                <Shield size={15} strokeWidth={2} />
+                Master Admin
+              </Link>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Bottom */}
+      <div className="adm-sidebar-bottom">
+        <div className="adm-nav-divider" />
+        <Link href="/" className="adm-nav-item" style={{ marginBottom: 4 }}>
+          <ExternalLink size={15} strokeWidth={2} />
+          Visit Website
+        </Link>
         <button
-          className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[14px] w-full text-left transition-colors"
-          style={{ color: "#dc2626" }} // red for sign out
+          onClick={() => signOut({ callbackUrl: "/admin/login" })}
+          className="adm-nav-item adm-signout"
         >
-          <LogOut size={18} strokeWidth={1.8} />
-          <span>Sign Out</span>
+          <LogOut size={15} strokeWidth={2} />
+          Sign Out
         </button>
+        <div className="adm-user-chip">
+          <div className="adm-avatar">{initial}</div>
+          <div className="adm-user-info">
+            <div className="adm-user-name">{displayName}</div>
+            <div className="adm-user-role">
+              {userRole === "master_admin" ? "Master Admin" : "Admin"}
+            </div>
+          </div>
+        </div>
       </div>
     </aside>
   );

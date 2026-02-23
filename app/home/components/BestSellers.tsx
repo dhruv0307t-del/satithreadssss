@@ -6,6 +6,12 @@ import { useCart } from "@/app/context/CartContext";
 import { useRouter } from "next/navigation";
 import { toggleWishlist } from "@/app/actions/user";
 
+interface SizeEntry {
+  _id: string;
+  size: string;
+  stock: number;
+}
+
 interface Product {
   _id: string;
   name: string;
@@ -13,7 +19,7 @@ interface Product {
   priceOld?: number;
   mainImage: string;
   gridImages?: string[];
-  sizes?: string[];
+  sizes?: SizeEntry[];
 }
 
 const ProductCard = ({ product }: { product: Product }) => {
@@ -138,11 +144,15 @@ const ProductCard = ({ product }: { product: Product }) => {
             onChange={(e) => setSelectedSize(e.target.value)}
           >
             <option value="">Select Size</option>
-            {(product.sizes || ["XS", "S", "M", "L", "XL"]).map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
+            {(product.sizes || []).map((s) => {
+              const sizeStr = typeof s === "string" ? s : s.size;
+              const sizeKey = typeof s === "string" ? s : s._id;
+              return (
+                <option key={sizeKey} value={sizeStr}>
+                  {sizeStr}
+                </option>
+              );
+            })}
           </select>
         </div>
 

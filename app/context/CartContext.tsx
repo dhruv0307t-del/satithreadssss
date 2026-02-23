@@ -18,16 +18,23 @@ export type CartItem = {
   size?: string;
 };
 
+export type AppliedCoupon = {
+  code: string;
+  discount: number;          // value (% or flat ₹)
+  type: "flat" | "percent";
+};
+
 type CartContextType = {
   cart: CartItem[];
   isOpen: boolean;
-  discount: number;
+  appliedCoupon: AppliedCoupon | null;
   openCart: () => void;
   closeCart: () => void;
   addToCart: (product: CartItem) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
-  applyCoupon: (code: string) => void;
+  applyCoupon: (code: string, cartTotal?: number) => Promise<{ ok: boolean; message: string }>;
+  removeCoupon: () => void;
 };
 
 /* ================= CONTEXT ================= */
@@ -39,34 +46,25 @@ const CartContext = createContext<CartContextType | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [discount, setDiscount] = useState<number>(0);
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
 
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
-  /* 🔥 ADD TO CART — FIXED */
+  /* ADD TO CART */
   const addToCart = (product: CartItem) => {
     setCart((prev) => {
-      const existing = prev.find((i) => i.id === product.id);
-
+      const existing = prev.find((i) => i.id === product.id && i.size === product.size);
       if (existing) {
         return prev.map((i) =>
-          i.id === product.id
+          i.id === product.id && i.size === product.size
             ? { ...i, qty: i.qty + 1 }
             : i
         );
       }
-
-      return [
-        ...prev,
-        {
-          ...product,
-          qty: product.qty ?? 1,
-        },
-      ];
+      return [...prev, { ...product, qty: product.qty ?? 1 }];
     });
-
-    setIsOpen(true); // 🔥 auto open drawer
+    setIsOpen(true);
   };
 
   const removeItem = (id: string) => {
@@ -75,27 +73,69 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => {
     setCart([]);
-    setDiscount(0);
+    setAppliedCoupon(null);
   };
 
-  const applyCoupon = (code: string) => {
-    if (code === "SATI10") setDiscount(10);
-    else if (code === "SATI20") setDiscount(20);
-    else alert("Invalid Coupon");
+  /* APPLY COUPON — hits the DB validate API */
+  const applyCoupon = async (
+    code: string,
+    cartTotal?: number
+  ): Promise<{ ok: boolean; message: string }> => {
+    if (!code.trim()) return { ok: false, message: "Enter a coupon code" };
+
+    try {
+      const subtotal =
+        cartTotal ??
+        cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+      const res = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: code.trim().toUpperCase(), cartTotal: subtotal }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setAppliedCoupon(null);
+        return { ok: false, message: data.message || "Invalid coupon" };
+      }
+
+      setAppliedCoupon({
+        code: data.code,
+        discount: data.discount,
+        type: data.type,
+      });
+
+      const saved =
+        data.type === "flat"
+          ? data.discount
+          : Math.round((subtotal * data.discount) / 100);
+
+      return {
+        ok: true,
+        message: `Coupon applied! You save ₹${saved.toLocaleString("en-IN")} 🎉`,
+      };
+    } catch {
+      return { ok: false, message: "Could not validate coupon. Try again." };
+    }
   };
+
+  const removeCoupon = () => setAppliedCoupon(null);
 
   return (
     <CartContext.Provider
       value={{
         cart,
         isOpen,
-        discount,
+        appliedCoupon,
         openCart,
         closeCart,
         addToCart,
         removeItem,
         clearCart,
         applyCoupon,
+        removeCoupon,
       }}
     >
       {children}
@@ -107,8 +147,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export const useCart = () => {
   const ctx = useContext(CartContext);
-  if (!ctx) {
-    throw new Error("useCart must be used inside CartProvider");
-  }
+  if (!ctx) throw new Error("useCart must be used inside CartProvider");
   return ctx;
 };

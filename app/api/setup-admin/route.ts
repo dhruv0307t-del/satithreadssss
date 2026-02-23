@@ -7,7 +7,19 @@ export async function POST(req: Request) {
     try {
         await connectDB();
 
-        // Check if any admin exists
+        const { email, password, name, secretKey } = await req.json();
+
+        // ------ Secret key guard ------
+        const expectedSecret = process.env.SETUP_ADMIN_SECRET;
+        if (!expectedSecret || secretKey !== expectedSecret) {
+            return NextResponse.json(
+                { success: false, message: "Invalid or missing setup secret key." },
+                { status: 403 }
+            );
+        }
+        // ------------------------------
+
+        // Check if admin limit reached
         const adminCount = await User.countDocuments({ role: "admin" });
         if (adminCount >= 6) {
             return NextResponse.json(
@@ -15,8 +27,6 @@ export async function POST(req: Request) {
                 { status: 403 }
             );
         }
-
-        const { email, password, name } = await req.json();
 
         if (!validateEmail(email)) {
             return NextResponse.json({ success: false, message: "Invalid email" }, { status: 400 });

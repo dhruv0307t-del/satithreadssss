@@ -7,6 +7,12 @@ import Image from "next/image";
 import { useState } from "react";
 import "../../category-products.css";
 
+interface SizeEntry {
+  _id: string;
+  size: string;
+  stock: number;
+}
+
 interface Product {
   _id: string;
   name: string;
@@ -14,7 +20,7 @@ interface Product {
   priceOld?: number;
   mainImage: string;
   gridImages?: string[];
-  sizes?: string[];
+  sizes?: SizeEntry[];
   quantity: number;
 }
 
@@ -160,11 +166,15 @@ const ProductCard = ({ product }: { product: Product }) => {
             ) : (
               <>
                 <option value="">Select Size</option>
-                {(product.sizes || ["XS", "S", "M", "L", "XL"]).map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
+                {(product.sizes || []).map((s) => {
+                  const sizeStr = typeof s === "string" ? s : s.size;
+                  const sizeKey = typeof s === "string" ? s : s._id;
+                  return (
+                    <option key={sizeKey} value={sizeStr}>
+                      {sizeStr}
+                    </option>
+                  );
+                })}
               </>
             )}
           </select>

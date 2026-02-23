@@ -91,12 +91,12 @@ export default function HomePage() {
 
   // Categories data
   const categories = [
-    { title: "Kurta Sets", slug: "kurta-sets", img: "/cat-kurta.png" },
+    { title: "Kurta Sets", slug: "kurta-sets", img: "/Dupaata Set.jpg" },
     { title: "Dupatta Sets", slug: "dupatta-sets", img: "/Dupaata Set.jpg" },
     { title: "Skirts", slug: "skirts", img: "/Skirts.jpg" },
-    { title: "Cord Sets", slug: "cord-sets", img: "/cat-coord.png" },
+    { title: "Cord Sets", slug: "cord-sets", img: "/Farshi Salwar Suit.jpg" },
     { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets", img: "/Farshi Salwar Suit.jpg" },
-    { title: "Tops", slug: "tops", img: "/Gate (5).png" },
+    { title: "Tops", slug: "tops", img: "/Skirts.jpg" },
     { title: "Short Kurtis", slug: "short-kurtis", img: "/Short Kuti.jpg" },
   ];
 

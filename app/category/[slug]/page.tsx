@@ -18,25 +18,25 @@ export default async function CategoryPage({
   })
     .sort({ createdAt: -1 })
     .lean();
-    const safeProducts = JSON.parse(JSON.stringify(productsRaw));
+  const safeProducts = JSON.parse(JSON.stringify(productsRaw));
   /* 🔥 SLUG → TOP IMAGE MAP */
   const CATEGORY_HEADERS: Record<string, string> = {
     "kurta-sets": "/category-headers/Kurta-Sets.png",
     "dupatta-sets": "/category-headers/Duppata.png",
     "skirts": "/category-headers/skirts.png",
     "cord-sets": "/category-headers/coord.png",
-    "farshi-salwar-sets": "/category-headers/Farshi.png",
-    "tops": "/category-headers/tops.png",
-    "short-kurtis": "/category-headers/short-kurtis.png",
+    "farshi-salwar-sets": "/category-headers/Farsi.png",
+    "tops": "/category-headers/Kurta-Sets.png",
+    "short-kurtis": "/category-headers/Short Kurtis.png",
   };
 
   const topImage =
-  CATEGORY_HEADERS[slug] || "/category-headers/default.jpg";
+    CATEGORY_HEADERS[slug] || "/category-headers/default.jpg";
 
   return (
     <CategoryClient
       products={safeProducts}
       topImage={topImage}
     />
-);
+  );
 }

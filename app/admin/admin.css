@@ -667,3 +667,608 @@
   border-color: #000;
   background: #fafafa;
 }
+
+/* ================================
+   ADM – NEW DESIGN SYSTEM
+   (prefix: adm- to avoid conflicts)
+================================= */
+
+:root {
+  --adm-bg: #f5f0e8;
+  --adm-surface: #ffffff;
+  --adm-surface2: #ede8dc;
+  --adm-border: #ddd8cc;
+  --adm-accent: #4a6741;
+  --adm-accent2: #6b8f67;
+  --adm-muted: #9a9488;
+  --adm-text: #1e1e1a;
+  --adm-text-dim: #6b6660;
+}
+
+/* Layout */
+.adm-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--adm-bg);
+  font-family: 'DM Sans', 'system-ui', sans-serif;
+}
+
+.adm-content {
+  margin-left: 220px !important;
+  flex: 1;
+}
+
+/* ---- Sidebar ---- */
+.adm-sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: var(--adm-surface);
+  border-right: 1px solid var(--adm-border);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Logo */
+.adm-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 28px;
+  border-bottom: 1px solid var(--adm-border);
+  margin-bottom: 16px;
+}
+
+.adm-logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--adm-accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.adm-logo-text {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--adm-text);
+  letter-spacing: -0.3px;
+}
+
+/* Nav groups */
+.adm-nav-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+
+.adm-nav-group {
+  margin-bottom: 6px;
+}
+
+.adm-nav-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+  padding: 6px 10px 4px;
+}
+
+.adm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--adm-text-dim);
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1px;
+}
+
+.adm-nav-item:hover {
+  background: var(--adm-surface2);
+  color: var(--adm-text);
+}
+
+.adm-nav-item.active {
+  background: var(--adm-accent);
+  color: #fff;
+}
+
+.adm-master.active,
+.adm-master:not(.active) {
+  background: rgba(234, 179, 8, 0.08);
+  color: #856a00;
+}
+
+.adm-master.active {
+  background: rgba(234, 179, 8, 0.2);
+}
+
+.adm-signout {
+  color: #dc2626 !important;
+}
+
+.adm-signout:hover {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+}
+
+.adm-nav-divider {
+  height: 1px;
+  background: var(--adm-border);
+  margin: 10px 16px;
+}
+
+/* Sidebar bottom */
+.adm-sidebar-bottom {
+  padding: 0 10px;
+}
+
+.adm-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--adm-surface2);
+  margin-top: 8px;
+}
+
+.adm-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--adm-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.adm-user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.adm-user-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--adm-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-user-role {
+  font-size: 10px;
+  color: var(--adm-muted);
+}
+
+/* ---- Dashboard page ---- */
+.adm-page {
+  padding: 40px 48px;
+  background: var(--adm-bg);
+  min-height: 100vh;
+  color: var(--adm-text);
+}
+
+.adm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  animation: admFadeUp 0.5s ease both;
+}
+
+.adm-greeting-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+  margin-bottom: 6px;
+}
+
+.adm-greeting-title {
+  font-family: 'DM Serif Display', 'Georgia', serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--adm-text);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.adm-greeting-title span {
+  color: var(--adm-accent);
+}
+
+.adm-greeting-sub {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--adm-text-dim);
+}
+
+.adm-status-chip {
+  background: var(--adm-surface2);
+  border: 1px solid var(--adm-border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--adm-text-dim);
+  white-space: nowrap;
+}
+
+/* Section title */
+.adm-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+  margin-bottom: 14px;
+}
+
+/* Stats grids */
+.adm-stats-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.adm-stats-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.adm-stats-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Stat card */
+.adm-stat-card {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  animation: admFadeUp 0.5s ease both;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.adm-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  opacity: 0.06;
+  background: var(--adm-accent);
+  transform: translate(20px, -20px);
+  pointer-events: none;
+}
+
+.adm-stat-card:hover {
+  border-color: var(--adm-accent);
+  transform: translateY(-2px);
+}
+
+.adm-stat-card.highlight {
+  background: var(--adm-accent);
+  border-color: var(--adm-accent);
+}
+
+.adm-stat-card.highlight .adm-stat-label,
+.adm-stat-card.highlight .adm-stat-value,
+.adm-stat-card.highlight .adm-stat-change {
+  color: #fff;
+}
+
+.adm-stat-card.highlight::before {
+  background: #fff;
+  opacity: 0.1;
+}
+
+.adm-stat-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+  margin-bottom: 10px;
+}
+
+.adm-stat-value {
+  font-family: 'DM Serif Display', 'Georgia', serif;
+  font-size: 52px;
+  font-weight: 400;
+  color: var(--adm-accent);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.adm-stat-change {
+  font-size: 11px;
+  color: var(--adm-accent2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.adm-stat-change.neutral {
+  color: var(--adm-muted);
+}
+
+/* Bar chart */
+.adm-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.adm-bar-tag {
+  font-size: 10px;
+  color: var(--adm-muted);
+  white-space: nowrap;
+}
+
+.adm-bar-track {
+  flex: 1;
+  height: 4px;
+  background: var(--adm-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.adm-bar-fill {
+  height: 100%;
+  background: var(--adm-accent);
+  border-radius: 2px;
+  animation: admGrowBar 1s ease 0.4s both;
+}
+
+.adm-bar-fill.alt {
+  background: var(--adm-accent2);
+}
+
+.adm-bar-pct {
+  font-size: 10px;
+  color: var(--adm-accent);
+  white-space: nowrap;
+}
+
+/* Manage link */
+.adm-manage-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--adm-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.adm-manage-link:hover {
+  text-decoration: underline;
+}
+
+/* Badge */
+.adm-badge-new {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Skeleton */
+.adm-skeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ede8dc 25%, #e5e0d3 50%, #ede8dc 75%);
+  background-size: 400% 100%;
+  animation: admShimmer 1.4s ease infinite;
+  margin-bottom: 8px;
+}
+
+/* Animations */
+@keyframes admFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes admGrowBar {
+  from {
+    width: 0 !important;
+  }
+}
+
+@keyframes admShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .adm-stats-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .adm-stats-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .adm-page {
+    padding: 28px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .adm-stats-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .adm-content {
+    margin-left: 0 !important;
+  }
+
+  .adm-sidebar {
+    display: none;
+  }
+}
+
+/* ================================
+   ADM COLOR PROTECTION
+   These override the legacy .admin-main * reset
+================================= */
+.admin-main .adm-page {
+  background: var(--adm-bg) !important;
+}
+
+.admin-main .adm-stat-card {
+  background: var(--adm-surface) !important;
+}
+
+.admin-main .adm-stat-card.highlight {
+  background: var(--adm-accent) !important;
+}
+
+.admin-main .adm-stat-value {
+  color: var(--adm-accent) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-stat-card.highlight .adm-stat-value {
+  color: #fff !important;
+}
+
+.admin-main .adm-stat-card.highlight .adm-stat-label {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.admin-main .adm-stat-card.highlight .adm-stat-change {
+  color: #fff !important;
+}
+
+.admin-main .adm-stat-label {
+  color: var(--adm-muted) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-stat-change {
+  color: var(--adm-accent2) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-stat-change.neutral {
+  color: var(--adm-muted) !important;
+}
+
+.admin-main .adm-section-title {
+  color: var(--adm-muted) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-greeting-title {
+  color: var(--adm-text) !important;
+  font-family: 'DM Serif Display', Georgia, serif !important;
+}
+
+.admin-main .adm-greeting-title span {
+  color: var(--adm-accent) !important;
+}
+
+.admin-main .adm-greeting-label {
+  color: var(--adm-muted) !important;
+}
+
+.admin-main .adm-greeting-sub {
+  color: var(--adm-text-dim) !important;
+}
+
+.admin-main .adm-status-chip {
+  background: var(--adm-surface2) !important;
+  color: var(--adm-text-dim) !important;
+  border: 1px solid var(--adm-border);
+}
+
+.admin-main .adm-bar-fill {
+  background: var(--adm-accent) !important;
+}
+
+.admin-main .adm-bar-fill.alt {
+  background: var(--adm-accent2) !important;
+}
+
+.admin-main .adm-bar-track {
+  background: var(--adm-border) !important;
+}
+
+.admin-main .adm-bar-pct {
+  color: var(--adm-accent) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-bar-tag {
+  color: var(--adm-muted) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-manage-link {
+  color: var(--adm-accent) !important;
+  background: transparent !important;
+}
+
+.admin-main .adm-badge-new {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.admin-main .adm-skeleton {
+  background: linear-gradient(90deg, #ede8dc 25%, #e5e0d3 50%, #ede8dc 75%) !important;
+  background-size: 400% 100% !important;
+}
+
+.admin-main .adm-stat-card::before {
+  background: var(--adm-accent) !important;
+}
+
+.admin-main .adm-stat-card.highlight::before {
+  background: #fff !important;
+}
