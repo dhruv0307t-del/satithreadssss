@@ -4,17 +4,18 @@ import { Category } from "@/app/models/Category";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !["admin", "master_admin"].includes(session.user?.role as string)) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
+        const { id } = await params;
         const body = await req.json();
         await connectDB();
 
-        const category = await Category.findByIdAndUpdate(params.id, body, { new: true });
+        const category = await Category.findByIdAndUpdate(id, body, { new: true });
         if (!category) {
             return NextResponse.json({ success: false, error: "Category not found" }, { status: 404 });
         }
@@ -26,16 +27,17 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !["admin", "master_admin"].includes(session.user?.role as string)) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
+        const { id } = await params;
         await connectDB();
 
-        const category = await Category.findByIdAndDelete(params.id);
+        const category = await Category.findByIdAndDelete(id);
         if (!category) {
             return NextResponse.json({ success: false, error: "Category not found" }, { status: 404 });
         }
