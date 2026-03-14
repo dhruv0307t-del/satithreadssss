@@ -4,8 +4,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useCheckoutModal } from "../context/CheckoutModalContext";
+import { useSession } from "next-auth/react";
+import { useAuthModal } from "../context/AuthModalContext";
 
 export default function CartDrawer() {
+  const { data: session, status } = useSession();
+  const { openModal: openAuthModal } = useAuthModal();
   const {
     cart,
     isOpen,
@@ -185,7 +189,18 @@ export default function CartDrawer() {
 
               {/* Actions */}
               <div className="cd-actions">
-                <button className="cd-checkout-btn" onClick={() => { closeCart(); openModal(); }}>
+                <button
+                  className="cd-checkout-btn"
+                  onClick={() => {
+                    closeCart();
+                    if (status === "unauthenticated") {
+                      localStorage.setItem("openCheckoutAfterLogin", "true");
+                      openAuthModal();
+                    } else {
+                      openModal();
+                    }
+                  }}
+                >
                   Proceed to Checkout
                 </button>
                 <button className="cd-clear-btn" onClick={clearCart}>

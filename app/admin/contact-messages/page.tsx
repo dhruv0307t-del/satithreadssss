@@ -27,8 +27,8 @@ export default function ContactMessagesPage() {
     useEffect(() => {
         if (status === "unauthenticated") {
             router.push("/admin/login");
-        } else if (status === "authenticated" && session?.user?.role !== "admin") {
-            router.push("/home");
+        } else if (status === "authenticated" && session?.user?.role !== "admin" && session?.user?.role !== "master_admin") {
+            router.push("/");
         }
     }, [status, session, router]);
 
@@ -114,7 +114,7 @@ export default function ContactMessagesPage() {
         );
     }
 
-    if (!session || session.user.role !== "admin") {
+    if (!session || (session.user.role !== "admin" && session.user.role !== "master_admin")) {
         return null;
     }
 

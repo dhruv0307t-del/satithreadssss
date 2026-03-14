@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 
 export default function ContactFooter() {
   const router = useRouter();
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [policiesOpen, setPoliciesOpen] = useState(false);
 
   const categories = [
     { title: "Kurta Sets", slug: "kurta-sets" },
@@ -25,9 +27,10 @@ export default function ContactFooter() {
           <Image
             src="/logo1.png"
             alt="SatiThreads"
-            width={140}
-            height={80}
+            width={180}
+            height={60}
             className="footer-logo"
+            style={{ mixBlendMode: "multiply" }}
           />
 
           <p className="brand-text">
@@ -76,8 +79,14 @@ export default function ContactFooter() {
 
         {/* CENTER - CATEGORIES */}
         <div className="footer-links">
-          <h4 className="footer-heading">CATEGORIES</h4>
-          <ul>
+          <h4
+            className="footer-heading"
+            onClick={() => setCategoriesOpen((prev) => !prev)}
+          >
+            CATEGORIES
+            <span className={`dropdown-arrow ${categoriesOpen ? "open" : ""}`}>▼</span>
+          </h4>
+          <ul className={`footer-list ${categoriesOpen ? "expanded" : ""}`}>
             {categories.map((cat) => (
               <li
                 key={cat.slug}
@@ -91,15 +100,21 @@ export default function ContactFooter() {
 
         {/* RIGHT - POLICIES */}
         <div className="footer-links">
-          <h4 className="footer-heading">POLICIES</h4>
-          <ul>
+          <h4
+            className="footer-heading"
+            onClick={() => setPoliciesOpen((prev) => !prev)}
+          >
+            POLICIES
+            <span className={`dropdown-arrow ${policiesOpen ? "open" : ""}`}>▼</span>
+          </h4>
+          <ul className={`footer-list ${policiesOpen ? "expanded" : ""}`}>
             <li onClick={() => router.push("/products")}>Search</li>
             <li onClick={() => router.push("/about")}>About Us</li>
             <li onClick={() => router.push("/privacy-policy")}>Privacy Policy</li>
             <li onClick={() => router.push("/terms-conditions")}>Terms and Conditions</li>
             <li onClick={() => router.push("/privacy-policy")}>Refund Policy</li>
             <li onClick={() => router.push("/shipping-policy")}>Shipping Policy</li>
-            <li onClick={() => router.push("/shipping-policy")}>Return & Exchange Policy</li>
+            <li onClick={() => router.push("/shipping-policy")}>Return &amp; Exchange Policy</li>
           </ul>
         </div>
       </div>
@@ -239,22 +254,35 @@ export default function ContactFooter() {
 
         .footer-heading {
           font-size: 16px;
-          color: white;
-          background: #c4a5a5;
+          color: white !important;
+          background: #8b7355 !important;
           margin-bottom: 20px;
           font-weight: 600;
           letter-spacing: 1px;
           padding: 12px 16px;
           border-radius: 4px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
 
-        .footer-links ul {
+        .dropdown-arrow {
+          font-size: 12px;
+          transition: transform 0.3s ease;
+          display: inline-block;
+        }
+
+        .dropdown-arrow.open {
+          transform: rotate(180deg);
+        }
+
+        .footer-list {
           list-style: none;
           padding: 0;
           margin: 0;
         }
 
-        .footer-links li {
+        .footer-list li {
           padding: 12px 0;
           font-size: 14px;
           color: #666;
@@ -263,15 +291,29 @@ export default function ContactFooter() {
           transition: all 0.2s ease;
         }
 
-        .footer-links li:hover {
+        .footer-list li:hover {
           color: #8b7355;
           padding-left: 5px;
         }
 
-        /* Desktop and Tablet behavior */
+        /* Desktop and Tablet behavior - always show lists, no toggle needed */
         @media (min-width: 769px) {
           .contact-grid {
             grid-template-columns: 1fr 1fr 1fr;
+          }
+
+          .footer-heading {
+            cursor: default;
+          }
+
+          .dropdown-arrow {
+            display: none;
+          }
+
+          .footer-list {
+            /* Always visible on desktop */
+            max-height: none !important;
+            overflow: visible !important;
           }
         }
 
@@ -286,7 +328,7 @@ export default function ContactFooter() {
           }
         }
 
-        /* Mobile specific behavior */
+        /* Mobile specific behavior - collapsible dropdowns */
         @media (max-width: 768px) {
           .contact-grid {
             grid-template-columns: 1fr;
@@ -294,6 +336,25 @@ export default function ContactFooter() {
 
           .footer-actions {
             flex-direction: row;
+          }
+
+          .footer-heading {
+            cursor: pointer;
+            margin-bottom: 0;
+            border-radius: 4px;
+            user-select: none;
+          }
+
+          .footer-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            margin-bottom: 0;
+          }
+
+          .footer-list.expanded {
+            max-height: 600px;
+            margin-bottom: 12px;
           }
         }
 

@@ -8,8 +8,9 @@ export async function GET() {
     try {
         const session = await getServerSession(authOptions);
 
-        // Check if user is authenticated and is admin
-        if (!session || !session.user || (session.user as any).role !== "admin") {
+        // Check if user is authenticated and is admin/master_admin
+        if (!session || !session.user ||
+            ((session.user as any).role !== "admin" && (session.user as any).role !== "master_admin")) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -34,8 +35,9 @@ export async function PATCH(req: Request) {
     try {
         const session = await getServerSession(authOptions);
 
-        // Check if user is authenticated and is admin
-        if (!session || !session.user || (session.user as any).role !== "admin") {
+        // Check if user is authenticated and is admin/master_admin
+        if (!session || !session.user ||
+            ((session.user as any).role !== "admin" && (session.user as any).role !== "master_admin")) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 

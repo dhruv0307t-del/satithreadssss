@@ -18,6 +18,7 @@ import {
   Shield,
   ExternalLink,
   LogOut,
+  Grid,
 } from "lucide-react";
 
 const groups = [
@@ -33,6 +34,7 @@ const groups = [
   {
     label: "Manage",
     items: [
+      { label: "Categories", href: "/admin/categories", icon: Grid },
       { label: "Users", href: "/admin/users", icon: Users },
       { label: "Revenue", href: "/admin/revenue", icon: IndianRupee },
       { label: "Coupons", href: "/admin/coupons", icon: TicketPercent },

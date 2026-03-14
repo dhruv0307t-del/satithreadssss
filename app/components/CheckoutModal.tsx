@@ -6,7 +6,18 @@ import { useCheckoutModal } from "@/app/context/CheckoutModalContext";
 import { useSession } from "next-auth/react";
 import { useAuthModal } from "@/app/context/AuthModalContext";
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
+import { X, Truck, Zap } from "lucide-react";
+import { calculateShippingFee, SHIPPING_REGIONS } from "@/app/lib/shipping";
+
+const INDIAN_STATES = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+    "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+];
 
 export default function CheckoutModal() {
     const { isOpen, closeModal } = useCheckoutModal();
@@ -17,7 +28,6 @@ export default function CheckoutModal() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-
     const [address, setAddress] = useState({
         name: "",
         phone: "",
@@ -26,6 +36,12 @@ export default function CheckoutModal() {
         state: "",
         pincode: "",
     });
+
+    const [isExpress, setIsExpress] = useState(false);
+    const [shippingFee, setShippingFee] = useState(0);
+    const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
+    const [fetchingAddresses, setFetchingAddresses] = useState(false);
+    const [saveAddress, setSaveAddress] = useState(false);
 
     // Lock body scroll when modal is open
     useEffect(() => {
@@ -39,13 +55,38 @@ export default function CheckoutModal() {
         };
     }, [isOpen]);
 
-    // Check authentication when modal opens
+    // Fetch saved addresses
     useEffect(() => {
-        if (isOpen && status === "unauthenticated") {
-            closeModal();
-            openAuthModal("/checkout");
+        if (isOpen && status === "authenticated") {
+            const fetchAddresses = async () => {
+                setFetchingAddresses(true);
+                try {
+                    const res = await fetch("/api/user/address");
+                    const data = await res.json();
+                    if (data.success) {
+                        setSavedAddresses(data.addresses);
+                        // If there's a default address, auto-fill
+                        const defaultAddr = data.addresses.find((a: any) => a.isDefault);
+                        if (defaultAddr) {
+                            setAddress({
+                                name: defaultAddr.name,
+                                phone: defaultAddr.phone,
+                                address: defaultAddr.address,
+                                city: defaultAddr.city,
+                                state: defaultAddr.state,
+                                pincode: defaultAddr.pincode,
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch addresses", err);
+                } finally {
+                    setFetchingAddresses(false);
+                }
+            };
+            fetchAddresses();
         }
-    }, [isOpen, status, closeModal, openAuthModal]);
+    }, [isOpen, status]);
 
     // Coupon State
     const [couponCode, setCouponCode] = useState("");
@@ -54,8 +95,6 @@ export default function CheckoutModal() {
 
     // Validation
     const isAddressValid = Object.values(address).every((v) => v.trim() !== "");
-
-    if (!isOpen) return null;
 
     // Calculate total
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -89,6 +128,14 @@ export default function CheckoutModal() {
             : subtotal - couponDetails.discount
         : subtotal;
 
+    // Calculate shipping fee whenever address or subtotal changes
+    useEffect(() => {
+        const fee = calculateShippingFee(subtotal, address.city, address.state, isExpress);
+        setShippingFee(fee);
+    }, [subtotal, address.city, address.state, isExpress]);
+
+    const grandTotal = finalTotal + shippingFee;
+
     const placeOrder = async () => {
         if (!isAddressValid) {
             setError("Please fill all address fields");
@@ -99,6 +146,7 @@ export default function CheckoutModal() {
         setError("");
 
         try {
+            // Place order
             const res = await fetch("/api/orders/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -107,13 +155,25 @@ export default function CheckoutModal() {
                     shippingAddress: address,
                     paymentMethod: "COD",
                     couponCode: couponDetails?.code,
-                    discountAmount: subtotal - finalTotal
+                    discountAmount: subtotal - finalTotal,
+                    shippingFee,
+                    isExpress,
+                    totalAmount: grandTotal,
                 }),
             });
 
             const data = await res.json();
 
             if (data.success) {
+                // Save address only if user checked the box
+                if (status === "authenticated" && saveAddress) {
+                    fetch("/api/user/address", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(address),
+                    });
+                }
+
                 clearCart();
                 closeModal();
                 resetForm();
@@ -137,6 +197,8 @@ export default function CheckoutModal() {
             state: "",
             pincode: "",
         });
+        setIsExpress(false);
+        setShippingFee(0);
         setError("");
         setCouponCode("");
         setCouponDetails(null);
@@ -153,6 +215,8 @@ export default function CheckoutModal() {
             handleClose();
         }
     };
+
+    if (!isOpen) return null;
 
     return (
         <div
@@ -180,97 +244,42 @@ export default function CheckoutModal() {
                     </div>
                 )}
 
-                {/* Order Summary */}
-                <div className="checkout-order-summary">
+                {/* Shipping Address Form */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                     <h3
                         style={{
                             fontSize: "18px",
                             fontWeight: "600",
-                            marginBottom: "16px",
+                            margin: 0,
                             color: "#1A202C",
                         }}
                     >
-                        Order Summary
+                        Shipping Address
                     </h3>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                        <span style={{ color: "#6B7280" }}>Items ({cart.length})</span>
-                        <span style={{ fontWeight: "500" }}>Rs. {subtotal.toFixed(2)}</span>
-                    </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            paddingTop: "12px",
-                            borderTop: "1px solid #E5E7EB",
-                            fontWeight: "600",
-                            fontSize: "18px",
-                        }}
-                    >
-                        <span>Total</span>
-                        <span>Rs. {subtotal.toFixed(2)}</span>
-                    </div>
-
-                    {/* Coupon Input */}
-                    <div style={{ margin: "16px 0", display: "flex", gap: "10px" }}>
-                        <input
-                            type="text"
-                            placeholder="Coupon Code"
-                            value={couponCode}
-                            onChange={(e) => setCouponCode(e.target.value)}
-                            style={{
-                                flex: 1,
-                                padding: "10px",
-                                border: "1px solid #D1D5DB",
-                                borderRadius: "8px"
+                    {savedAddresses.length > 0 && (
+                        <select
+                            onChange={(e) => {
+                                const selected = savedAddresses.find(a => a._id === e.target.value);
+                                if (selected) {
+                                    setAddress({
+                                        name: selected.name,
+                                        phone: selected.phone,
+                                        address: selected.address,
+                                        city: selected.city,
+                                        state: selected.state,
+                                        pincode: selected.pincode,
+                                    });
+                                }
                             }}
-                        />
-                        <button
-                            onClick={(e) => { e.preventDefault(); validateCoupon(); }}
-                            style={{
-                                padding: "10px 20px",
-                                backgroundColor: "#333",
-                                color: "#fff",
-                                borderRadius: "8px",
-                                fontWeight: "600"
-                            }}
+                            style={{ padding: "6px 12px", borderRadius: "8px", border: "1px solid #E5E7EB", fontSize: "14px" }}
                         >
-                            Apply
-                        </button>
-                    </div>
-                    {couponError && <p style={{ color: "red", fontSize: "14px", marginBottom: "10px" }}>{couponError}</p>}
-                    {couponDetails && (
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", color: "green" }}>
-                            <span>Discount ({couponDetails.code})</span>
-                            <span>- Rs. {(subtotal - finalTotal).toFixed(2)}</span>
-                        </div>
+                            <option value="">Use Saved Address</option>
+                            {savedAddresses.map(a => (
+                                <option key={a._id} value={a._id}>{a.name} - {a.city}</option>
+                            ))}
+                        </select>
                     )}
-
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            paddingTop: "12px",
-                            borderTop: "1px solid #E5E7EB",
-                            fontWeight: "600",
-                            fontSize: "18px",
-                        }}
-                    >
-                        <span>Total Payble</span>
-                        <span>Rs. {finalTotal.toFixed(2)}</span>
-                    </div>
                 </div>
-
-                {/* Shipping Address Form */}
-                <h3
-                    style={{
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        marginBottom: "20px",
-                        color: "#1A202C",
-                    }}
-                >
-                    Shipping Address
-                </h3>
 
                 <form onSubmit={(e) => { e.preventDefault(); placeOrder(); }}>
                     <div className="checkout-form-grid">
@@ -310,14 +319,18 @@ export default function CheckoutModal() {
                             className="checkout-input"
                         />
 
-                        {/* State */}
-                        <input
-                            type="text"
-                            placeholder="State"
+                        {/* State Dropdown */}
+                        <select
                             value={address.state}
                             onChange={(e) => setAddress({ ...address, state: e.target.value })}
                             className="checkout-input"
-                        />
+                            style={{ backgroundColor: "#fff" }}
+                        >
+                            <option value="">Select State</option>
+                            {INDIAN_STATES.sort().map(s => (
+                                <option key={s} value={s}>{s}</option>
+                            ))}
+                        </select>
 
                         {/* Pincode - Full Width */}
                         <input
@@ -327,6 +340,105 @@ export default function CheckoutModal() {
                             onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
                             className="checkout-input checkout-input-full"
                         />
+                    </div>
+
+                    {/* Save address checkbox (only for logged-in users) */}
+                    {status === "authenticated" && (
+                        <label style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0 0", cursor: "pointer", userSelect: "none", padding: "12px 16px", borderRadius: 12, border: `1.5px solid ${saveAddress ? "rgba(58,107,80,0.3)" : "#E5E7EB"}`, background: saveAddress ? "#EAF4EE" : "#fff", transition: "all 0.15s" }}>
+                            <div style={{ width: 20, height: 20, borderRadius: 6, border: `2px solid ${saveAddress ? "#3A6B50" : "#D1D5DB"}`, background: saveAddress ? "#3A6B50" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", flexShrink: 0 }} onClick={() => setSaveAddress(!saveAddress)}>
+                                {saveAddress && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>}
+                            </div>
+                            <input type="checkbox" checked={saveAddress} onChange={e => setSaveAddress(e.target.checked)} style={{ display: "none" }} />
+                            <div>
+                                <div style={{ fontSize: 13, fontWeight: 600, color: "#1A1A14" }}>Save this address for later</div>
+                                <div style={{ fontSize: 11.5, color: "#6B7060", marginTop: 1 }}>Add to your saved addresses in My Profile</div>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={saveAddress ? "#3A6B50" : "#9CA3AF"} strokeWidth="2" style={{ marginLeft: "auto", flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                        </label>
+                    )}
+
+                    {/* Delivery Option */}
+                    <div style={{ margin: "24px 0" }}>
+                        <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "12px", color: "#1A202C" }}>Delivery Method</h3>
+                        <div
+                            onClick={() => setIsExpress(!isExpress)}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "12px",
+                                padding: "16px",
+                                borderRadius: "12px",
+                                border: `2px solid ${isExpress ? "#3A6B50" : "#E5E7EB"}`,
+                                backgroundColor: isExpress ? "#F0FDF4" : "#fff",
+                                cursor: "pointer",
+                                transition: "all 0.2s"
+                            }}
+                        >
+                            <div style={{
+                                width: "24px",
+                                height: "24px",
+                                borderRadius: "50%",
+                                border: `2px solid ${isExpress ? "#3A6B50" : "#D1D5DB"}`,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: isExpress ? "#3A6B50" : "transparent"
+                            }}>
+                                {isExpress && <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                            </div>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                    <Zap size={16} color="#3A6B50" fill="#3A6B50" />
+                                    <span style={{ fontWeight: "600", color: "#1A202C" }}>Express Delivery</span>
+                                </div>
+                                <p style={{ fontSize: "13px", color: "#6B7280", marginTop: "2px" }}>Extra Rs. 50 will be charged. Faster delivery guaranteed.</p>
+                            </div>
+                            <span style={{ fontWeight: "600", color: "#3A6B50" }}>+Rs. 50</span>
+                        </div>
+                    </div>
+
+                    {/* Order Summary */}
+                    <div className="checkout-order-summary" style={{ background: "#F9FAFB", padding: "20px", borderRadius: "12px", marginBottom: "24px" }}>
+                        <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px", color: "#1A202C" }}>Order Summary</h3>
+
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                            <span style={{ color: "#6B7280" }}>Items ({cart.length})</span>
+                            <span style={{ fontWeight: "500" }}>Rs. {subtotal.toFixed(2)}</span>
+                        </div>
+
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                <span style={{ color: "#6B7280" }}>Shipping Fee</span>
+                                {!address.state && <span style={{ fontSize: "11px", color: "#9CA3AF" }}>Select state to calculate</span>}
+                            </div>
+                            <span style={{ fontWeight: "500", color: shippingFee === (isExpress ? 50 : 0) ? "#059669" : "#1A202C" }}>
+                                {shippingFee === (isExpress ? 50 : 0) ? (isExpress ? "Rs. 50.00 (Express)" : "FREE") : `Rs. ${shippingFee.toFixed(2)}`}
+                            </span>
+                        </div>
+
+                        {/* Coupon Logic */}
+                        <div style={{ margin: "16px 0", display: "flex", gap: "10px" }}>
+                            <input
+                                type="text"
+                                placeholder="Coupon Code"
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value)}
+                                style={{ flex: 1, padding: "10px", border: "1px solid #D1D5DB", borderRadius: "8px" }}
+                            />
+                            <button onClick={(e) => { e.preventDefault(); validateCoupon(); }} style={{ padding: "10px 20px", backgroundColor: "#333", color: "#fff", borderRadius: "8px", fontWeight: "600" }}>Apply</button>
+                        </div>
+                        {couponError && <p style={{ color: "red", fontSize: "14px", marginBottom: "10px" }}>{couponError}</p>}
+                        {couponDetails && (
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", color: "green" }}>
+                                <span>Discount ({couponDetails.code})</span>
+                                <span>- Rs. {(subtotal - finalTotal).toFixed(2)}</span>
+                            </div>
+                        )}
+
+                        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: "12px", borderTop: "1px solid #E5E7EB", fontWeight: "700", fontSize: "20px", color: "#3A6B50" }}>
+                            <span>Total Payable</span>
+                            <span>Rs. {grandTotal.toFixed(2)}</span>
+                        </div>
                     </div>
 
                     {/* Place Order Button */}

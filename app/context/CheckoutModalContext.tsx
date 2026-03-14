@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 interface CheckoutModalContextType {
     isOpen: boolean;
@@ -14,9 +15,21 @@ const CheckoutModalContext = createContext<CheckoutModalContextType | undefined>
 
 export function CheckoutModalProvider({ children }: { children: ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
+    const { status } = useSession();
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
+
+    // Auto-open logic after login
+    useEffect(() => {
+        if (status === "authenticated") {
+            const shouldOpen = localStorage.getItem("openCheckoutAfterLogin");
+            if (shouldOpen === "true") {
+                openModal();
+                localStorage.removeItem("openCheckoutAfterLogin");
+            }
+        }
+    }, [status]);
 
     return (
         <CheckoutModalContext.Provider value={{ isOpen, openModal, closeModal }}>

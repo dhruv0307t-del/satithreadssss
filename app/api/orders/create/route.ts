@@ -3,6 +3,7 @@ import { connectDB } from "@/app/lib/db";
 import Order from "@/app/models/Order";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
+import { calculateShippingFee } from "@/app/lib/shipping";
 
 export async function POST(req: Request) {
   await connectDB();
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
   const userId = (session.user as any).id;
 
   const body = await req.json();
-  const { items, shippingAddress, paymentMethod, couponCode, discountAmount } = body;
+  const { items, shippingAddress, paymentMethod, couponCode, discountAmount, isExpress } = body;
 
   const formattedItems = items.map((item: any) => ({
     product: item.id,
@@ -32,15 +33,25 @@ export async function POST(req: Request) {
     0
   );
 
-  // Server-side simple validation (could actally check DB again for strictness)
+  // Server-side simple validation
   const finalDiscount = discountAmount || 0;
-  const totalAmount = subtotal - finalDiscount;
+
+  // Recalculate shipping for verification
+  const verifiedShippingFee = calculateShippingFee(
+    subtotal,
+    shippingAddress.city,
+    shippingAddress.state,
+    !!isExpress
+  );
+
+  const totalAmount = subtotal - finalDiscount + verifiedShippingFee;
 
   const order = await Order.create({
     user: userId,
     items: formattedItems,
     subtotal,
-    shippingFee: 0,
+    shippingFee: verifiedShippingFee,
+    isExpress: !!isExpress,
     discount: finalDiscount,
     couponCode: couponCode || "",
     totalAmount: totalAmount > 0 ? totalAmount : 0,

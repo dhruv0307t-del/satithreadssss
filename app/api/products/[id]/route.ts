@@ -80,7 +80,23 @@ export async function PUT(
     // 🔥 IMPORTANT: await params
     const { id } = await context.params;
     const body = await request.json();
-    console.log("UPDATE BODY:", body); // Debug log to see if isBestSeller is present
+
+    // Slugify category if it changed
+    if (body.category) {
+      body.categorySlug = body.category
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    // Ensure boolean types for flags
+    const flags = ["isFeatured", "isBestSeller", "isFestive", "isNewArrival", "isActive", "couponAllowed"];
+    flags.forEach(flag => {
+      if (Object.prototype.hasOwnProperty.call(body, flag)) {
+        body[flag] = !!body[flag];
+      }
+    });
 
     const updatedProduct = await Product.findByIdAndUpdate(
       id,

@@ -89,24 +89,36 @@ export default function HomePage() {
   const { data: session } = useSession();
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Categories data
-  const categories = [
-    { title: "Kurta Sets", slug: "kurta-sets", img: "/Dupaata Set.jpg" },
-    { title: "Dupatta Sets", slug: "dupatta-sets", img: "/Dupaata Set.jpg" },
-    { title: "Skirts", slug: "skirts", img: "/Skirts.jpg" },
-    { title: "Cord Sets", slug: "cord-sets", img: "/Farshi Salwar Suit.jpg" },
-    { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets", img: "/Farshi Salwar Suit.jpg" },
-    { title: "Tops", slug: "tops", img: "/Skirts.jpg" },
-    { title: "Short Kurtis", slug: "short-kurtis", img: "/Short Kuti.jpg" },
-  ];
+  // Dynamic Categories data
+  const [categories, setCategories] = useState<{ title: string; slug: string; img: string }[]>([]);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    fetch('/api/categories').then(r => r.json()).then(d => {
+      if (d.success && d.categories.length > 0) {
+        setCategories(d.categories.map((c: any) => ({
+          title: c.title,
+          slug: c.slug,
+          img: c.thumbnail || '/Dupaata Set.jpg', // Fallback image
+        })));
+      } else {
+        // Fallback hardcoded if DB is empty
+        setCategories([
+          { title: "Kurta Sets", slug: "kurta-sets", img: "/Kurtasets.jpg" },
+          { title: "Dupatta Sets", slug: "dupatta-sets", img: "/Dupaata Set.jpg" },
+          { title: "Skirts", slug: "skirts", img: "/Skirts.jpg" },
+          { title: "Cord Sets", slug: "cord-sets", img: "/Coordsets.jpg" },
+          { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets", img: "/Farshi Salwar Suit.jpg" },
+          { title: "Tops", slug: "tops", img: "/Dress.jpg" },
+          { title: "Short Kurtis", slug: "short-kurtis", img: "/Short Kuti.jpg" },
+        ]);
+      }
+    });
+  }, []);
 
   // Carousel settings - 4 cards visible at a time
   const cardsPerView = 4;
   const totalSlides = Math.ceil(categories.length / cardsPerView);
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
 
   // Navigate carousel
   // Scroll handlers
@@ -180,7 +192,7 @@ export default function HomePage() {
         <section className="hero-banner">
           {/* Desktop Image */}
           <Image
-            src="/Banner.png"
+            src="/Sati Threads Banner.jpg"
             alt="Hero Desktop"
             fill
             priority

@@ -128,6 +128,10 @@ body {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+.mobile-menu-btn {
+  display: none;
+}
+
 .nav-left-spacer {
   width: 180px;
   height: 72px;
@@ -640,6 +644,13 @@ body {
 
   .categories-carousel-box {
     padding: 30px 20px;
+  }
+
+  .categories-carousel-box::before,
+  .categories-carousel-box::after,
+  .category-card-new::before,
+  .category-card-new::after {
+    display: none !important;
   }
 
   .category-card-new {
@@ -5262,14 +5273,19 @@ select {
 
   /* ==================== FESTIVE SECTION ==================== */
   .festive-section {
-    padding: 60px 16px !important;
+    padding: 60px 0 !important;
+    /* Increased vertical, removed horizontal padding for size */
     position: relative !important;
     overflow: hidden !important;
-    background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%) !important;
+    background: #FFFBF5 !important;
+    /* Clean background */
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
   }
 
   .festive-background {
-    opacity: 0.3 !important;
+    display: none !important;
+    /* Remove pattern */
   }
 
   .festive-content {
@@ -5281,14 +5297,18 @@ select {
     position: relative !important;
     max-width: 100% !important;
     margin: 0 auto !important;
-    padding: 20px !important;
+    padding: 0 !important;
+    /* Remove padding to make poster full width */
+    cursor: pointer !important;
+    /* Make it look clickable */
   }
 
   .festive-banner-image-container {
     width: 100% !important;
-    border-radius: 15px !important;
+    border-radius: 12px !important;
     overflow: hidden !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: none !important;
+    /* Remove cloudy shadow */
   }
 
   .festive-banner-image {
@@ -5298,27 +5318,8 @@ select {
   }
 
   .festive-cta {
-    display: inline-block !important;
-    /* Changed from display: block for better centering */
-    margin: 10px auto 0 !important;
-    padding: 8px 16px !important;
-    /* Much smaller padding */
-    background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 50px !important;
-    font-size: 12px !important;
-    /* Smaller text */
-    font-weight: 700 !important;
-    letter-spacing: 0.5px !important;
-    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4) !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    width: auto !important;
-    max-width: fit-content !important;
-    position: relative !important;
-    bottom: 5px !important;
-    /* Shift down slightly */
+    display: none !important;
+    /* Hide button on mobile */
   }
 
   .festive-cta:active {
@@ -5654,11 +5655,7 @@ select {
     cursor: pointer !important;
   }
 
-  .accordion>div::after {
-    content: "▼" !important;
-    font-size: 12px !important;
-    color: #999 !important;
-  }
+
 
   .footer-actions {
     display: flex !important;
@@ -5711,11 +5708,7 @@ select {
     cursor: pointer !important;
   }
 
-  .footer-links h4::after {
-    content: "▼" !important;
-    font-size: 12px !important;
-    color: #999 !important;
-  }
+
 
   .footer-links ul {
     list-style: none !important;

@@ -19,6 +19,7 @@ export async function GET(req: Request) {
     const search = searchParams.get("search") || "";
     const isBestSeller = searchParams.get("isBestSeller") === "true";
     const isFestive = searchParams.get("isFestive") === "true";
+    const isNewArrival = searchParams.get("isNewArrival") === "true";
     const categoryQuery = searchParams.get("category");
     const sort = searchParams.get("sort") || "";
 
@@ -34,11 +35,15 @@ export async function GET(req: Request) {
       query.isBestSeller = true;
     }
 
-    if (isFestive) {
+    if (isFestive || categoryQuery === "festive") {
       query.isFestive = true;
     }
 
-    if (categoryQuery && categoryQuery !== "festive") {
+    if (isNewArrival || categoryQuery === "new") {
+      query.isNewArrival = true;
+    }
+
+    if (categoryQuery && categoryQuery !== "festive" && categoryQuery !== "new") {
       query.categorySlug = categoryQuery;
     }
 
@@ -90,6 +95,10 @@ export async function POST(req: Request) {
       video,
       isFeatured,
       isActive,
+      isBestSeller,
+      isFestive,
+      isNewArrival,
+      categorySlug,
     } = body;
 
     if (!name || !priceNew || !category || !mainImage) {
@@ -119,6 +128,9 @@ export async function POST(req: Request) {
       video,
       isFeatured,
       isActive,
+      isBestSeller: !!isBestSeller,
+      isFestive: !!isFestive,
+      isNewArrival: !!isNewArrival,
     });
 
     return NextResponse.json(

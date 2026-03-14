@@ -494,25 +494,16 @@ export default function PrivacyPolicyPage() {
                 @media (max-width: 768px) {
                     .policy-nav {
                         padding: 1rem 1.5rem;
-                        flex-wrap: wrap;
-                        gap: 1rem;
+                        display: flex;
+                        justify-content: center;
                     }
 
                     .logo {
                         font-size: 1.5rem;
-                        flex-shrink: 0;
                     }
 
                     .nav-links {
-                        gap: 1.2rem;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                        width: 100%;
-                        order: 3;
-                    }
-
-                    .nav-links li {
-                        font-size: 0.85rem;
+                        display: none;
                     }
 
                     .hero {

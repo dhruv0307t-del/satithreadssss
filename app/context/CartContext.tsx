@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   ReactNode,
+  useEffect,
 } from "react";
 
 /* ================= TYPES ================= */
@@ -47,6 +48,45 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    const savedCoupon = localStorage.getItem("appliedCoupon");
+    if (savedCart) {
+      try {
+        setCart(JSON.parse(savedCart));
+      } catch (e) {
+        console.error("Failed to parse cart from localStorage", e);
+      }
+    }
+    if (savedCoupon) {
+      try {
+        setAppliedCoupon(JSON.parse(savedCoupon));
+      } catch (e) {
+        console.error("Failed to parse coupon from localStorage", e);
+      }
+    }
+    setIsHydrated(true);
+  }, []);
+
+  // Persist to localStorage whenever cart or coupon changes
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart, isHydrated]);
+
+  useEffect(() => {
+    if (isHydrated) {
+      if (appliedCoupon) {
+        localStorage.setItem("appliedCoupon", JSON.stringify(appliedCoupon));
+      } else {
+        localStorage.removeItem("appliedCoupon");
+      }
+    }
+  }, [appliedCoupon, isHydrated]);
 
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);

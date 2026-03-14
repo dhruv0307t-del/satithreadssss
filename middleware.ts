@@ -20,8 +20,8 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Verify Admin Role
-    if (token.role !== "admin") {
+    // Verify Admin or Master Admin Role
+    if (token.role !== "admin" && token.role !== "master_admin") {
       const url = new URL("/", req.url);
       return NextResponse.redirect(url);
     }

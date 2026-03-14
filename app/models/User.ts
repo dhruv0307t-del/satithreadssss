@@ -55,6 +55,25 @@ const UserSchema = new Schema(
         ref: "Product",
       },
     ],
+    gender: {
+      type: String,
+      default: "Prefer not to say",
+    },
+    dob: String,
+    addresses: [
+      {
+        name: String,
+        phone: String,
+        address: String,
+        city: String,
+        state: String,
+        pincode: String,
+        isDefault: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

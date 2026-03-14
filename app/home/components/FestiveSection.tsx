@@ -118,7 +118,11 @@ export default function FestiveSection() {
 
             {/* Main Content */}
             <div className="festive-content">
-                <div className="festive-banner-wrapper">
+                <div
+                    className="festive-banner-wrapper"
+                    onClick={() => router.push("/products?category=festive")}
+                    style={{ cursor: 'pointer' }}
+                >
                     {/* Corner Decorations */}
                     <div className="corner-decoration top-left"></div>
                     <div className="corner-decoration top-right"></div>

@@ -46,6 +46,10 @@ const ProductSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isNewArrival: {
+      type: Boolean,
+      default: false,
+    },
 
 
   },

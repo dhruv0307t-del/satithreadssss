@@ -25,6 +25,7 @@ const OrderSchema = new Schema(
     discount: Number,
     couponCode: String,
     totalAmount: Number,
+    isExpress: { type: Boolean, default: false },
 
     paymentMethod: {
       type: String,

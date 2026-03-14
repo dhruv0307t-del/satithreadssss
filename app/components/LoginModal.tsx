@@ -80,10 +80,10 @@ export default function LoginModal() {
             } else if (result?.ok) {
                 closeModal();
                 resetModal();
-                if (callbackUrl) {
+                if (callbackUrl && callbackUrl !== "/checkout") {
                     window.location.href = callbackUrl;
                 } else {
-                    window.location.href = "/home";
+                    window.location.reload();
                 }
             }
         } catch (err) {
@@ -117,10 +117,12 @@ export default function LoginModal() {
             } else if (result?.ok) {
                 closeModal();
                 resetModal();
-                if (callbackUrl) {
+                // If we are coming from a checkout attempt, we want to reload 
+                // so the CheckoutModalProvider can catch the localStorage flag.
+                if (callbackUrl && callbackUrl !== "/checkout") {
                     window.location.href = callbackUrl;
                 } else {
-                    window.location.href = "/home";
+                    window.location.reload();
                 }
             }
         } catch (err) {

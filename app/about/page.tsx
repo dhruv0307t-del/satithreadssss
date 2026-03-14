@@ -669,10 +669,17 @@ export default function AboutPage() {
                 @media (max-width: 968px) {
                     .about-nav {
                         padding: 1.5rem 2rem;
+                        justify-content: center;
+                    }
+
+                    .about-nav .nav-left {
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
                     }
 
                     .about-nav-links {
-                        gap: 1.5rem;
+                        display: none;
                     }
 
                     .about-hero h1 {

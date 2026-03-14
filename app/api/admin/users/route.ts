@@ -7,9 +7,15 @@ import Order from "@/app/models/Order";
 export async function GET() {
   await connectDB();
 
-  // Register Order model to ensure it exists
-  // mongoose.models.Order || mongoose.model("Order", Order.schema);
+  const now = new Date();
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
+  // 1. Global Stats
+  const totalUsers = await User.countDocuments();
+  const subscribedCount = await User.countDocuments({ isSubscribed: true });
+  const newUsersThisWeek = await User.countDocuments({ createdAt: { $gte: sevenDaysAgo } });
+
+  // 2. Aggregation for detailed user list
   const users = await User.aggregate([
     {
       $lookup: {
@@ -23,12 +29,39 @@ export async function GET() {
       $addFields: {
         totalOrders: { $size: "$ordersData" },
         totalSpent: { $sum: "$ordersData.totalAmount" },
+        lastOrder: { $arrayElemAt: [{ $sortArray: { input: "$ordersData", sortBy: { createdAt: -1 } } }, 0] },
       },
     },
     {
       $project: {
-        ordersData: 0, // Exclude the full orders array to keep payload light
-        password: 0,   // Exclude sensitive data
+        name: 1,
+        email: 1,
+        role: 1,
+        isSubscribed: 1,
+        createdAt: 1,
+        totalOrders: 1,
+        totalSpent: 1,
+        addresses: 1,
+        location: { $ifNull: ["$lastOrder.shippingAddress.city", "—"] },
+        phone: { $ifNull: ["$lastOrder.shippingAddress.phone", "—"] },
+        // Keep order history light in the main list, but maybe include simple IDs/amounts
+        orderHistory: {
+          $slice: [
+            {
+              $map: {
+                input: { $sortArray: { input: "$ordersData", sortBy: { createdAt: -1 } } },
+                as: "o",
+                in: {
+                  id: "$$o._id",
+                  date: "$$o.createdAt",
+                  amount: "$$o.totalAmount",
+                  status: "$$o.orderStatus"
+                }
+              }
+            },
+            5
+          ]
+        }
       },
     },
     {
@@ -36,5 +69,19 @@ export async function GET() {
     },
   ]);
 
-  return NextResponse.json(users);
+  // 3. Derived Stats
+  const activeBuyers = users.filter(u => u.totalOrders > 0).length;
+  const totalSpentAll = users.reduce((acc, u) => acc + (u.totalSpent || 0), 0);
+  const avgSpend = activeBuyers > 0 ? Math.round(totalSpentAll / activeBuyers) : 0;
+
+  return NextResponse.json({
+    users,
+    stats: {
+      totalUsers,
+      activeBuyers,
+      subscribedCount,
+      avgSpend,
+      newUsersThisWeek
+    }
+  });
 }

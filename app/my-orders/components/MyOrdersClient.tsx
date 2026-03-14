@@ -165,40 +165,47 @@ export default function MyOrdersClient({ orders, wishlist, likedProducts }: any)
 
                                 <div className="tracking-details">
                                     <div className="tracking-timeline">
-                                        {/* Placeholder Tracking Steps based on status */}
-                                        <div className="tracking-step completed">
+                                        {/* Admin note / tracking info */}
+                                        {(order.trackingNumber || order.trackingNote) && (
+                                            <div style={{ background: '#EAF4EE', borderRadius: 10, padding: '10px 14px', marginBottom: 14, border: '1px solid rgba(58,107,80,0.15)' }}>
+                                                {order.trackingNote && <div style={{ fontSize: 13, fontWeight: 600, color: '#3A6B50', marginBottom: order.trackingNumber ? 4 : 0 }}>{order.trackingNote}</div>}
+                                                {order.trackingNumber && <div style={{ fontSize: 12, color: '#7A8070' }}>Tracking #: <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#1A1A14' }}>{order.trackingNumber}</span></div>}
+                                            </div>
+                                        )}
+                                        {/* Tracking Steps */}
+                                        <div className={`tracking-step completed`}>
                                             <div className="tracking-title">Order Placed</div>
                                             <div className="tracking-time">{new Date(order.createdAt).toLocaleString()}</div>
                                         </div>
-                                        {order.orderStatus === 'processing' && (
+                                        {['confirmed', 'processing', 'shipped', 'delivered'].some(s => order.orderStatus === s || ['processing', 'shipped', 'delivered'].includes(s) && ['processing', 'shipped', 'delivered'].indexOf(s) <= ['processing', 'shipped', 'delivered'].indexOf(order.orderStatus)) && (
+                                            <div className={`tracking-step${['confirmed', 'processing', 'shipped', 'delivered'].includes(order.orderStatus) ? ' completed' : ''}`}>
+                                                <div className="tracking-title">Confirmed</div>
+                                                <div className="tracking-time">Order confirmed</div>
+                                            </div>
+                                        )}
+                                        {['processing', 'shipped', 'delivered'].includes(order.orderStatus) && (
                                             <div className="tracking-step completed">
                                                 <div className="tracking-title">Processing</div>
                                                 <div className="tracking-time">Order is being packed</div>
                                             </div>
                                         )}
-                                        {order.orderStatus === 'shipped' && (
-                                            <>
-                                                <div className="tracking-step completed">
-                                                    <div className="tracking-title">Processing</div>
-                                                    <div className="tracking-time">Completed</div>
-                                                </div>
-                                                <div className="tracking-step completed">
-                                                    <div className="tracking-title">Shipped</div>
-                                                    <div className="tracking-time">In Transit</div>
-                                                </div>
-                                            </>
+                                        {['shipped', 'delivered'].includes(order.orderStatus) && (
+                                            <div className="tracking-step completed">
+                                                <div className="tracking-title">Shipped</div>
+                                                <div className="tracking-time">{order.trackingNumber ? `In Transit · ${order.trackingNumber}` : 'In Transit'}</div>
+                                            </div>
                                         )}
                                         {order.orderStatus === 'delivered' && (
-                                            <>
-                                                <div className="tracking-step completed">
-                                                    <div className="tracking-title">Shipped</div>
-                                                    <div className="tracking-time">Completed</div>
-                                                </div>
-                                                <div className="tracking-step completed">
-                                                    <div className="tracking-title">Delivered</div>
-                                                    <div className="tracking-time">Package Delivered</div>
-                                                </div>
-                                            </>
+                                            <div className="tracking-step completed">
+                                                <div className="tracking-title">Delivered</div>
+                                                <div className="tracking-time">Package Delivered 🎉</div>
+                                            </div>
+                                        )}
+                                        {order.orderStatus === 'cancelled' && (
+                                            <div className="tracking-step" style={{ color: '#C0392B' }}>
+                                                <div className="tracking-title">Cancelled</div>
+                                                <div className="tracking-time">{order.trackingNote || 'Order was cancelled'}</div>
+                                            </div>
                                         )}
                                     </div>
                                 </div>

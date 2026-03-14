@@ -389,7 +389,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         @media (max-width: 480px) {
           .product-image-wrapper {
-            height: 300px;
+            height: 350px;
           }
         }
       `}</style>

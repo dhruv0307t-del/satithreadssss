@@ -1,17 +1,28 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, ArrowRight, Mail, Lock, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Mail, Lock, ShieldCheck, LogOut, Loader2 } from "lucide-react";
 
 export default function AdminLogin() {
+    const { data: session, status } = useSession();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
+
+    // Redirect if already admin
+    useEffect(() => {
+        if (status === "authenticated") {
+            const role = (session?.user as any).role;
+            if (role === "admin" || role === "master_admin") {
+                router.replace("/admin");
+            }
+        }
+    }, [status, session, router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,6 +42,50 @@ export default function AdminLogin() {
             router.push("/admin");
         }
     };
+
+    if (status === "loading") {
+        return (
+            <div className="al-body">
+                <Loader2 className="animate-spin text-[#3A6B50]" size={40} />
+            </div>
+        );
+    }
+
+    // If logged in as 'user', show switch prompt
+    if (status === "authenticated" && (session?.user as any).role === "user") {
+        return (
+            <div className="al-body">
+                <style>{`
+                    .al-body { background: #f0ebe0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; font-family: 'DM Sans', sans-serif; }
+                    .al-card { background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 440px; width: 100%; text-align: center; }
+                    .al-btn { background: #3A6B50; color: #fff; padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; margin-top: 20px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+                    .al-btn:hover { background: #2d523d; transform: translateY(-1px); }
+                `}</style>
+                <div className="al-card">
+                    <div className="w-16 h-16 bg-[#F2EFE0] text-[#3A6B50] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Lock size={24} />
+                    </div>
+                    <h1 className="text-2xl font-bold mb-2">Switch Account</h1>
+                    <p className="text-[#6B7060] mb-6">
+                        You're currently logged in as <span className="font-bold">{session.user.name}</span> (Customer).
+                        To access the admin panel, please log in with an admin account.
+                    </p>
+                    <button
+                        onClick={() => signOut({ callbackUrl: "/admin/login" })}
+                        className="al-btn"
+                    >
+                        <LogOut size={18} /> Logout & Login as Admin
+                    </button>
+                    <button
+                        onClick={() => router.push("/home")}
+                        className="mt-4 text-[#7A8070] font-semibold hover:text-[#3A6B50] transition-colors"
+                    >
+                        Back to Website
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>

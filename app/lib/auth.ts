@@ -58,6 +58,13 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.id = (user as any).id;
                 token.role = (user as any).role;
+            } else if (!token.role) {
+                // If role is missing from token (e.g. following an OAuth login), fetch it from DB
+                await connectDB();
+                const dbUser = await User.findOne({ email: token.email }).select("role");
+                if (dbUser) {
+                    token.role = dbUser.role || "user";
+                }
             }
             return token;
         },

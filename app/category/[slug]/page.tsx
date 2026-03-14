@@ -1,5 +1,6 @@
 
 import Product from "@/app/models/Product";
+import { Category } from "@/app/models/Category";
 import { connectDB } from "@/app/lib/db";
 import CategoryClient from "./CategoryClient";
 
@@ -30,8 +31,10 @@ export default async function CategoryPage({
     "short-kurtis": "/category-headers/Short Kurtis.png",
   };
 
+  const dbCategory = await Category.findOne({ slug });
+
   const topImage =
-    CATEGORY_HEADERS[slug] || "/category-headers/default.jpg";
+    dbCategory?.headerImage || CATEGORY_HEADERS[slug] || "/category-headers/default.jpg";
 
   return (
     <CategoryClient

@@ -18,8 +18,15 @@ function ProductList() {
   // Fetch products
   useEffect(() => {
     setLoading(true);
-    // Fetch with isFestive=true if in festive mode, else just all products
-    const url = isFestive ? "/api/products?isFestive=true&limit=50" : "/api/products?limit=50";
+    let url = "/api/products?limit=50";
+
+    if (category === "festive") {
+      url = "/api/products?isFestive=true&limit=50";
+    } else if (category === "new") {
+      url = "/api/products?isNewArrival=true&limit=50";
+    } else if (category) {
+      url = `/api/products?category=${category}&limit=50`;
+    }
 
     fetch(url)
       .then((res) => res.json())
