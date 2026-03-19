@@ -6,13 +6,13 @@ import { authOptions } from "@/app/lib/auth";
 import { calculateShippingFee } from "@/app/lib/shipping";
 import Razorpay from "razorpay";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
-
 export async function POST(req: Request) {
   try {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    });
+
     await connectDB();
 
     const session = await getServerSession(authOptions);
