@@ -3,10 +3,12 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSearch } from "../context/SearchContext";
 
 export default function ShippingPolicyPage() {
     const router = useRouter();
-    const [activeSection, setActiveSection] = useState("shipping");
+    const { openSearch } = useSearch();
+    const [activeSection, setActiveSection] = useState("shipping-info");
 
     useEffect(() => {
         // Smooth scrolling for anchor links
@@ -46,14 +48,20 @@ export default function ShippingPolicyPage() {
     return (
         <>
             <nav className="policy-nav">
-                <div className="logo" onClick={() => router.push("/home")}>
-                    <Image src="/logo1.png" alt="Sati Threads" width={120} height={40} style={{ cursor: "pointer" }} />
+                <div className="logo" onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
+                    <Image src="/logo1.png" alt="Sati Threads" width={120} height={40} />
                 </div>
                 <ul className="nav-links">
-                    <li onClick={() => router.push("/home")}>Home</li>
+                    <li onClick={() => router.push("/")}>Home</li>
                     <li onClick={() => router.push("/products")}>Shop</li>
                     <li onClick={() => router.push("/about")}>About</li>
                     <li onClick={() => router.push("/contact")}>Contact</li>
+                    <li onClick={openSearch} className="search-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </li>
                 </ul>
             </nav>
 
@@ -61,7 +69,7 @@ export default function ShippingPolicyPage() {
                 <div className="hero-content">
                     <div className="policy-badge">Delivery Information</div>
                     <h1>Shipping, Delivery & Exchange Policy</h1>
-                    <p>Everything you need to know about ordering, receiving, and exchanging products from Sati Threads.</p>
+                    <p>At Sati Threads, we follow a strict **No Return Only Exchange** policy to ensure the best service for our customers.</p>
                     <div className="last-updated">Last Updated: February 10, 2026</div>
                 </div>
             </section>
@@ -77,7 +85,7 @@ export default function ShippingPolicyPage() {
                             <li><a href="#eligibility" className={activeSection === 'eligibility' ? 'active' : ''}>Exchange Eligibility</a></li>
                             <li><a href="#non-exchangeable" className={activeSection === 'non-exchangeable' ? 'active' : ''}>Non-Exchangeable Items</a></li>
                             <li><a href="#process" className={activeSection === 'process' ? 'active' : ''}>Exchange Process</a></li>
-                            <li><a href="#refund" className={activeSection === 'refund' ? 'active' : ''}>No Refund Policy</a></li>
+                            <li><a href="#refund" className={activeSection === 'refund' ? 'active' : ''}>No Return Only Exchange</a></li>
                             <li><a href="#important" className={activeSection === 'important' ? 'active' : ''}>Important Notes</a></li>
                         </ul>
                     </nav>
@@ -138,7 +146,7 @@ export default function ShippingPolicyPage() {
 
                     <section id="exchange" className="section">
                         <h2><span className="section-icon">🔁</span> Exchange Policy</h2>
-                        <p>At Sati Threads, we follow a <strong>No Refund Policy</strong>. However, we do offer exchanges under specific conditions to ensure customer satisfaction.</p>
+                        <p>At Sati Threads, we operate under a <strong>No Return Only Exchange Policy</strong>. We do not provide monetary refunds, but we are happy to assist you with exchanges under specific conditions.</p>
 
                         <div className="info-box important">
                             <p><strong>Important:</strong> We do not provide monetary refunds. Only product or size exchanges are available as per the conditions outlined below.</p>
@@ -217,12 +225,12 @@ export default function ShippingPolicyPage() {
                     </section>
 
                     <section id="refund" className="section">
-                        <h2><span className="section-icon">🚫</span> No Refund Policy</h2>
-                        <p>Please note that Sati Threads operates under a strict <strong>No Refund Policy</strong>:</p>
+                        <h2><span className="section-icon">🚫</span> No Return Only Exchange</h2>
+                        <p>Please note that Sati Threads operates under a strict <strong>No Return Only Exchange Policy</strong>:</p>
                         <ul>
                             <li>Monetary refunds are <strong>not provided</strong> under any circumstances</li>
                             <li>Only size or product exchanges are allowed as per our policy</li>
-                            <li>In case of order cancellation before dispatch, refunds may be considered on a case-by-case basis</li>
+                            <li>All sales are final, with exchange being the only post-purchase option</li>
                         </ul>
 
                         <div className="info-box important">

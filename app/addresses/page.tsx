@@ -36,7 +36,7 @@ export default function AddressesPage() {
 
     useEffect(() => {
         if (status === "unauthenticated") {
-            router.push("/home");
+            router.push("/");
             return;
         }
 

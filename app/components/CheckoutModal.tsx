@@ -42,6 +42,18 @@ export default function CheckoutModal() {
     const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
     const [fetchingAddresses, setFetchingAddresses] = useState(false);
     const [saveAddress, setSaveAddress] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState<"COD" | "ONLINE" | "UPI">("COD");
+
+    // Load Razorpay script
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
     // Lock body scroll when modal is open
     useEffect(() => {
@@ -153,7 +165,7 @@ export default function CheckoutModal() {
                 body: JSON.stringify({
                     items: cart,
                     shippingAddress: address,
-                    paymentMethod: "COD",
+                    paymentMethod: paymentMethod,
                     couponCode: couponDetails?.code,
                     discountAmount: subtotal - finalTotal,
                     shippingFee,
@@ -162,10 +174,17 @@ export default function CheckoutModal() {
                 }),
             });
 
+            const contentType = res.headers.get("content-type");
+            if (!res.ok || !contentType || !contentType.includes("application/json")) {
+                const text = await res.text();
+                console.error("Server Error Response:", text);
+                throw new Error(`Server Error: ${res.status} ${res.statusText}`);
+            }
+
             const data = await res.json();
 
             if (data.success) {
-                // Save address only if user checked the box
+                // Save address if requested
                 if (status === "authenticated" && saveAddress) {
                     fetch("/api/user/address", {
                         method: "POST",
@@ -174,15 +193,66 @@ export default function CheckoutModal() {
                     });
                 }
 
-                clearCart();
-                closeModal();
-                resetForm();
-                router.push(`/orders/${data.orderId}`);
+                if (paymentMethod === "ONLINE" || paymentMethod === "UPI") {
+                    if (!(window as any).Razorpay) {
+                        setError("Razorpay SDK not loaded. Please refresh the page.");
+                        setLoading(false);
+                        return;
+                    }
+                    const options = {
+                        key: data.razorpayKeyId,
+                        amount: Math.round(data.totalAmount * 100),
+                        currency: "INR",
+                        name: "Sati Threads",
+                        description: "Order Payment",
+                        order_id: data.razorpayOrderId,
+                        handler: async function (response: any) {
+                            // Verify payment on backend
+                            const verifyRes = await fetch("/api/verify-payment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    orderId: data.orderId,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                }),
+                            });
+                            const verifyData = await verifyRes.json();
+                            if (verifyData.success) {
+                                clearCart();
+                                closeModal();
+                                resetForm();
+                                router.push(`/orders/${data.orderId}`);
+                            } else {
+                                setError("Payment verification failed. Please contact support.");
+                            }
+                        },
+                        prefill: {
+                            name: address.name,
+                            contact: address.phone,
+                            email: session?.user?.email || "",
+                            method: paymentMethod === "UPI" ? "upi" : undefined
+                        },
+                        theme: {
+                            color: "#3A6B50",
+                        },
+                    };
+                    const rzp = new (window as any).Razorpay(options);
+                    rzp.open();
+                } else {
+                    // COD Success
+                    clearCart();
+                    closeModal();
+                    resetForm();
+                    router.push(`/orders/${data.orderId}`);
+                }
             } else {
                 setError(data.message || "Order failed");
             }
-        } catch (err) {
-            setError("Something went wrong. Please try again.");
+        } catch (err: any) {
+            console.error("Checkout Error:", err);
+            setError(err.message || "Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -356,6 +426,48 @@ export default function CheckoutModal() {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={saveAddress ? "#3A6B50" : "#9CA3AF"} strokeWidth="2" style={{ marginLeft: "auto", flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                         </label>
                     )}
+
+                    {/* Payment Method */}
+                    <div style={{ margin: "24px 0" }}>
+                        <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "12px", color: "#1A202C" }}>Payment Method</h3>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
+                            {[
+                                { id: "COD", label: "Cash on Delivery", icon: "💵" },
+                                { id: "UPI", label: "UPI (Google Pay/PhonePe)", icon: "📱" },
+                                { id: "ONLINE", label: "Other Online (Card/Net)", icon: "💳" }
+                            ].map((method) => (
+                                <div
+                                    key={method.id}
+                                    onClick={() => setPaymentMethod(method.id as any)}
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "10px",
+                                        padding: "14px",
+                                        borderRadius: "12px",
+                                        border: `2px solid ${paymentMethod === method.id ? "#3A6B50" : "#E5E7EB"}`,
+                                        backgroundColor: paymentMethod === method.id ? "#F0FDF4" : "#fff",
+                                        cursor: "pointer",
+                                        transition: "all 0.2s"
+                                    }}
+                                >
+                                    <div style={{
+                                        width: "18px",
+                                        height: "18px",
+                                        borderRadius: "50%",
+                                        border: `2px solid ${paymentMethod === method.id ? "#3A6B50" : "#D1D5DB"}`,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: paymentMethod === method.id ? "#3A6B50" : "transparent"
+                                    }}>
+                                        {paymentMethod === method.id && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                                    </div>
+                                    <span style={{ fontWeight: "600", fontSize: "14px", color: "#1A202C" }}>{method.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
                     {/* Delivery Option */}
                     <div style={{ margin: "24px 0" }}>

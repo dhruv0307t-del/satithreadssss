@@ -1,49 +1,338 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCart } from "./context/CartContext";
+import { useSearch } from "./context/SearchContext";
+import { useAuthModal } from "./context/AuthModalContext";
+import { useCouponModal } from "./context/CouponModalContext";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import gsap from "gsap";
+import UserMenu from "./components/UserMenu";
+import CouponPopup from "./components/CouponPopup";
+import BestSellers from "./components/BestSellers";
+import ContactFooter from "./components/ContactFotter";
+import FooterBanner from "./components/FooterBanner";
+import FestiveSection from "./components/FestiveSection";
 
-export default function LandingDoor() {
-  const doorRef = useRef(null);
+// Icon Components
+const SearchIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="8"></circle>
+    <path d="m21 21-4.35-4.35"></path>
+  </svg>
+);
+
+const CartIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="21" r="1"></circle>
+    <circle cx="20" cy="21" r="1"></circle>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+  </svg>
+);
+
+const UserIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+);
+
+const HelpIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </svg>
+);
+
+const PhoneIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
+);
+
+const ChevronLeftIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6"></polyline>
+  </svg>
+);
+
+const ChevronRightIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+);
+
+const MenuIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+export default function HomePage() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openSearch } = useSearch();
   const router = useRouter();
+  const { openCart } = useCart();
+  const { openModal } = useAuthModal();
+  const { openModal: openCouponModal } = useCouponModal();
+  const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({
-      defaults: { ease: "power4.inOut" },
-    });
+    if (searchParams.get("search") === "open") {
+      openSearch();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [searchParams]);
 
-    // cinematic dolly-in
-    tl.fromTo(
-      doorRef.current,
-      { scale: 1 },
-      {
-        scale: 2.8,
-        duration: 2.2,
+  // Dynamic Categories data
+  const [categories, setCategories] = useState<{ title: string; slug: string; img: string }[]>([]);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    fetch('/api/categories').then(r => r.json()).then(d => {
+      if (d.success && d.categories.length > 0) {
+        setCategories(d.categories.map((c: any) => ({
+          title: c.title,
+          slug: c.slug,
+          img: c.thumbnail || '/Dupaata Set.jpg', // Fallback image
+        })));
+      } else {
+        // Fallback hardcoded if DB is empty
+        setCategories([
+          { title: "Kurta Sets", slug: "kurta-sets", img: "/Kurtasets.jpg" },
+          { title: "Dupatta Sets", slug: "dupatta-sets", img: "/Dupaata Set.jpg" },
+          { title: "Skirts", slug: "skirts", img: "/Skirts.jpg" },
+          { title: "Cord Sets", slug: "cord-sets", img: "/Coordsets.jpg" },
+          { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets", img: "/Farshi Salwar Suit.jpg" },
+          { title: "Dress", slug: "dress", img: "/Dress.jpg" },
+          { title: "Short Kurtis", slug: "short-kurtis", img: "/Short Kuti.jpg" },
+        ]);
       }
-    );
-
-    // go to home AFTER zoom completes
-    tl.call(() => {
-      router.push("/home");
     });
+  }, []);
+
+  // Carousel settings - 4 cards visible at a time
+  const cardsPerView = 4;
+  const totalSlides = Math.ceil(categories.length / cardsPerView);
+
+  // Navigate carousel
+  // Scroll handlers
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  };
+
+  // Auto-scroll for mobile (Circular Rotation)
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    const handleAutoScroll = () => {
+      if (window.innerWidth <= 768 && carouselRef.current && categories.length > 0) {
+        const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+
+        // Circular logic: if we're past the midpoint (end of first set), jump back to start instantly
+        // Then proceed to scroll smoothly
+        if (scrollLeft >= (scrollWidth / 2)) {
+          carouselRef.current.scrollTo({ left: 0, behavior: 'auto' });
+          // Give it a tiny moment to reset before the next smooth scroll
+          setTimeout(() => {
+            if (carouselRef.current) {
+              carouselRef.current.scrollBy({ left: 280, behavior: 'smooth' }); // One card width approx
+            }
+          }, 50);
+        } else {
+          carouselRef.current.scrollBy({ left: 280, behavior: 'smooth' });
+        }
+      }
+    };
+
+    if (categories.length > 0) {
+      interval = setInterval(handleAutoScroll, 2000); // 2s delay as requested
+    }
 
     return () => {
-      tl.kill();
+      if (interval) clearInterval(interval);
     };
-  }, [router]);
+  }, [categories]);
+
+  // Removed handleSearch
 
   return (
-    <div className="door-wrapper">
-      <Image
-        ref={doorRef}
-        src="/door.jpeg"
-        alt="Heritage Door"
-        fill
-        priority
-        className="door-image"
-      />
-    </div>
+    <>
+      {/* 🧭 NAVBAR */}
+      {/* 🧭 NAVBAR */}
+      <nav className={`navbar nav-visible ${isMenuOpen ? "menu-active" : ""}`}>
+        {/* MOBILE MENU TRIGGER */}
+        <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+        </button>
+
+        {/* LEFT (LOGO) */}
+        <div className="nav-left" onClick={() => router.push("/")} style={{ cursor: 'pointer' }}>
+          <Image src="/logo1.png" alt="Satithreads" width={120} height={40} className="mobile-logo-adjust" />
+        </div>
+
+        {/* CENTER */}
+        <ul className={`nav-links ${isMenuOpen ? "show" : ""}`}>
+          <li onClick={() => { router.push("/products?category=new"); setIsMenuOpen(false); }}>New Arrivals</li>
+          <li
+            onClick={() => {
+              document
+                .getElementById("categories-section")
+                ?.scrollIntoView({ behavior: "smooth" });
+              setIsMenuOpen(false);
+            }}
+          >
+            Categories
+          </li>
+          <li onClick={() => { router.push("/products?category=festive"); setIsMenuOpen(false); }}>Festive</li>
+          <li onClick={() => { openCouponModal(); setIsMenuOpen(false); }}>Offers</li>
+          <li onClick={() => { router.push("/about"); setIsMenuOpen(false); }}>About</li>
+        </ul>
+
+        {/* Removed SEARCH BAR OVERLAY */}
+
+        {/* RIGHT */}
+        <div className="nav-right">
+          <div className="nav-icon" onClick={openSearch} style={{ cursor: "pointer" }}>
+            <SearchIcon />
+          </div>
+          <div className="nav-icon" onClick={openCart}><CartIcon /></div>
+
+          {session ? (
+            <UserMenu />
+          ) : (
+            <div
+              onClick={() => openModal("/")}
+              className="nav-icon"
+              style={{ cursor: "pointer" }}
+            >
+              <UserIcon />
+            </div>
+          )}
+          <div className="nav-icon help-hide-mobile"><HelpIcon /></div>
+          <div className="nav-icon phone-hide-mobile"><PhoneIcon /></div>
+        </div>
+      </nav>
+
+      {/* 🌄 HERO - DIFFERENT IMAGES FOR MOBILE/DESKTOP */}
+      <section className="hero-banner">
+        {/* Desktop Image */}
+        <Image
+          src="/Sati Threads Banner.jpg"
+          alt="Hero Desktop"
+          fill
+          priority
+          className="hero-image hide-mobile"
+        />
+
+        {/* Mobile Image - Upload this as /public/mobile-banner.jpg */}
+        <Image
+          src="/Mobile Banner (1).jpg"
+          alt="Hero Mobile - The नूर परिधान"
+          fill
+          priority
+          className="hero-image show-mobile"
+        />
+
+        <div className="hero-luxury-overlay">
+          <div className="hero-copy">
+            {/* Hero content */}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= CATEGORIES CAROUSEL ================= */}
+      <section id="categories-section" className="categories-section">
+        <div className="section-image-heading">
+          <Image
+            src="/Shop By Category.png"
+            alt="Shop by Category"
+            width={1920}
+            height={200}
+            className="full-width-heading"
+          />
+        </div>
+
+        <div className="categories-carousel-container">
+          <div className="categories-carousel-box">
+            <div className="categories-carousel-wrapper">
+              {/* Previous Button */}
+              <button
+                className="carousel-nav-button prev"
+                onClick={scrollLeft}
+                aria-label="Previous"
+              >
+                <ChevronLeftIcon />
+              </button>
+
+              {/* Cards Grid */}
+              <div
+                className="categories-grid"
+                ref={carouselRef}
+              >
+                {[...categories, ...categories].map((cat, idx) => (
+                  <div
+                    key={`${cat.slug}-${idx}`}
+                    className="category-card-new"
+                    onClick={() => router.push(`/category/${cat.slug}`)}
+                  >
+                    <img src={cat.img} className="category-img-bg" alt={cat.title} />
+                    <div className="category-overlay"></div>
+                    <div className="category-label-vertical">{cat.title.toUpperCase()}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Next Button */}
+              <button
+                className="carousel-nav-button next"
+                onClick={scrollRight}
+                aria-label="Next"
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </section >
+
+      {/* ================= FESTIVE SECTION ================= */}
+      <FestiveSection />
+
+      {/* ================= BEST SELLERS ================= */}
+      <section>
+        <BestSellers />
+      </section>
+
+      <ContactFooter />
+      <FooterBanner />
+
+      {/* Coupon Popup */}
+      <CouponPopup />
+    </>
   );
 }

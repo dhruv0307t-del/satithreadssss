@@ -3,10 +3,12 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSearch } from "../context/SearchContext";
 
 export default function TermsConditionsPage() {
     const router = useRouter();
-    const [activeSection, setActiveSection] = useState("acceptance");
+    const { openSearch } = useSearch();
+    const [activeSection, setActiveSection] = useState("agreement");
 
     useEffect(() => {
         // Smooth scrolling for anchor links
@@ -46,14 +48,20 @@ export default function TermsConditionsPage() {
     return (
         <>
             <nav className="policy-nav">
-                <div className="logo" onClick={() => router.push("/home")}>
-                    <Image src="/logo1.png" alt="Sati Threads" width={120} height={40} style={{ cursor: "pointer" }} />
+                <div className="logo" onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
+                    <Image src="/logo1.png" alt="Sati Threads" width={120} height={40} />
                 </div>
                 <ul className="nav-links">
-                    <li onClick={() => router.push("/home")}>Home</li>
+                    <li onClick={() => router.push("/")}>Home</li>
                     <li onClick={() => router.push("/products")}>Shop</li>
                     <li onClick={() => router.push("/about")}>About</li>
                     <li onClick={() => router.push("/contact")}>Contact</li>
+                    <li onClick={openSearch} className="search-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </li>
                 </ul>
             </nav>
 

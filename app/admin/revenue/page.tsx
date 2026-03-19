@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -102,23 +102,27 @@ const GLOBAL_CSS = `
     display: inline-flex; align-items: center; gap: 3px; margin-top: 8px;
     font-size: 12px; font-weight: 500; padding: 3px 8px; border-radius: 99px;
   }
-  .kpi-badge.up { background: #E6F4EC; color: var(--green); }
+  .kpi-badge.up   { background: #E6F4EC; color: var(--green); }
   .kpi-badge.down { background: var(--red-soft); color: var(--red); }
   .kpi-badge.neutral { background: #F0F0EA; color: var(--label); }
 
   .chart-grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
   .chart-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .kpi-grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
   @media (max-width: 900px) {
-    .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+    .chart-grid-2, .chart-grid-3, .kpi-grid-2x2 { grid-template-columns: 1fr; }
   }
 
   .chart-card { position: relative; }
   .chart-card .chart-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
   .chart-card .chart-title { font-size: 14px; font-weight: 600; color: var(--text); }
   .chart-card .chart-sub { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
-  .chart-wrap { position: relative; height: 220px; }
-  .chart-wrap.tall { height: 260px; }
+
+  /* ✅ FIX 6: added missing .small height */
+  .chart-wrap        { position: relative; height: 220px; }
+  .chart-wrap.tall   { height: 260px; }
+  .chart-wrap.small  { height: 180px; }
 
   .rank-list { display: flex; flex-direction: column; gap: 10px; }
   .rank-item { display: flex; align-items: center; gap: 12px; }
@@ -134,20 +138,12 @@ const GLOBAL_CSS = `
   .profit-table th { font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--label); font-weight: 600; border-bottom: 1px solid var(--border); }
   .profit-table td { border-bottom: 1px solid rgba(58,107,80,0.06); }
   .profit-table tr:last-child td { border-bottom: none; font-weight: 700; }
-  .profit-table .money { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--green); text-align: right; }
+  .profit-table .money     { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--green); text-align: right; }
   .profit-table .loss-cell { color: var(--red); font-family: 'DM Mono', monospace; text-align: right; }
-  .profit-table .pct { font-size: 11px; color: var(--text-sub); text-align: right; }
-
-  .tab-group { display: flex; gap: 4px; background: var(--bg); border-radius: 99px; padding: 3px; width: fit-content; margin-bottom: 16px; }
-  .tab { padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text-sub); transition: all 0.15s; border: none; background: transparent; font-family: 'DM Sans', sans-serif; }
-  .tab.active { background: var(--card); color: var(--green); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-
-  .pay-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .pay-dot { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-sub); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .profit-table .pct       { font-size: 11px; color: var(--text-sub); text-align: right; }
 
   .alert-card { border-left: 3px solid var(--red); background: linear-gradient(135deg, #FFF9F9 0%, var(--card) 100%); }
-  
+
   .metric-pill {
     display: inline-flex; align-items: center; gap: 6px;
     background: var(--card); border: 1px solid var(--border); border-radius: 99px;
@@ -156,7 +152,15 @@ const GLOBAL_CSS = `
   .metric-pill strong { color: var(--green); font-weight: 600; }
   .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .loading-shimmer {
+    background: linear-gradient(90deg, #eee 25%, #f5f5f0 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: var(--radius-sm);
+    height: 80px;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes fadeUp  { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
   .section { animation: fadeUp 0.4s ease both; }
 
   @media (max-width: 600px) {
@@ -166,351 +170,506 @@ const GLOBAL_CSS = `
   }
 `;
 
+const PALETTE = ["#3A6B50", "#5DA87A", "#8FC9A8", "#B8DEC9", "#9B6B3A", "#D4956A", "#3A5D6B", "#6A9BB0"];
+
 export default function RevenuePage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("month");
 
-  useEffect(() => {
-    fetch("/api/admin/revenue")
+  // ✅ FIX 1 + 2: re-fetch whenever filter changes, pass period as query param
+  const fetchData = useCallback(() => {
+    setLoading(true);
+    fetch(`/api/admin/revenue?period=${filter}`)
       .then(res => res.json())
-      .then(resData => {
-        setData(resData);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+      .then(resData => { setData(resData); setLoading(false); })
+      .catch(err => { console.error(err); setLoading(false); });
+  }, [filter]);
 
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
   const fmt = (n: number) => {
     if (n >= 100000) return "₹" + (n / 100000).toFixed(1) + "L";
-    if (n >= 1000) return "₹" + (n / 1000).toFixed(0) + "K";
+    if (n >= 1000) return "₹" + (n / 1000).toFixed(1) + "K";
     return "₹" + n;
   };
+  const fmtLong = (n: number) => "₹" + (n || 0).toLocaleString("en-IN");
 
-  const fmtLong = (n: number) => {
-    return "₹" + n.toLocaleString("en-IN");
+  const getGrowth = (curr: number, prev: number) => {
+    if (!prev && !curr) return { label: "— no data", cls: "neutral" };
+    if (!prev) return { label: "+100%", cls: "up" };
+    const diff = ((curr - prev) / prev) * 100;
+    return {
+      label: `${diff > 0 ? "+" : ""}${diff.toFixed(0)}% vs ${comparisonLabel}`,
+      cls: diff >= 0 ? "up" : "down",
+    };
   };
 
+  const periodLabel = filter.charAt(0).toUpperCase() + filter.slice(1);
+  const comparisonLabel = filter === "today" ? "yesterday" : `last ${filter}`;
+
+  // ── Chart base options ────────────────────────────────────────────────────
   const chartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: 'rgba(26,26,20,0.95)',
+        backgroundColor: "rgba(26,26,20,0.95)",
         padding: 12,
         bodyFont: { family: "'DM Sans', sans-serif" },
         titleFont: { family: "'DM Sans', sans-serif" },
-        callbacks: {
-          label: (ctx: any) => ` ₹${ctx.raw.toLocaleString("en-IN")}`
-        }
-      }
+        callbacks: { label: (ctx: any) => ` ₹${ctx.raw.toLocaleString("en-IN")}` },
+      },
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { font: { family: "'DM Mono', monospace", size: 10 }, color: '#7A8070' }
+        ticks: { font: { family: "'DM Mono', monospace", size: 10 }, color: "#7A8070" },
       },
       y: {
-        grid: { color: 'rgba(58,107,80,0.05)' },
-        ticks: { font: { family: "'DM Mono', monospace", size: 10 }, color: '#7A8070', callback: (v: any) => v >= 1000 ? `₹${(v / 1000).toFixed(0)}k` : `₹${v}` }
-      }
-    }
+        grid: { color: "rgba(58,107,80,0.05)" },
+        ticks: {
+          font: { family: "'DM Mono', monospace", size: 10 },
+          color: "#7A8070",
+          callback: (v: any) => v >= 1000 ? `₹${(v / 1000).toFixed(0)}k` : `₹${v}`,
+        },
+      },
+    },
   };
 
-  const monthlyTrendsData = useMemo(() => {
-    if (!data?.trends || (filter !== 'month' && filter !== 'year')) return { labels: [], datasets: [] };
-    return {
-      labels: data.trends.map((t: any) => {
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        // Handle both old and new API formats
-        const m = t._id?.month || t.label;
-        return typeof m === 'number' ? months[m - 1] : m;
-      }),
-      datasets: [{
-        label: "Monthly Revenue",
-        data: data.trends.map((t: any) => t.revenue),
-        borderColor: "#3A6B50",
-        backgroundColor: "rgba(58,107,80,0.08)",
-        tension: 0.4,
-        fill: true,
-        pointRadius: 4,
-      }]
-    };
-  }, [data, filter]);
+  const doughnutOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "70%",
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "rgba(26,26,20,0.95)",
+        callbacks: { label: (ctx: any) => ` ₹${ctx.raw.toLocaleString("en-IN")}` },
+      },
+    },
+  };
 
-  const hourlyTrendsData = useMemo(() => {
-    if (!data?.trends || filter !== 'today') return { labels: [], datasets: [] };
-    return {
-      labels: data.trends.map((t: any) => `${t.label}:00`),
-      datasets: [{
-        label: "Hourly Revenue",
-        data: data.trends.map((t: any) => t.revenue),
-        borderColor: "#3A6B50",
-        backgroundColor: "rgba(58,107,80,0.08)",
-        tension: 0.4,
-        fill: true,
-        pointRadius: 4,
-      }]
-    };
-  }, [data, filter]);
-
-  const weekTrendsData = useMemo(() => {
-    if (!data?.trends || filter !== 'week') return { labels: [], datasets: [] };
+  // ── Memoised chart datasets ───────────────────────────────────────────────
+  const trendChartData = useMemo(() => {
+    if (!data?.trends?.length) return { labels: [], datasets: [] };
     return {
       labels: data.trends.map((t: any) => t.label),
       datasets: [{
-        label: "Daily Revenue",
+        label: "Revenue",
         data: data.trends.map((t: any) => t.revenue),
         borderColor: "#3A6B50",
         backgroundColor: "rgba(58,107,80,0.08)",
         tension: 0.4,
         fill: true,
-        pointRadius: 4,
-      }]
+        pointRadius: 3,
+        pointHoverRadius: 5,
+      }],
     };
-  }, [data, filter]);
+  }, [data]);
 
-  const categoryData = useMemo(() => {
-    if (!data?.categoryRevenue) return { labels: [], datasets: [] };
+  const categoryChartData = useMemo(() => {
+    if (!data?.categoryRevenue?.length) return { labels: [], datasets: [] };
     return {
       labels: data.categoryRevenue.map((c: any) => c._id),
       datasets: [{
         data: data.categoryRevenue.map((c: any) => c.revenue),
-        backgroundColor: ["#3A6B50", "#5DA87A", "#8FC9A8", "#B8DEC9", "#9B6B3A"],
+        backgroundColor: PALETTE,
         borderWidth: 0,
-      }]
+        hoverOffset: 6,
+      }],
     };
   }, [data]);
 
-  const paymentData = useMemo(() => {
-    if (!data?.paymentMethods) return { labels: [], datasets: [] };
+  const paymentChartData = useMemo(() => {
+    if (!data?.paymentMethods?.length) return { labels: [], datasets: [] };
     return {
       labels: data.paymentMethods.map((p: any) => p._id),
       datasets: [{
         data: data.paymentMethods.map((p: any) => p.revenue),
-        backgroundColor: ["#3A6B50", "#B8DEC9"],
+        backgroundColor: PALETTE,
         borderWidth: 0,
-      }]
+        hoverOffset: 6,
+      }],
     };
   }, [data]);
 
-  const cityData = useMemo(() => {
-    if (!data?.cityRevenue) return { labels: [], datasets: [] };
+  const cityChartData = useMemo(() => {
+    if (!data?.cityRevenue?.length) return { labels: [], datasets: [] };
     return {
       labels: data.cityRevenue.map((c: any) => c._id),
       datasets: [{
         data: data.cityRevenue.map((c: any) => c.revenue),
         backgroundColor: "rgba(58,107,80,0.12)",
         hoverBackgroundColor: "#3A6B50",
-        borderRadius: 12,
-        barThickness: 32,
-      }]
+        borderRadius: 10,
+        barThickness: 28,
+      }],
     };
   }, [data]);
 
-  const getGrowth = (curr: number, prev: number) => {
-    if (!prev) return "+100%";
-    const diff = ((curr - prev) / prev) * 100;
-    return `${diff > 0 ? '+' : ''}${diff.toFixed(0)}%`;
-  };
+  // ── Loading state ─────────────────────────────────────────────────────────
+  if (loading && !data) {
+    return (
+      <div className="revenue-page-container">
+        <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />
+        <div className="kpi-grid" style={{ marginTop: 40 }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="loading-shimmer" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-  if (loading && !data) return <div style={{ background: '#F2EFE0', height: '100vh', padding: '20px' }}>Loading...</div>;
   if (!data) return null;
 
-  const periodLabel = filter.charAt(0).toUpperCase() + filter.slice(1);
-  const comparisonLabel = filter === 'today' ? 'yesterday' : `last ${filter}`;
+  const revenueGrowth = getGrowth(data.revenue, data.prevRevenue);
+  const ordersGrowth = getGrowth(data.orders, data.prevOrders);
+  const netRevenue = data.revenue - (data.refunded || 0);
+  const cogs = Math.round(data.revenue * 0.45);
+  const grossProfit = data.revenue - cogs;
+  const netProfit = Math.round(data.revenue * 0.35);
+  const refundPct = data.revenue > 0 ? ((data.refunded / data.revenue) * 100).toFixed(1) : "0.0";
 
   return (
     <div className="revenue-page-container">
       <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />
 
+      {/* ── Header ── */}
       <div className="header">
         <div className="header-left">
           <h1>Revenue</h1>
-          <p>Last updated: recently · All figures in Indian Rupees (₹)</p>
+          <p>
+            {loading ? "Refreshing…" : "Last updated: just now"} · All figures in ₹
+          </p>
         </div>
         <div className="filter-bar">
-          {["Today", "Week", "Month", "Year"].map(v => (
+          {[
+            { label: "Today", value: "today" },
+            { label: "This Week", value: "week" },
+            { label: "This Month", value: "month" },
+            { label: "This Year", value: "year" },
+          ].map(f => (
             <button
-              key={v}
-              className={`filter-btn ${filter === v.toLowerCase() ? "active" : ""}`}
-              onClick={() => setFilter(v.toLowerCase())}
+              key={f.value}
+              className={`filter-btn ${filter === f.value ? "active" : ""}`}
+              onClick={() => setFilter(f.value)}
             >
-              {v === "Month" || v === "Year" || v === "Week" ? "This " + v : v}
+              {f.label}
             </button>
           ))}
         </div>
       </div>
 
+      {/* ── KPIs ── */}
       <div className="section">
-        <div className="section-title">Core Revenue KPIs ({periodLabel})</div>
+        <div className="section-title">Core KPIs — {periodLabel}</div>
         <div className="kpi-grid">
           <KPICard
-            label={`${periodLabel} Revenue`}
+            label={`Revenue (${periodLabel})`}
             value={fmtLong(data.revenue)}
-            badge={`${getGrowth(data.revenue, data.prevRevenue)} vs ${comparisonLabel}`}
+            badge={revenueGrowth.label}
+            badgeCls={revenueGrowth.cls}
           />
           <KPICard
-            label={`${periodLabel} Orders`}
-            value={data.orders?.toLocaleString()}
-            badge={`${getGrowth(data.orders, data.prevOrders)} vs ${comparisonLabel}`}
+            label={`Orders (${periodLabel})`}
+            value={(data.orders || 0).toLocaleString()}
+            badge={ordersGrowth.label}
+            badgeCls={ordersGrowth.cls}
           />
-          <KPICard label="Total Revenue (All Time)" value={fmtLong(data.totalRevenue)} isBaseline />
-          <KPICard label="Total Orders (All Time)" value={data.totalOrders?.toLocaleString()} isBaseline />
-          <KPICard label="Avg Order Value" value={fmtLong(data.orders > 0 ? Math.round(data.revenue / data.orders) : 0)} />
-          <KPICard label="Conversion Rate" value={`${data.customerStats?.conversionRate || 0}%`} />
-          <KPICard label="Refunded Amount" value={fmtLong(data.refunded || 0)} isAlert />
-          <KPICard label="Revenue per Visitor" value="₹70" badge="+9% vs last month" />
+          <KPICard label="All-Time Revenue" value={fmtLong(data.totalRevenue)} isBaseline />
+          <KPICard label="All-Time Orders" value={(data.totalOrders || 0).toLocaleString()} isBaseline />
+          <KPICard
+            label="Avg Order Value"
+            value={data.orders > 0 ? fmtLong(Math.round(data.revenue / data.orders)) : "₹0"}
+          />
+          <KPICard
+            label="Conversion Rate"
+            value={`${data.customerStats?.conversionRate ?? "0.0"}%`}
+            badge="orders ÷ total users"
+            badgeCls="neutral"
+          />
+          <KPICard
+            label="Refunded Amount"
+            value={fmtLong(data.refunded || 0)}
+            isAlert
+            badge={`${refundPct}% of revenue`}
+            badgeCls="down"
+          />
+          <KPICard
+            label="Net Revenue"
+            value={fmtLong(netRevenue)}
+            badge="after refunds"
+            badgeCls="neutral"
+          />
         </div>
       </div>
 
+      {/* ── Trends + City ── */}
       <div className="section">
-        <div className="section-title">{periodLabel} Performance Trends</div>
+        <div className="section-title">Revenue Trends — {periodLabel}</div>
         <div className="chart-grid-2">
-          {/* Main Distribution Chart */}
           <div className="card chart-card">
             <div className="chart-header">
               <div>
-                <div className="chart-title">Revenue Distribution</div>
+                <div className="chart-title">Revenue Over Time</div>
                 <div className="chart-sub">
-                  Analytics · {filter === 'today' ? 'Hourly' : filter === 'week' ? 'Daily' : 'Monthly'}
+                  {filter === "today" ? "Hourly" : filter === "week" ? "Daily" : filter === "month" ? "Daily (this month)" : "Monthly"}
                 </div>
               </div>
             </div>
             <div className="chart-wrap tall">
-              {filter === 'today' && <Line data={hourlyTrendsData} options={chartOptions} />}
-              {filter === 'week' && <Line data={weekTrendsData} options={chartOptions} />}
-              {(filter === 'month' || filter === 'year') && <Line data={monthlyTrendsData} options={chartOptions} />}
+              {trendChartData.labels.length > 0
+                ? <Line data={trendChartData} options={chartOptions} />
+                : <EmptyChart />
+              }
             </div>
           </div>
 
-          {/* Location Bar Chart */}
           <div className="card chart-card">
             <div className="chart-header">
               <div>
-                <div className="chart-title">Revenue by Location</div>
-                <div className="chart-sub">Geographic breakdown for {periodLabel}</div>
+                <div className="chart-title">Revenue by City</div>
+                <div className="chart-sub">Top 8 cities — {periodLabel}</div>
               </div>
             </div>
             <div className="chart-wrap tall">
-              <Bar data={cityData} options={chartOptions} />
+              {cityChartData.labels.length > 0
+                ? <Bar data={cityChartData} options={chartOptions} />
+                : <EmptyChart />
+              }
             </div>
           </div>
         </div>
       </div>
 
+      {/* ── Breakdown ── */}
       <div className="section">
-        <div className="section-title">{periodLabel} Breakdown</div>
+        <div className="section-title">Revenue Breakdown — {periodLabel}</div>
         <div className="chart-grid-3">
+
+          {/* Top products */}
           <div className="card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Top Products</div>
-                <div className="chart-sub">By revenue ({filter})</div>
+                <div className="chart-sub">By revenue</div>
               </div>
             </div>
             <div className="rank-list">
-              {data.topProducts?.length > 0 ? data.topProducts.map((p: any, i: number) => (
-                <div key={p._id} className="rank-item">
-                  <div className="rank-num">{i + 1}</div>
-                  <div className="rank-bar-wrap">
-                    <div className="rank-name">{p._id}</div>
-                    <div className="rank-bar">
-                      <motion.div
-                        className="rank-fill"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(p.revenue / (data.topProducts[0]?.revenue || 1) * 100)}%` }}
-                      />
+              {data.topProducts?.length > 0 ? (
+                data.topProducts.map((p: any, i: number) => (
+                  <div key={p._id} className="rank-item">
+                    <div className="rank-num">{i + 1}</div>
+                    <div className="rank-bar-wrap">
+                      <div className="rank-name">{p._id}</div>
+                      <div className="rank-bar">
+                        <motion.div
+                          className="rank-fill"
+                          initial={{ width: 0 }}
+                          animate={{
+                            width: `${(p.revenue / (data.topProducts[0]?.revenue || 1)) * 100}%`,
+                          }}
+                          transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                        />
+                      </div>
                     </div>
+                    <div className="rank-val">{fmt(p.revenue)}</div>
                   </div>
-                  <div className="rank-val">{fmt(p.revenue)}</div>
-                </div>
-              )) : <div style={{ padding: '20px', color: 'var(--text-sub)' }}>No data for this period</div>}
+                ))
+              ) : (
+                <EmptyChart label="No product sales in this period" />
+              )}
             </div>
           </div>
 
+          {/* Category doughnut */}
           <div className="card chart-card">
             <div className="chart-header">
               <div>
-                <div className="chart-title">Category Revenue</div>
-                <div className="chart-sub">Period distribution</div>
+                <div className="chart-title">By Category</div>
+                <div className="chart-sub">Revenue share</div>
               </div>
             </div>
             <div className="chart-wrap small">
-              <Doughnut data={categoryData} options={{ ...chartOptions, cutout: '70%' }} />
+              {categoryChartData.labels.length > 0
+                ? <Doughnut data={categoryChartData} options={doughnutOptions} />
+                : <EmptyChart />
+              }
             </div>
+            <ColorLegend items={categoryChartData.labels as string[]} />
           </div>
 
+          {/* Payment doughnut */}
           <div className="card chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Payment Methods</div>
-                <div className="chart-sub">Period distribution</div>
+                <div className="chart-sub">Revenue share</div>
               </div>
             </div>
             <div className="chart-wrap small">
-              <Doughnut data={paymentData} options={{ ...chartOptions, cutout: '70%' }} />
+              {paymentChartData.labels.length > 0
+                ? <Doughnut data={paymentChartData} options={doughnutOptions} />
+                : <EmptyChart />
+              }
             </div>
+            <ColorLegend items={paymentChartData.labels as string[]} />
           </div>
         </div>
       </div>
 
+      {/* ── P&L + Customer metrics ── */}
       <div className="section">
-        <div className="section-title">Profit Metrics ({periodLabel})</div>
+        <div className="section-title">Profit & Customer Metrics — {periodLabel}</div>
         <div className="chart-grid-2">
+
+          {/* P&L table */}
           <div className="card">
             <div className="chart-header">
-              <div className="chart-title">P&L Summary (Estimated)</div>
+              <div className="chart-title">P&amp;L Summary (Estimated)</div>
             </div>
             <table className="profit-table">
               <thead>
-                <tr><th>Metric</th><th style={{ textAlign: 'right' }}>Amount</th><th style={{ textAlign: 'right' }}>% of Revenue</th></tr>
+                <tr>
+                  <th>Metric</th>
+                  <th style={{ textAlign: "right" }}>Amount</th>
+                  <th style={{ textAlign: "right" }}>% of Revenue</th>
+                </tr>
               </thead>
               <tbody>
-                <tr><td>Gross Revenue</td><td className="money">{fmtLong(data.revenue)}</td><td className="pct">100%</td></tr>
-                <tr><td>Discounts & Returns</td><td className="loss-cell">-{fmtLong(data.refunded || 0)}</td><td className="pct">{(data.revenue > 0 ? (data.refunded / data.revenue * 100) : 0).toFixed(1)}%</td></tr>
-                <tr><td>Net Revenue</td><td className="money">{fmtLong(data.revenue - (data.refunded || 0))}</td><td className="pct">{(data.revenue > 0 ? ((1 - (data.refunded / data.revenue)) * 100) : 0).toFixed(1)}%</td></tr>
-                <tr><td>Est. COGS (45%)</td><td className="loss-cell">-{fmtLong(Math.round(data.revenue * 0.45))}</td><td className="pct">45%</td></tr>
-                <tr><td>Gross Profit</td><td className="money">{fmtLong(Math.round(data.revenue * 0.55))}</td><td className="pct">55%</td></tr>
-                <tr><td style={{ fontWeight: 700 }}>Net Profit (35%)</td><td className="money" style={{ fontWeight: 700, fontSize: '15px' }}>{fmtLong(Math.round(data.revenue * 0.35))}</td><td className="pct" style={{ fontWeight: 700, color: '#3A6B50' }}>35%</td></tr>
+                <tr>
+                  <td>Gross Revenue</td>
+                  <td className="money">{fmtLong(data.revenue)}</td>
+                  <td className="pct">100%</td>
+                </tr>
+                <tr>
+                  <td>Refunds &amp; Returns</td>
+                  <td className="loss-cell">-{fmtLong(data.refunded || 0)}</td>
+                  <td className="pct">{refundPct}%</td>
+                </tr>
+                <tr>
+                  <td>Net Revenue</td>
+                  <td className="money">{fmtLong(netRevenue)}</td>
+                  <td className="pct">
+                    {data.revenue > 0 ? ((netRevenue / data.revenue) * 100).toFixed(1) : "0.0"}%
+                  </td>
+                </tr>
+                <tr>
+                  <td>Est. COGS (45%)</td>
+                  <td className="loss-cell">-{fmtLong(cogs)}</td>
+                  <td className="pct">45%</td>
+                </tr>
+                <tr>
+                  <td>Gross Profit</td>
+                  <td className="money">{fmtLong(grossProfit)}</td>
+                  <td className="pct">
+                    {data.revenue > 0 ? ((grossProfit / data.revenue) * 100).toFixed(1) : "0.0"}%
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 700 }}>Net Profit (est. 35%)</td>
+                  <td className="money" style={{ fontWeight: 700, fontSize: 15 }}>
+                    {fmtLong(netProfit)}
+                  </td>
+                  <td className="pct" style={{ fontWeight: 700, color: "var(--green)" }}>35%</td>
+                </tr>
               </tbody>
             </table>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <KPICard label="New Customers" value={data.customerStats?.newCustomers || 0} />
-            <KPICard label="Returning Customers" value={data.customerStats?.returningCustomers || 0} />
-            <KPICard label="Revenue per Customer" value={fmtLong(data.customerStats?.totalUsers > 0 ? Math.round(data.revenue / data.customerStats?.totalUsers) : 0)} />
-            <KPICard label="LTV Estimate" value={fmtLong(data.customerStats?.totalUsers > 0 ? Math.round(data.revenue / data.customerStats?.totalUsers * 4) : 0)} />
+
+          {/* Customer KPIs — ✅ FIX: now uses real newCustomers/returningCustomers */}
+          <div className="kpi-grid-2x2">
+            <KPICard
+              label="New Customers"
+              value={(data.customerStats?.newCustomers ?? 0).toLocaleString()}
+            />
+            <KPICard
+              label="Returning Customers"
+              value={(data.customerStats?.returningCustomers ?? 0).toLocaleString()}
+            />
+            <KPICard
+              label="Rev / Customer"
+              value={
+                data.customerStats?.totalUsers > 0
+                  ? fmtLong(Math.round(data.revenue / data.customerStats.totalUsers))
+                  : "₹0"
+              }
+            />
+            <KPICard
+              label="Est. LTV (4×)"
+              value={
+                data.customerStats?.totalUsers > 0
+                  ? fmtLong(Math.round((data.revenue / data.customerStats.totalUsers) * 4))
+                  : "₹0"
+              }
+            />
           </div>
         </div>
       </div>
 
+      {/* ── Advanced pills ── */}
       <div className="section">
-        <div className="section-title">Advanced Metrics ({periodLabel})</div>
+        <div className="section-title">Advanced Metrics — {periodLabel}</div>
         <div className="pill-row">
-          <div className="metric-pill">Revenue / Visitor <strong>₹70</strong></div>
-          <div className="metric-pill">CAC <strong>₹320</strong></div>
-          <div className="metric-pill">LTV <strong>{fmtLong(data.customerStats?.totalUsers > 0 ? Math.round(data.revenue / data.customerStats?.totalUsers * 4) : 0)}</strong></div>
           <div className="metric-pill">Gross Margin <strong>55%</strong></div>
           <div className="metric-pill">Net Margin <strong>35%</strong></div>
+          <div className="metric-pill">
+            Conversion Rate{" "}
+            <strong>{data.customerStats?.conversionRate ?? "0.0"}%</strong>
+          </div>
+          <div className="metric-pill">
+            Total Users <strong>{(data.customerStats?.totalUsers ?? 0).toLocaleString()}</strong>
+          </div>
+          <div className="metric-pill">
+            Net Revenue <strong>{fmtLong(netRevenue)}</strong>
+          </div>
+          <div className="metric-pill">
+            Est. Profit <strong>{fmtLong(netProfit)}</strong>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function KPICard({ label, value, badge, isBaseline, isAlert }: any) {
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function KPICard({ label, value, badge, badgeCls = "up", isBaseline, isAlert }: any) {
   return (
     <div className={`card kpi-card ${isAlert ? "alert-card" : ""}`}>
       <div className="kpi-label">{label}</div>
-      <div className={`kpi-value ${isAlert ? "loss" : ""}`}>{value}</div>
-      {badge && <div className="kpi-badge up">{badge}</div>}
-      {isBaseline && <div className="kpi-badge neutral">— baseline</div>}
+      <div className={`kpi-value ${isAlert ? "loss" : ""}`}>{value ?? "—"}</div>
+      {badge && (
+        <div className={`kpi-badge ${isBaseline ? "neutral" : badgeCls}`}>{badge}</div>
+      )}
+      {isBaseline && !badge && (
+        <div className="kpi-badge neutral">— baseline</div>
+      )}
     </div>
   );
 }
-// version-sync-1773420245
+
+function ColorLegend({ items }: { items: string[] }) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 12 }}>
+      {items.map((item, i) => (
+        <div key={item} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "var(--text-sub)" }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: PALETTE[i % PALETTE.length] }} />
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EmptyChart({ label = "No data for this period" }: { label?: string }) {
+  return (
+    <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-sub)", fontSize: 13 }}>
+      {label}
+    </div>
+  );
+}

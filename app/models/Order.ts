@@ -29,7 +29,7 @@ const OrderSchema = new Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["COD", "CARD", "UPI"],
+      enum: ["COD", "ONLINE", "CARD", "UPI"],
       default: "COD",
     },
 
@@ -38,6 +38,10 @@ const OrderSchema = new Schema(
       enum: ["pending", "paid", "failed"],
       default: "pending",
     },
+
+    razorpayOrderId: String,
+    razorpayPaymentId: String,
+    razorpaySignature: String,
 
     orderStatus: {
       type: String,

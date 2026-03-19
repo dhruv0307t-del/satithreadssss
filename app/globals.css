@@ -207,7 +207,6 @@ body {
 
 .nav-enter {
   animation: navFade 0.6s ease forwards;
-  animation-delay: 0.15s;
 }
 
 .navbar img {
@@ -224,10 +223,8 @@ body {
   position: relative;
   overflow: hidden;
   background: transparent;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
-  animation-delay: 0.3s;
+  /* Removed delays and initial hidden state for instant smooth entrance */
+  opacity: 1;
   padding-top: 0;
   z-index: 1 !important;
   /* FIXED: Ensure hero is below navbar */
@@ -6389,5 +6386,103 @@ select {
 
   .expand-btn {
     align-self: flex-end;
+  }
+}
+
+@keyframes searchSlideIn {
+  from { clip-path: circle(0% at 85% 50%); }
+  to { clip-path: circle(150% at 85% 50%); }
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #3b1f23;
+  background: transparent;
+  font-family: inherit;
+}
+
+.search-submit-btn, .search-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3b1f23;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.search-submit-btn:hover, .search-close-btn:hover {
+  opacity: 0.6;
+}
+
+.hide-for-search {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+  .search-bar-container {
+    padding: 0 16px;
+  }
+}
+
+/* ================= MOBILE FONT ADJUSTMENTS (EYE COMFORT) ================= */
+@media (max-width: 768px) {
+  /* Product Detail Page */
+  .product-title {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .current-price {
+    font-size: 24px !important;
+  }
+
+  .original-price {
+    font-size: 16px !important;
+  }
+
+  .product-description {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    color: #4a4a4a !important;
+    letter-spacing: 0.2px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .size-label, .size-guide, .quantity-label {
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-weight: 600 !important;
+  }
+
+  .size-option {
+    font-size: 14px !important;
+    padding: 10px 15px !important;
+  }
+
+  .btn {
+    font-size: 14px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* General Content */
+  p {
+    line-height: 1.6 !important;
   }
 }

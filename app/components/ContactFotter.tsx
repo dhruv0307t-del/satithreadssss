@@ -3,9 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSearch } from "../context/SearchContext";
+import { Instagram } from "lucide-react";
 
 export default function ContactFooter() {
   const router = useRouter();
+  const { openSearch } = useSearch();
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [policiesOpen, setPoliciesOpen] = useState(false);
 
@@ -15,7 +18,7 @@ export default function ContactFooter() {
     { title: "Skirts", slug: "skirts" },
     { title: "Cord Sets", slug: "cord-sets" },
     { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets" },
-    { title: "Tops", slug: "tops" },
+    { title: "Dress", slug: "dress" },
     { title: "Short Kurtis", slug: "short-kurtis" },
   ];
 
@@ -30,7 +33,8 @@ export default function ContactFooter() {
             width={180}
             height={60}
             className="footer-logo"
-            style={{ mixBlendMode: "multiply" }}
+            style={{ mixBlendMode: "multiply", cursor: "pointer" }}
+            onClick={() => router.push("/")}
           />
 
           <p className="brand-text">
@@ -39,8 +43,8 @@ export default function ContactFooter() {
 
           {/* Social */}
           <div className="social">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-              <span>📷</span>
+            <a href="https://www.instagram.com/satithreads?igsh=MXZrOHVoNWFndXdxMQ==" target="_blank" rel="noopener noreferrer">
+              <span><Instagram size={20} /></span>
             </a>
           </div>
 
@@ -108,7 +112,7 @@ export default function ContactFooter() {
             <span className={`dropdown-arrow ${policiesOpen ? "open" : ""}`}>▼</span>
           </h4>
           <ul className={`footer-list ${policiesOpen ? "expanded" : ""}`}>
-            <li onClick={() => router.push("/products")}>Search</li>
+            <li onClick={openSearch}>Search</li>
             <li onClick={() => router.push("/about")}>About Us</li>
             <li onClick={() => router.push("/privacy-policy")}>Privacy Policy</li>
             <li onClick={() => router.push("/terms-conditions")}>Terms and Conditions</li>

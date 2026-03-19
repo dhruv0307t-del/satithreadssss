@@ -12,7 +12,7 @@ export default async function MyOrdersPage() {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
-        redirect("/home");
+        redirect("/");
     }
 
     await connectDB();
@@ -27,7 +27,7 @@ export default async function MyOrdersPage() {
         .lean();
 
     if (!user) {
-        redirect("/home");
+        redirect("/");
     }
 
     // Fetch Orders

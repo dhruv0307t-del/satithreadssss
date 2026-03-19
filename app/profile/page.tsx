@@ -179,7 +179,7 @@ export default function ProfilePage() {
     const [pwdForm, setPwdForm] = useState({ current: "", next: "", confirm: "" });
 
     useEffect(() => {
-        if (status === "unauthenticated") router.push("/home");
+        if (status === "unauthenticated") router.push("/");
     }, [status, router]);
 
     useEffect(() => {

@@ -3,7 +3,6 @@ import { connectDB } from "@/app/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 import Order from "@/app/models/Order";
-import Product from "@/app/models/Product";
 import User from "@/app/models/User";
 
 export const dynamic = "force-dynamic";
@@ -11,20 +10,22 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || !session.user || (session.user as any).role !== "admin" && (session.user as any).role !== "master_admin") {
+    if (
+      !session?.user ||
+      ((session.user as any).role !== "admin" &&
+        (session.user as any).role !== "master_admin")
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const startParam = searchParams.get("startDate");
-    const endParam = searchParams.get("endDate");
-    const period = searchParams.get("period") || "month";
+    const period = searchParams.get("period") || "month"; // ✅ FIX 1: read period param
 
     const now = new Date();
-    // Use UTC boundaries to avoid local server timezone confusion if necessary, 
-    // but for now let's be extremely explicit about the range.
+
+    // ── Current period boundaries ──────────────────────────────────────────
     const startOfToday = new Date(now);
     startOfToday.setHours(0, 0, 0, 0);
     const endOfToday = new Date(now);
@@ -37,31 +38,34 @@ export async function GET(request: Request) {
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
     const startOfYear = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
 
+    // ── Comparison period boundaries ───────────────────────────────────────
+    const yesterdayStart = new Date(startOfToday);
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+    const yesterdayEnd = new Date(endOfToday);
+    yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
+
+    const prevWeekStart = new Date(startOfWeek);
+    prevWeekStart.setDate(prevWeekStart.getDate() - 7);
+    const prevWeekEnd = new Date(startOfWeek);
+    prevWeekEnd.setMilliseconds(-1);
+
     const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0, 0);
     const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
 
     const lastYearStart = new Date(now.getFullYear() - 1, 0, 1, 0, 0, 0, 0);
     const lastYearEnd = new Date(now.getFullYear() - 1, 11, 31, 23, 59, 59, 999);
 
-    // Filter Logic
+    // ── Pick correct filters ───────────────────────────────────────────────
     let dateFilter: any = {};
     let comparisonFilter: any = {};
 
     switch (period) {
       case "today":
         dateFilter = { createdAt: { $gte: startOfToday, $lte: endOfToday } };
-        const yesterdayStart = new Date(startOfToday);
-        yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-        const yesterdayEnd = new Date(endOfToday);
-        yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
         comparisonFilter = { createdAt: { $gte: yesterdayStart, $lte: yesterdayEnd } };
         break;
       case "week":
         dateFilter = { createdAt: { $gte: startOfWeek, $lte: endOfToday } };
-        const prevWeekStart = new Date(startOfWeek);
-        prevWeekStart.setDate(prevWeekStart.getDate() - 7);
-        const prevWeekEnd = new Date(startOfWeek);
-        prevWeekEnd.setMilliseconds(-1);
         comparisonFilter = { createdAt: { $gte: prevWeekStart, $lte: prevWeekEnd } };
         break;
       case "year":
@@ -75,87 +79,154 @@ export async function GET(request: Request) {
         break;
     }
 
-    // Basic aggregation for current period
-    const currentMetrics = await Order.aggregate([
-      { $match: dateFilter },
-      {
-        $group: {
-          _id: null,
-          revenue: { $sum: "$totalAmount" },
-          orders: { $count: {} },
-          refunded: {
-            $sum: { $cond: [{ $eq: ["$orderStatus", "cancelled"] }, "$totalAmount", 0] }
-          }
-        }
-      }
-    ]);
-
-    // Basic aggregation for comparison period
-    const comparisonMetrics = await Order.aggregate([
-      { $match: comparisonFilter },
-      {
-        $group: {
-          _id: null,
-          revenue: { $sum: "$totalAmount" },
-          orders: { $count: {} }
-        }
-      }
+    // ── Core metrics ──────────────────────────────────────────────────────
+    const [currentMetrics, comparisonMetrics] = await Promise.all([
+      Order.aggregate([
+        { $match: dateFilter },
+        {
+          $group: {
+            _id: null,
+            revenue: { $sum: "$totalAmount" },
+            orders: { $count: {} },
+            // ✅ FIX 2: only count genuinely refunded/cancelled orders
+            refunded: {
+              $sum: {
+                $cond: [
+                  { $in: ["$orderStatus", ["cancelled", "refunded"]] },
+                  "$totalAmount",
+                  0,
+                ],
+              },
+            },
+          },
+        },
+      ]),
+      Order.aggregate([
+        { $match: comparisonFilter },
+        {
+          $group: {
+            _id: null,
+            revenue: { $sum: "$totalAmount" },
+            orders: { $count: {} },
+          },
+        },
+      ]),
     ]);
 
     const curr = currentMetrics[0] || { revenue: 0, orders: 0, refunded: 0 };
     const prev = comparisonMetrics[0] || { revenue: 0, orders: 0 };
 
-    // Trends based on period
-    let trendGroup: any = {
-      year: { $year: "$createdAt" },
-      month: { $month: "$createdAt" }
-    };
-    if (period === "today") trendGroup = { hour: { $hour: "$createdAt" } };
-    if (period === "week") trendGroup = {
-      month: { $month: "$createdAt" },
-      day: { $dayOfMonth: "$createdAt" }
-    };
+    // ── Trends (grouped correctly per period) ─────────────────────────────
+    // ✅ FIX 3: week now groups by actual calendar date string, not day-of-month
+    let trendPipeline: any[] = [];
 
-    const trends = await Order.aggregate([
-      { $match: dateFilter },
-      {
-        $group: {
-          _id: trendGroup,
-          revenue: { $sum: "$totalAmount" }
-        }
-      },
-      // Sort by whatever keys are present in the group _id
-      { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1, "_id.hour": 1 } }
-    ]);
+    if (period === "today") {
+      trendPipeline = [
+        { $match: dateFilter },
+        { $group: { _id: { hour: { $hour: "$createdAt" } }, revenue: { $sum: "$totalAmount" } } },
+        { $sort: { "_id.hour": 1 } },
+        {
+          $project: {
+            label: { $toString: "$_id.hour" }, // "0" … "23"
+            revenue: 1,
+          },
+        },
+      ];
+    } else if (period === "week") {
+      trendPipeline = [
+        { $match: dateFilter },
+        {
+          $group: {
+            _id: {
+              year: { $year: "$createdAt" },
+              month: { $month: "$createdAt" },
+              day: { $dayOfMonth: "$createdAt" },
+              dow: { $dayOfWeek: "$createdAt" }, // 1=Sun … 7=Sat
+            },
+            revenue: { $sum: "$totalAmount" },
+          },
+        },
+        { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+        {
+          $project: {
+            // "Mon 10", "Tue 11" etc.
+            label: {
+              $concat: [
+                {
+                  $arrayElemAt: [
+                    ["", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                    "$_id.dow",
+                  ],
+                },
+                " ",
+                { $toString: "$_id.day" },
+              ],
+            },
+            revenue: 1,
+          },
+        },
+      ];
+    } else if (period === "month") {
+      const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      trendPipeline = [
+        { $match: dateFilter },
+        {
+          $group: {
+            _id: { day: { $dayOfMonth: "$createdAt" } },
+            revenue: { $sum: "$totalAmount" },
+          },
+        },
+        { $sort: { "_id.day": 1 } },
+        {
+          $project: {
+            label: { $toString: "$_id.day" }, // "1" … "31"
+            revenue: 1,
+          },
+        },
+      ];
+    } else {
+      // year → group by month
+      trendPipeline = [
+        { $match: dateFilter },
+        {
+          $group: {
+            _id: { month: { $month: "$createdAt" } },
+            revenue: { $sum: "$totalAmount" },
+          },
+        },
+        { $sort: { "_id.month": 1 } },
+        {
+          $project: {
+            label: {
+              $arrayElemAt: [
+                ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                { $subtract: ["$_id.month", 1] },
+              ],
+            },
+            revenue: 1,
+          },
+        },
+      ];
+    }
 
-    // Flatten trends for easier consumption
-    const flattenedTrends = trends.map(t => ({
-      label: period === "today" ? (t._id.hour !== undefined ? t._id.hour : t._id) :
-        period === "week" ? `Day ${t._id.day}` :
-          period === "month" || period === "year" ? (t._id.month !== undefined ? t._id.month : t._id) :
-            "Data",
-      revenue: t.revenue,
-      _id: t._id
-    }));
+    const trends = await Order.aggregate(trendPipeline);
 
-    // ... (rest of aggregations)
-    // Category, City, Payment (unchanged match logic)
-
-    // Top 5 Products
+    // ── Top Products ──────────────────────────────────────────────────────
     const topProducts = await Order.aggregate([
       { $match: dateFilter },
       { $unwind: "$items" },
       {
         $group: {
           _id: "$items.name",
-          revenue: { $sum: { $multiply: ["$items.price", "$items.quantity"] } }
-        }
+          revenue: { $sum: { $multiply: ["$items.price", "$items.quantity"] } },
+          unitsSold: { $sum: "$items.quantity" },
+        },
       },
       { $sort: { revenue: -1 } },
-      { $limit: 5 }
+      { $limit: 5 },
     ]);
 
-    // Category
+    // ── Category Revenue ──────────────────────────────────────────────────
     const categoryRevenue = await Order.aggregate([
       { $match: dateFilter },
       { $unwind: "$items" },
@@ -164,86 +235,94 @@ export async function GET(request: Request) {
           from: "products",
           localField: "items.product",
           foreignField: "_id",
-          as: "product"
-        }
+          as: "product",
+        },
       },
-      { $unwind: "$product" },
+      { $unwind: { path: "$product", preserveNullAndEmptyArrays: true } },
       {
         $group: {
-          _id: "$product.category",
-          revenue: { $sum: { $multiply: ["$items.price", "$items.quantity"] } }
-        }
-      }
+          _id: { $ifNull: ["$product.category", "Uncategorised"] },
+          revenue: { $sum: { $multiply: ["$items.price", "$items.quantity"] } },
+        },
+      },
+      { $sort: { revenue: -1 } },
     ]);
 
-    // City
+    // ── City Revenue ──────────────────────────────────────────────────────
     const cityRevenue = await Order.aggregate([
       { $match: dateFilter },
       {
         $group: {
-          _id: "$shippingAddress.city",
-          revenue: { $sum: "$totalAmount" }
-        }
+          _id: { $ifNull: ["$shippingAddress.city", "Unknown"] },
+          revenue: { $sum: "$totalAmount" },
+        },
       },
       { $sort: { revenue: -1 } },
-      { $limit: 8 }
+      { $limit: 8 },
     ]);
 
-    // Payment
+    // ── Payment Methods ───────────────────────────────────────────────────
     const paymentMethods = await Order.aggregate([
       { $match: dateFilter },
       {
         $group: {
-          _id: "$paymentMethod",
-          revenue: { $sum: "$totalAmount" }
-        }
-      }
+          _id: { $ifNull: ["$paymentMethod", "Unknown"] },
+          revenue: { $sum: "$totalAmount" },
+          count: { $count: {} },
+        },
+      },
+      { $sort: { revenue: -1 } },
     ]);
 
-    // Global stats (for specific cards like Total Revenue that should maybe stay global? 
-    // Actually user said "when I click today I should get today's data", so let's make it scoped)
+    // ── Customer Stats ────────────────────────────────────────────────────
+    // ✅ FIX 4: new customers = users created within the period
+    const [newCustomersCount, totalUsers, absoluteTotal] = await Promise.all([
+      User.countDocuments({ createdAt: dateFilter.createdAt }),
+      User.countDocuments(),
+      Order.aggregate([
+        { $group: { _id: null, rev: { $sum: "$totalAmount" }, count: { $count: {} } } },
+      ]),
+    ]);
 
-    // We also need some absolute totals for context
-    const absoluteTotal = await Order.aggregate([{ $group: { _id: null, rev: { $sum: "$totalAmount" }, count: { $count: {} } } }]);
     const abs = absoluteTotal[0] || { rev: 0, count: 0 };
+    const returningCustomers = Math.max(0, curr.orders - newCustomersCount);
 
-    const totalUsers = await User.countDocuments();
+    // ✅ FIX 5: sensible conversion rate = (period orders / total users) * 100, capped at 100
+    const conversionRate =
+      totalUsers > 0
+        ? Math.min(100, ((curr.orders / totalUsers) * 100)).toFixed(1)
+        : "0.0";
 
-    return NextResponse.json({
-      period,
-      debug: {
-        now: now.toISOString(),
-        start: startOfToday.toISOString(),
-        end: endOfToday.toISOString(),
-        serverTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    return NextResponse.json(
+      {
+        period,
+        revenue: curr.revenue,
+        orders: curr.orders,
+        refunded: curr.refunded,
+        prevRevenue: prev.revenue,
+        prevOrders: prev.orders,
+        totalRevenue: abs.rev,
+        totalOrders: abs.count,
+        trends,
+        topProducts,
+        categoryRevenue,
+        cityRevenue,
+        paymentMethods,
+        customerStats: {
+          totalUsers,
+          newCustomers: newCustomersCount,
+          returningCustomers: returningCustomers,
+          conversionRate,
+        },
       },
-      revenue: curr.revenue,
-      orders: curr.orders,
-      refunded: curr.refunded,
-      prevRevenue: prev.revenue,
-      prevOrders: prev.orders,
-      totalRevenue: abs.rev,
-      totalOrders: abs.count,
-      trends: flattenedTrends,
-      topProducts,
-      categoryRevenue,
-      cityRevenue,
-      paymentMethods,
-      customerStats: {
-        totalUsers,
-        conversionRate: totalUsers > 0 ? ((curr.orders / totalUsers) * 10).toFixed(1) : 0
-      },
-      // Keep old fields for backward compatibility
-      revenueToday: period === "today" ? curr.revenue : 0,
-      revenueMonth: period === "month" ? curr.revenue : 0,
-      revenueLastMonth: prev.revenue,
-    }, {
-      headers: {
-        'Cache-Control': 'no-store, max-age=0',
-        'Pragma': 'no-cache',
-        'Expires': '0',
+      {
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
       }
-    });
+    );
   } catch (error: any) {
     console.error("Revenue API Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

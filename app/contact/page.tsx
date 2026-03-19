@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSearch } from "../context/SearchContext";
+import { useCart } from "../context/CartContext";
 import Image from "next/image";
 
 export default function ContactPage() {
@@ -20,6 +22,8 @@ export default function ContactPage() {
     } | null>(null);
 
     const router = useRouter();
+    const { openSearch } = useSearch();
+    const { openCart } = useCart();
 
     useEffect(() => {
         setIsLoaded(true);
@@ -82,21 +86,20 @@ export default function ContactPage() {
         <>
             {/* Navigation */}
             <nav className={`contact-nav ${isLoaded ? "nav-visible" : "nav-hidden"}`}>
-                <div className="nav-left" onClick={() => router.push("/home")}>
+                <div className="nav-left" onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
                     <Image
                         src="/logo1.png"
                         alt="सतीDREAOS"
                         width={120}
                         height={40}
-                        style={{ cursor: "pointer" }}
                     />
                 </div>
 
                 <ul className="contact-nav-links">
-                    <li onClick={() => router.push("/home")}>Home</li>
+                    <li onClick={() => router.push("/")}>Home</li>
                     <li onClick={() => router.push("/about")}>About</li>
                     <li onClick={() => router.push("/products")}>Shop</li>
-                    <li onClick={() => router.push("/products")} className="search-link">
+                    <li onClick={openSearch} className="search-link">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>
@@ -797,11 +800,13 @@ export default function ContactPage() {
                     }
 
                     .contact-nav-links {
-                        gap: 1.2rem;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                        width: 100%;
-                        order: 3;
+                        display: none !important;
+                    }
+
+                    .contact-nav {
+                        padding: 1.2rem 1rem !important;
+                        justify-content: center !important;
+                        min-height: 70px !important;
                     }
 
                     .contact-nav-links li {
@@ -809,7 +814,7 @@ export default function ContactPage() {
                     }
 
                     .contact-hero {
-                        margin-top: 140px;
+                        margin-top: 100px;
                         padding: 2rem 1.5rem;
                     }
 
@@ -942,16 +947,14 @@ export default function ContactPage() {
                     }
 
                     .nav-left img {
-                        width: 100px !important;
-                        height: 33px !important;
+                        width: 140px !important;
+                        height: auto !important;
+                        max-height: 45px !important;
+                        object-fit: contain !important;
                     }
 
                     .contact-nav-links {
-                        gap: 1rem;
-                    }
-
-                    .contact-nav-links li {
-                        font-size: 0.85rem;
+                        display: none !important;
                     }
 
                     .contact-hero {
@@ -1050,8 +1053,8 @@ export default function ContactPage() {
                         font-size: 0.95rem;
                     }
 
-                    .contact-nav-links li {
-                        font-size: 0.8rem;
+                    .contact-nav-links {
+                        display: none !important;
                     }
 
                     .info-card h2 {

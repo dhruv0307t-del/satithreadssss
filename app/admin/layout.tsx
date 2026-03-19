@@ -55,7 +55,7 @@ export default function AdminLayout({
 
           <div className="space-y-3">
             <button
-              onClick={() => window.location.href = "/home"}
+              onClick={() => window.location.href = "/"}
               className="w-full bg-[#3A6B50] text-white py-3.5 rounded-2xl font-bold shadow-lg hover:bg-[#2d523d] transition-all"
             >
               Back to Home

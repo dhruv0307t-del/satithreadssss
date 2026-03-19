@@ -27,7 +27,7 @@ export default async function CategoryPage({
     "skirts": "/category-headers/skirts.png",
     "cord-sets": "/category-headers/coord.png",
     "farshi-salwar-sets": "/category-headers/Farsi.png",
-    "tops": "/category-headers/Kurta-Sets.png",
+    "dress": "/category-headers/Kurta-Sets.png",
     "short-kurtis": "/category-headers/Short Kurtis.png",
   };
 

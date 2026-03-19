@@ -211,7 +211,7 @@ const SUB_CATS: Record<string, string[]> = {
   suits: ['3-Piece Suit', '2-Piece Set', 'Palazzo Set', 'Sharara Set', 'Pant Suit'],
   sarees: ['Cotton Sarees', 'Silk Sarees', 'Banarasi', 'Georgette', 'Chiffon'],
   lehengas: ['Bridal Lehenga', 'Party Wear', 'Chaniya Choli', 'Mini Lehenga'],
-  tops: ['Crop Tops', 'Peplum Tops', 'Tunic Tops', 'Blouses'],
+  dress: ['Crop Tops', 'Peplum Tops', 'Tunic Tops', 'Blouses'],
 };
 
 interface DbCategory {

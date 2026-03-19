@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSearch } from "../context/SearchContext";
 import Image from "next/image";
 
 export default function AboutPage() {
     const [isLoaded, setIsLoaded] = useState(false);
     const router = useRouter();
+    const { openSearch } = useSearch();
 
     useEffect(() => {
         setIsLoaded(true);
@@ -16,21 +18,20 @@ export default function AboutPage() {
         <>
             {/* Navigation */}
             <nav className={`about-nav ${isLoaded ? "nav-visible" : "nav-hidden"}`}>
-                <div className="nav-left" onClick={() => router.push("/home")}>
+                <div className="nav-left" onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
                     <Image
                         src="/logo1.png"
                         alt="सतीDREAOS"
                         width={120}
                         height={40}
-                        style={{ cursor: "pointer" }}
                     />
                 </div>
 
                 <ul className="about-nav-links">
-                    <li onClick={() => router.push("/home")}>Home</li>
+                    <li onClick={() => router.push("/")}>Home</li>
                     <li onClick={() => router.push("/products")}>Shop</li>
                     <li onClick={() => router.push("/contact")}>Contact</li>
-                    <li onClick={() => router.push("/products")} className="search-link">
+                    <li onClick={openSearch} className="search-link">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { User, ChevronDown, Package, LogOut, Heart, UserCircle } from "lucide-react";
+import { User, ChevronDown, Package, LogOut, Heart, UserCircle, Phone } from "lucide-react";
 import Link from "next/link";
 
 const DROPDOWN_CSS = `
@@ -165,18 +165,11 @@ const DROPDOWN_CSS = `
 .ad-menu-item.logout .ad-item-arrow { color: #E8A09A; }
 .ad-menu-item.logout:hover .ad-item-arrow { color: #C0392B; transform: translateX(2px); }
 
-/* ── Responsive Mobile Sheet Behavior ── */
+/* Removed mobile sheet behavior to maintain desktop dropdown look on all screens */
 @media (max-width: 480px) {
   .account-dropdown {
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    border-radius: 20px 20px 0 0;
-    transform: translateY(0);
-    z-index: 5000;
+    right: -20px;
+    width: 250px;
   }
 }
 `;
@@ -233,6 +226,18 @@ export default function UserMenu() {
       href: '/wishlist',
       icon: <Heart size={15} className="text-[#3A6B50]" />
     },
+    {
+      label: 'Help & Support',
+      desc: 'FAQs and guidance',
+      href: '/about', // Or a help page
+      icon: <User size={15} className="text-[#3A6B50]" />
+    },
+    {
+      label: 'Contact Us',
+      desc: 'Talk to our team',
+      href: '/contact',
+      icon: <Phone size={15} className="text-[#3A6B50]" />
+    },
   ];
 
   return (
@@ -248,7 +253,7 @@ export default function UserMenu() {
         <User size={20} />
         <ChevronDown
           size={14}
-          className={`transition-transform hidden sm:block ${isOpen ? "rotate-180" : ""}`}
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -291,7 +296,7 @@ export default function UserMenu() {
           <div className="ad-menu" style={{ paddingBottom: '8px' }}>
             <button
               onClick={() => {
-                signOut({ callbackUrl: "/home" });
+                signOut({ callbackUrl: "/" });
                 setIsOpen(false);
               }}
               className="ad-menu-item logout"

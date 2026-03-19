@@ -216,7 +216,7 @@ export default function MyOrdersClient({ orders, wishlist, likedProducts }: any)
                             <div className="empty-state-icon">📦</div>
                             <h3 className="empty-state-title">No orders yet</h3>
                             <p className="empty-state-text">Start shopping to see your orders here.</p>
-                            <Link href="/home" className="shop-now-btn">Shop Now</Link>
+                            <Link href="/" className="shop-now-btn">Shop Now</Link>
                         </div>
                     )}
                 </div>
@@ -254,7 +254,7 @@ export default function MyOrdersClient({ orders, wishlist, likedProducts }: any)
                                 <div className="empty-state-icon">👁️</div>
                                 <h3 className="empty-state-title">Your wishlist is empty</h3>
                                 <p className="empty-state-text">Start adding items you love!</p>
-                                <Link href="/home" className="shop-now-btn">Shop Now</Link>
+                                <Link href="/" className="shop-now-btn">Shop Now</Link>
                             </div>
                         )}
                     </div>
@@ -293,7 +293,7 @@ export default function MyOrdersClient({ orders, wishlist, likedProducts }: any)
                                 <div className="empty-state-icon">❤️</div>
                                 <h3 className="empty-state-title">No liked products</h3>
                                 <p className="empty-state-text">Heart items to save them here!</p>
-                                <Link href="/home" className="shop-now-btn">Shop Now</Link>
+                                <Link href="/" className="shop-now-btn">Shop Now</Link>
                             </div>
                         )}
                     </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useAuthModal } from "@/app/context/AuthModalContext";
-import { X } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 
 export default function LoginModal() {
     const { isOpen, callbackUrl, closeModal } = useAuthModal();
@@ -14,6 +14,8 @@ export default function LoginModal() {
     const [name, setName] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
@@ -72,7 +74,7 @@ export default function LoginModal() {
                 email,
                 password,
                 redirect: false,
-                callbackUrl: callbackUrl || "/home",
+                callbackUrl: callbackUrl || "/",
             });
 
             if (result?.error) {
@@ -109,7 +111,7 @@ export default function LoginModal() {
                 email,
                 password,
                 redirect: false,
-                callbackUrl: callbackUrl || "/home",
+                callbackUrl: callbackUrl || "/",
             });
 
             if (result?.error) {
@@ -150,6 +152,8 @@ export default function LoginModal() {
         setName("");
         setError("");
         setMode("login");
+        setShowPassword(false);
+        setShowConfirmPassword(false);
     };
 
     const toggleMode = () => {
@@ -289,38 +293,15 @@ export default function LoginModal() {
                     />
 
                     {/* Password Input */}
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{
-                            width: "100%",
-                            padding: "14px 16px",
-                            marginBottom: "16px",
-                            border: "1px solid #D1D5DB",
-                            borderRadius: "8px",
-                            fontSize: "15px",
-                            backgroundColor: "#FFFFFF",
-                            color: "#1F2937",
-                            outline: "none",
-                            transition: "border-color 0.2s",
-                        }}
-                        onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
-                        onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
-                    />
-
-                    {/* Confirm Password (Signup only) */}
-                    {mode === "signup" && (
+                    <div style={{ position: "relative", marginBottom: "16px" }}>
                         <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             style={{
                                 width: "100%",
-                                padding: "14px 16px",
-                                marginBottom: "16px",
+                                padding: "14px 44px 14px 16px", // Added space for eye icon
                                 border: "1px solid #D1D5DB",
                                 borderRadius: "8px",
                                 fontSize: "15px",
@@ -332,6 +313,75 @@ export default function LoginModal() {
                             onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
                             onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{
+                                position: "absolute",
+                                right: "14px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                color: "#9CA3AF",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "4px",
+                                transition: "color 0.2s",
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.color = "#4B5563")}
+                            onMouseLeave={(e) => (e.currentTarget.style.color = "#9CA3AF")}
+                        >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                    </div>
+
+                    {/* Confirm Password (Signup only) */}
+                    {mode === "signup" && (
+                        <div style={{ position: "relative", marginBottom: "16px" }}>
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="Confirm Password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                style={{
+                                    width: "100%",
+                                    padding: "14px 44px 14px 16px", // Added space for eye icon
+                                    border: "1px solid #D1D5DB",
+                                    borderRadius: "8px",
+                                    fontSize: "15px",
+                                    backgroundColor: "#FFFFFF",
+                                    color: "#1F2937",
+                                    outline: "none",
+                                    transition: "border-color 0.2s",
+                                }}
+                                onFocus={(e) => (e.currentTarget.style.borderColor = "#2C3E50")}
+                                onBlur={(e) => (e.currentTarget.style.borderColor = "#D1D5DB")}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                style={{
+                                    position: "absolute",
+                                    right: "14px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    background: "none",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    color: "#9CA3AF",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    padding: "4px",
+                                    transition: "color 0.2s",
+                                }}
+                                onMouseEnter={(e) => (e.currentTarget.style.color = "#4B5563")}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = "#9CA3AF")}
+                            >
+                                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
                     )}
 
                     {/* Privacy Policy Text */}

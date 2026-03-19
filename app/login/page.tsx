@@ -7,7 +7,7 @@ import { Suspense } from "react";
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/home";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   return (
     <div className="p-10">
