@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCart } from "./context/CartContext";
 import { useSearch } from "./context/SearchContext";
@@ -80,6 +80,14 @@ const CloseIcon = () => (
 );
 
 export default function HomePage() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openSearch } = useSearch();
@@ -92,11 +100,11 @@ export default function HomePage() {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (searchParams.get("search") === "open") {
+    if (searchParams?.get("search") === "open") {
       openSearch();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [searchParams]);
+  }, [searchParams, openSearch]);
 
   // Dynamic Categories data
   const [categories, setCategories] = useState<{ title: string; slug: string; img: string }[]>([]);
