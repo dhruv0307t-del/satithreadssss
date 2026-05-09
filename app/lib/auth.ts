@@ -16,6 +16,7 @@ export const authOptions: NextAuthOptions = {
             credentials: {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
+                secretKey: { label: "Secret Key", type: "password" },
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -31,6 +32,14 @@ export const authOptions: NextAuthOptions = {
 
                 if (!user || !user.password) {
                     throw new Error("Invalid email or password");
+                }
+
+                // Check secret key for admin roles
+                if (user.role === "admin" || user.role === "master_admin") {
+                    const systemSecret = process.env.SETUP_ADMIN_SECRET;
+                    if (!credentials.secretKey || credentials.secretKey !== systemSecret) {
+                        throw new Error("Invalid admin setup secret key");
+                    }
                 }
 
                 // Verify password

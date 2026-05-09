@@ -8,6 +8,7 @@ import { useAuthModal } from "@/app/context/AuthModalContext";
 import { useRouter } from "next/navigation";
 import { X, Truck, Zap } from "lucide-react";
 import { calculateShippingFee, SHIPPING_REGIONS } from "@/app/lib/shipping";
+import OrderSuccessModal, { OrderSuccessData } from "@/app/components/OrderSuccessModal";
 
 const INDIAN_STATES = [
     "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -28,6 +29,8 @@ export default function CheckoutModal() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [successOrder, setSuccessOrder] = useState<OrderSuccessData | null>(null);
+    const [showSuccess, setShowSuccess] = useState(false);
     const [address, setAddress] = useState({
         name: "",
         phone: "",
@@ -223,7 +226,14 @@ export default function CheckoutModal() {
                                 clearCart();
                                 closeModal();
                                 resetForm();
-                                router.push(`/orders/${data.orderId}`);
+                                setSuccessOrder({
+                                    orderId: data.orderId,
+                                    total: grandTotal,
+                                    status: "placed",
+                                    items: cart.length,
+                                    estimatedDelivery: isExpress ? "2–3 business days" : "3–5 business days",
+                                });
+                                setShowSuccess(true);
                             } else {
                                 setError("Payment verification failed. Please contact support.");
                             }
@@ -245,7 +255,14 @@ export default function CheckoutModal() {
                     clearCart();
                     closeModal();
                     resetForm();
-                    router.push(`/orders/${data.orderId}`);
+                    setSuccessOrder({
+                        orderId: data.orderId,
+                        total: grandTotal,
+                        status: "placed",
+                        items: cart.length,
+                        estimatedDelivery: isExpress ? "2–3 business days" : "3–5 business days",
+                    });
+                    setShowSuccess(true);
                 }
             } else {
                 setError(data.message || "Order failed");
@@ -286,9 +303,16 @@ export default function CheckoutModal() {
         }
     };
 
-    if (!isOpen) return null;
+    if (!isOpen && !showSuccess) return null;
 
     return (
+        <>
+        <OrderSuccessModal
+            isOpen={showSuccess}
+            onClose={() => setShowSuccess(false)}
+            order={successOrder}
+        />
+        {!isOpen ? null : (
         <div
             onClick={handleBackdropClick}
             className="checkout-modal-overlay"
@@ -564,5 +588,7 @@ export default function CheckoutModal() {
                 </form>
             </div>
         </div>
+        )}
+        </>
     );
 }

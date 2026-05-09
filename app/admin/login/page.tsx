@@ -9,7 +9,9 @@ export default function AdminLogin() {
     const { data: session, status } = useSession();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [secretKey, setSecretKey] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [showSecret, setShowSecret] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
@@ -33,6 +35,7 @@ export default function AdminLogin() {
             redirect: false,
             email,
             password,
+            secretKey,
         });
 
         if (result?.error) {
@@ -365,6 +368,34 @@ export default function AdminLogin() {
                                         aria-label="Toggle password visibility"
                                     >
                                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Secret Key */}
+                            <div className="al-form-group">
+                                <label htmlFor="al-secret" className="al-label">Setup Secret Key</label>
+                                <div className="al-input-wrap">
+                                    <span className="al-input-icon">
+                                        <ShieldCheck size={16} />
+                                    </span>
+                                    <input
+                                        id="al-secret"
+                                        type={showSecret ? "text" : "password"}
+                                        value={secretKey}
+                                        onChange={(e) => setSecretKey(e.target.value)}
+                                        className="al-input"
+                                        placeholder="Enter setup secret"
+                                        autoComplete="off"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        className="al-toggle"
+                                        onClick={() => setShowSecret(!showSecret)}
+                                        aria-label="Toggle secret visibility"
+                                    >
+                                        {showSecret ? <EyeOff size={18} /> : <Eye size={18} />}
                                     </button>
                                 </div>
                             </div>
