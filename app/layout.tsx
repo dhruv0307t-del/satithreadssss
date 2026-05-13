@@ -1,3 +1,4 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import "./festive.css";
 import CartDrawer from "./components/CartDrawer";
@@ -42,6 +43,7 @@ export default function RootLayout({
             </CouponModalProvider>
           </AuthModalProvider>
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
