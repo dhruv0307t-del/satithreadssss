@@ -113,20 +113,27 @@ function HomeContent() {
     setIsLoaded(true);
     fetch('/api/categories').then(r => r.json()).then(d => {
       if (d.success && d.categories.length > 0) {
-        setCategories(d.categories.map((c: any) => ({
-          title: c.title,
-          slug: c.slug,
-          img: c.thumbnail || '/Dupaata Set.jpg', // Fallback image
-        })));
+        const filtered = d.categories.filter((c: any) => c.slug !== 'skirts');
+        setCategories(filtered.map((c: any) => {
+          let thumbnail = c.thumbnail;
+          if (c.slug === 'dupatta-sets') thumbnail = '/Duppatta Set.png';
+          if (c.slug === 'cord-sets') thumbnail = '/cord-set.png';
+          if (c.slug === 'dress') thumbnail = '/Dress.png';
+          if (c.slug === 'farshi-salwar-sets') thumbnail = '/pharsi salwar suit.png';
+          return {
+            title: c.title,
+            slug: c.slug,
+            img: thumbnail || '/Dupaata Set.jpg', // Fallback image
+          };
+        }));
       } else {
         // Fallback hardcoded if DB is empty
         setCategories([
           { title: "Kurta Sets", slug: "kurta-sets", img: "/Kurtasets.jpg" },
-          { title: "Dupatta Sets", slug: "dupatta-sets", img: "/Dupaata Set.jpg" },
-          { title: "Skirts", slug: "skirts", img: "/Skirts.jpg" },
-          { title: "Cord Sets", slug: "cord-sets", img: "/Coordsets.jpg" },
-          { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets", img: "/Farshi Salwar Suit.jpg" },
-          { title: "Dress", slug: "dress", img: "/Dress.jpg" },
+          { title: "Dupatta Sets", slug: "dupatta-sets", img: "/Duppatta Set.png" },
+          { title: "Cord Sets", slug: "cord-sets", img: "/cord-set.png" },
+          { title: "Farshi Salwar Sets", slug: "farshi-salwar-sets", img: "/pharsi salwar suit.png" },
+          { title: "Dress", slug: "dress", img: "/Dress.png" },
           { title: "Short Kurtis", slug: "short-kurtis", img: "/Short Kuti.jpg" },
         ]);
       }
@@ -151,7 +158,7 @@ function HomeContent() {
     }
   };
 
-  // Auto-scroll for mobile (Circular Rotation)
+  // Auto-scroll for mobile
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -159,16 +166,9 @@ function HomeContent() {
       if (window.innerWidth <= 768 && carouselRef.current && categories.length > 0) {
         const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
 
-        // Circular logic: if we're past the midpoint (end of first set), jump back to start instantly
-        // Then proceed to scroll smoothly
-        if (scrollLeft >= (scrollWidth / 2)) {
-          carouselRef.current.scrollTo({ left: 0, behavior: 'auto' });
-          // Give it a tiny moment to reset before the next smooth scroll
-          setTimeout(() => {
-            if (carouselRef.current) {
-              carouselRef.current.scrollBy({ left: 280, behavior: 'smooth' }); // One card width approx
-            }
-          }, 50);
+        // Reset to start if we reached the end
+        if (scrollLeft + clientWidth >= scrollWidth - 5) {
+          carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
           carouselRef.current.scrollBy({ left: 280, behavior: 'smooth' });
         }
@@ -300,7 +300,7 @@ function HomeContent() {
                 className="categories-grid"
                 ref={carouselRef}
               >
-                {[...categories, ...categories].map((cat, idx) => (
+                {categories.map((cat, idx) => (
                   <div
                     key={`${cat.slug}-${idx}`}
                     className="category-card-new"
