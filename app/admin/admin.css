@@ -265,7 +265,7 @@
 
 /* Section blocks */
 .admin-section,
-.admin-main .bg-[#ffe4e1] {
+.admin-main .bg-\[\#ffe4e1\] {
   margin-bottom: 48px;
 }
 
@@ -336,7 +336,7 @@
 
 /* Section cards – ONE consistent look */
 .admin-section,
-.admin-main .bg-[#ffe4e1] {
+.admin-main .bg-\[\#ffe4e1\] {
   background-color: #ffe4e1;
   border-radius: 18px;
   padding: 40px;
