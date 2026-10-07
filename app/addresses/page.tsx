@@ -112,24 +112,24 @@ export default function AddressesPage() {
 
     if (status === "loading" || loading) {
         return (
-            <div className="min-h-screen bg-[#F2EFE0] flex items-center justify-center">
+            <div className="min-h-screen bg-[#ffe4e1] flex items-center justify-center">
                 <Loader2 className="animate-spin text-[#3A6B50]" size={40} />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#F2EFE0] py-12 px-4 sm:px-6 lg:px-8 font-['DM_Sans']">
+        <div className="min-h-screen bg-[#ffe4e1] py-12 px-4 sm:px-6 lg:px-8 font-['DM_Sans']">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-10">
                     <div>
-                        <h1 className="text-4xl font-bold text-[#1A1A14] tracking-tight">Saved Addresses</h1>
-                        <p className="text-[#6B7060] mt-2">Manage your delivery locations for faster checkout</p>
+                        <h1 className="text-4xl font-bold text-[#bf7e81] tracking-tight">Saved Addresses</h1>
+                        <p className="text-[#bf7e81] mt-2">Manage your delivery locations for faster checkout</p>
                     </div>
                     <button
                         onClick={() => setShowAddForm(true)}
-                        className="bg-[#3A6B50] text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-[#2d523d] transition-all shadow-lg hover:translate-y-[-2px]"
+                        className="bg-[#3A6B50] text-[#ffe4e1] px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-[#2d523d] transition-all shadow-lg hover:translate-y-[-2px]"
                     >
                         <Plus size={18} /> Add New Address
                     </button>
@@ -138,12 +138,12 @@ export default function AddressesPage() {
                 {/* Address List */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {addresses.length === 0 ? (
-                        <div className="col-span-full bg-white rounded-3xl p-12 text-center border border-dashed border-[#C0C4B8]">
-                            <div className="w-16 h-16 bg-[#F2EFE0] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="col-span-full bg-[#ffe4e1] rounded-3xl p-12 text-center border border-dashed border-[#C0C4B8]">
+                            <div className="w-16 h-16 bg-[#ffe4e1] rounded-full flex items-center justify-center mx-auto mb-4">
                                 <MapPin size={24} className="text-[#3A6B50]" />
                             </div>
-                            <h3 className="text-xl font-bold text-[#1A1A14]">No saved addresses yet</h3>
-                            <p className="text-[#6B7060] mt-2">Add your first address to make checkout easier.</p>
+                            <h3 className="text-xl font-bold text-[#bf7e81]">No saved addresses yet</h3>
+                            <p className="text-[#bf7e81] mt-2">Add your first address to make checkout easier.</p>
                             <button
                                 onClick={() => setShowAddForm(true)}
                                 className="mt-6 text-[#3A6B50] font-bold underline"
@@ -155,26 +155,26 @@ export default function AddressesPage() {
                         addresses.map((addr: any) => (
                             <div
                                 key={addr._id}
-                                className={`bg-white rounded-3xl p-6 border-2 transition-all shadow-sm ${addr.isDefault ? "border-[#3A6B50]" : "border-transparent"}`}
+                                className={`bg-[#ffe4e1] rounded-3xl p-6 border-2 transition-all shadow-sm ${addr.isDefault ? "border-[#3A6B50]" : "border-transparent"}`}
                             >
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="flex items-center gap-2">
-                                        <div className={`p-2 rounded-xl ${addr.isDefault ? "bg-[#3A6B50] text-white" : "bg-[#F2EFE0] text-[#3A6B50]"}`}>
+                                        <div className={`p-2 rounded-xl ${addr.isDefault ? "bg-[#3A6B50] text-[#ffe4e1]" : "bg-[#ffe4e1] text-[#3A6B50]"}`}>
                                             <Home size={18} />
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-[#1A1A14]">{addr.name}</h4>
-                                            <p className="text-xs text-[#6B7060]">{addr.phone}</p>
+                                            <h4 className="font-bold text-[#bf7e81]">{addr.name}</h4>
+                                            <p className="text-xs text-[#bf7e81]">{addr.phone}</p>
                                         </div>
                                     </div>
                                     <button
                                         onClick={() => handleDeleteAddress(addr._id)}
-                                        className="text-[#D47A72] hover:text-[#C0392B] p-2 hover:bg-[#FDECEA] rounded-full transition-all"
+                                        className="text-[#D47A72] hover:text-[#C0392B] p-2 hover:bg-[#ffe4e1] rounded-full transition-all"
                                     >
                                         <Trash2 size={18} />
                                     </button>
                                 </div>
-                                <p className="text-[#1A1A14] text-sm leading-relaxed mb-4">
+                                <p className="text-[#bf7e81] text-sm leading-relaxed mb-4">
                                     {addr.address}<br />
                                     {addr.city}, {addr.state} - {addr.pincode}
                                 </p>
@@ -191,73 +191,73 @@ export default function AddressesPage() {
                 {/* Add Address Modal */}
                 {showAddForm && (
                     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowAddForm(false)}></div>
-                        <div className="relative bg-[#F2EFE0] rounded-[32px] w-full max-w-xl p-8 shadow-2xl animate-in fade-in zoom-in duration-300">
+                        <div className="absolute inset-0 bg-[#bf7e81]/40 backdrop-blur-sm" onClick={() => setShowAddForm(false)}></div>
+                        <div className="relative bg-[#ffe4e1] rounded-[32px] w-full max-w-xl p-8 shadow-2xl animate-in fade-in zoom-in duration-300">
                             <button
                                 onClick={() => setShowAddForm(false)}
-                                className="absolute top-6 right-6 p-2 hover:bg-white/50 rounded-full transition-all"
+                                className="absolute top-6 right-6 p-2 hover:bg-[#ffe4e1]/50 rounded-full transition-all"
                             >
                                 <X size={24} />
                             </button>
 
-                            <h2 className="text-2xl font-bold text-[#1A1A14] mb-6">Add New Address</h2>
+                            <h2 className="text-2xl font-bold text-[#bf7e81] mb-6">Add New Address</h2>
 
                             <form onSubmit={handleAddAddress} className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-bold text-[#7A8070] uppercase ml-1">Full Name</label>
+                                        <label className="text-xs font-bold text-[#bf7e81] uppercase ml-1">Full Name</label>
                                         <input
                                             type="text"
                                             required
                                             value={newAddress.name}
                                             onChange={(e) => setNewAddress({ ...newAddress, name: e.target.value })}
-                                            className="w-full bg-white border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
+                                            className="w-full bg-[#ffe4e1] border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
                                             placeholder="John Doe"
                                         />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-bold text-[#7A8070] uppercase ml-1">Phone Number</label>
+                                        <label className="text-xs font-bold text-[#bf7e81] uppercase ml-1">Phone Number</label>
                                         <input
                                             type="tel"
                                             required
                                             value={newAddress.phone}
                                             onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })}
-                                            className="w-full bg-white border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
+                                            className="w-full bg-[#ffe4e1] border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
                                             placeholder="+91 00000 00000"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-[#7A8070] uppercase ml-1">Street Address</label>
+                                    <label className="text-xs font-bold text-[#bf7e81] uppercase ml-1">Street Address</label>
                                     <textarea
                                         required
                                         value={newAddress.address}
                                         onChange={(e) => setNewAddress({ ...newAddress, address: e.target.value })}
-                                        className="w-full bg-white border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all min-h-[100px]"
+                                        className="w-full bg-[#ffe4e1] border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all min-h-[100px]"
                                         placeholder="Flat, House no., Building, Company, Apartment"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-bold text-[#7A8070] uppercase ml-1">City</label>
+                                        <label className="text-xs font-bold text-[#bf7e81] uppercase ml-1">City</label>
                                         <input
                                             type="text"
                                             required
                                             value={newAddress.city}
                                             onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-                                            className="w-full bg-white border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
+                                            className="w-full bg-[#ffe4e1] border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
                                             placeholder="Mumbai"
                                         />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-bold text-[#7A8070] uppercase ml-1">State</label>
+                                        <label className="text-xs font-bold text-[#bf7e81] uppercase ml-1">State</label>
                                         <select
                                             required
                                             value={newAddress.state}
                                             onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
-                                            className="w-full bg-white border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all appearance-none"
+                                            className="w-full bg-[#ffe4e1] border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all appearance-none"
                                         >
                                             <option value="">Select State</option>
                                             {INDIAN_STATES.map((s) => (
@@ -269,13 +269,13 @@ export default function AddressesPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-bold text-[#7A8070] uppercase ml-1">Pincode</label>
+                                        <label className="text-xs font-bold text-[#bf7e81] uppercase ml-1">Pincode</label>
                                         <input
                                             type="text"
                                             required
                                             value={newAddress.pincode}
                                             onChange={(e) => setNewAddress({ ...newAddress, pincode: e.target.value })}
-                                            className="w-full bg-white border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
+                                            className="w-full bg-[#ffe4e1] border border-[#C0C4B8] rounded-2xl px-5 py-3.5 outline-none focus:border-[#3A6B50] transition-all"
                                             placeholder="400001"
                                         />
                                     </div>
@@ -287,7 +287,7 @@ export default function AddressesPage() {
                                             onChange={(e) => setNewAddress({ ...newAddress, isDefault: e.target.checked })}
                                             className="w-5 h-5 accent-[#3A6B50]"
                                         />
-                                        <label htmlFor="isDefault" className="text-sm font-semibold text-[#1A1A14] cursor-pointer">Set as default address</label>
+                                        <label htmlFor="isDefault" className="text-sm font-semibold text-[#bf7e81] cursor-pointer">Set as default address</label>
                                     </div>
                                 </div>
 
@@ -296,7 +296,7 @@ export default function AddressesPage() {
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="w-full bg-[#3A6B50] text-white py-4 rounded-2xl font-bold text-lg mt-4 flex items-center justify-center gap-2 hover:bg-[#2d523d] transition-all shadow-xl disabled:opacity-50"
+                                    className="w-full bg-[#3A6B50] text-[#ffe4e1] py-4 rounded-2xl font-bold text-lg mt-4 flex items-center justify-center gap-2 hover:bg-[#2d523d] transition-all shadow-xl disabled:opacity-50"
                                 >
                                     {saving ? <Loader2 className="animate-spin" /> : "Save Address"}
                                 </button>

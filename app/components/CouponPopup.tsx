@@ -243,7 +243,7 @@ export default function CouponPopup() {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            color: "#FFFFFF",
+                            color: "#ffe4e1",
                             transition: "all 0.2s",
                             zIndex: 10,
                         }}
@@ -256,7 +256,7 @@ export default function CouponPopup() {
                         style={{
                             fontSize: "28px",
                             fontWeight: "700",
-                            color: "#FFFFFF",
+                            color: "#ffe4e1",
                             marginBottom: "4px",
                             textShadow: "0 2px 4px rgba(0,0,0,0.2)",
                         }}
@@ -299,9 +299,9 @@ export default function CouponPopup() {
                     </div>
 
                     <div className="text-center space-y-2">
-                        <p className="font-bold text-gray-800 text-lg use-code-text">Use Code:</p>
+                        <p className="font-bold text-[#bf7e81] text-lg use-code-text">Use Code:</p>
                         <div
-                            className="inline-block bg-white border-2 border-dashed border-[#CD853F] rounded-xl cursor-pointer hover:bg-gray-50 transition coupon-code"
+                            className="inline-block bg-[#ffe4e1] border-2 border-dashed border-[#CD853F] rounded-xl cursor-pointer hover:bg-gray-50 transition coupon-code"
                             style={{ padding: "12px 32px" }}
                             onClick={() => {
                                 navigator.clipboard.writeText(coupon.code);
@@ -310,7 +310,7 @@ export default function CouponPopup() {
                         >
                             <span className="text-2xl font-mono font-bold tracking-widest text-[#8B4513]">{coupon.code}</span>
                         </div>
-                        <p className="text-sm text-gray-500 mt-2 copy-text">Click to copy code</p>
+                        <p className="text-sm text-[#bf7e81] mt-2 copy-text">Click to copy code</p>
                     </div>
 
                     {/* Footer instruction */}
@@ -323,7 +323,7 @@ export default function CouponPopup() {
                             gap: "8px",
                             marginTop: "20px",
                             padding: "12px",
-                            backgroundColor: "#FFFFFF",
+                            backgroundColor: "#ffe4e1",
                             borderRadius: "12px",
                             border: "1px solid #CD853F",
                         }}

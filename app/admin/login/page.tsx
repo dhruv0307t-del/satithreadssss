@@ -60,16 +60,16 @@ export default function AdminLogin() {
             <div className="al-body">
                 <style>{`
                     .al-body { background: #f0ebe0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; font-family: 'DM Sans', sans-serif; }
-                    .al-card { background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 440px; width: 100%; text-align: center; }
-                    .al-btn { background: #3A6B50; color: #fff; padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; margin-top: 20px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+                    .al-card { background: #ffe4e1; border-radius: 24px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 440px; width: 100%; text-align: center; }
+                    .al-btn { background: #3A6B50; color: #ffe4e1; padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; margin-top: 20px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
                     .al-btn:hover { background: #2d523d; transform: translateY(-1px); }
                 `}</style>
                 <div className="al-card">
-                    <div className="w-16 h-16 bg-[#F2EFE0] text-[#3A6B50] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="w-16 h-16 bg-[#ffe4e1] text-[#3A6B50] rounded-full flex items-center justify-center mx-auto mb-6">
                         <Lock size={24} />
                     </div>
                     <h1 className="text-2xl font-bold mb-2">Switch Account</h1>
-                    <p className="text-[#6B7060] mb-6">
+                    <p className="text-[#bf7e81] mb-6">
                         You're currently logged in as <span className="font-bold">{session.user.name}</span> (Customer).
                         To access the admin panel, please log in with an admin account.
                     </p>
@@ -81,7 +81,7 @@ export default function AdminLogin() {
                     </button>
                     <button
                         onClick={() => router.push("/home")}
-                        className="mt-4 text-[#7A8070] font-semibold hover:text-[#3A6B50] transition-colors"
+                        className="mt-4 text-[#bf7e81] font-semibold hover:text-[#3A6B50] transition-colors"
                     >
                         Back to Website
                     </button>
@@ -121,7 +121,7 @@ export default function AdminLogin() {
                 }
 
                 .al-card {
-                    background: #ffffff;
+                    background: #ffe4e1;
                     border-radius: 0 0 20px 20px;
                     padding: 48px 44px 44px;
                     box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 20px 60px rgba(0,0,0,0.08);
@@ -222,7 +222,7 @@ export default function AdminLogin() {
                 .al-input::placeholder { color: #888; }
 
                 .al-input:focus {
-                    background: #fff;
+                    background: #ffe4e1;
                     border-color: #0a0a0a;
                     box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
                 }
@@ -259,7 +259,7 @@ export default function AdminLogin() {
                     margin-top: 10px;
                     padding: 14px 20px;
                     background: #0a0a0a;
-                    color: #fff;
+                    color: #ffe4e1;
                     border: none;
                     border-radius: 12px;
                     font-family: inherit;

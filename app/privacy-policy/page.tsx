@@ -202,9 +202,9 @@ export default function PrivacyPolicyPage() {
                 :root {
                     --terracotta: #D4695B;
                     --deep-rust: #8B4513;
-                    --sand: #F4E8D8;
-                    --warm-cream: #FFF8F0;
-                    --charcoal: #2C2C2C;
+                    --sand: #ffe4e1;
+                    --warm-cream: #ffe4e1;
+                    --charcoal: #bf7e81;
                     --gold: #C9A961;
                     --sage: #8B9D83;
                 }
@@ -224,7 +224,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .logo {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.8rem;
                     font-weight: 700;
                     color: var(--terracotta);
@@ -255,7 +255,7 @@ export default function PrivacyPolicyPage() {
                 .hero {
                     margin-top: 90px;
                     padding: 4rem 4rem 3rem;
-                    background: linear-gradient(135deg, #FFF8F0 0%, #F4E8D8 100%);
+                    background: linear-gradient(135deg, #ffe4e1 0%, #ffe4e1 100%);
                     color: var(--charcoal);
                     position: relative;
                     overflow: hidden;
@@ -283,7 +283,7 @@ export default function PrivacyPolicyPage() {
                     display: inline-block;
                     padding: 0.5rem 1.5rem;
                     background: var(--terracotta);
-                    color: white;
+                    color: #ffe4e1;
                     border-radius: 30px;
                     font-size: 0.9rem;
                     letter-spacing: 2px;
@@ -292,7 +292,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .hero h1 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 3.5rem;
                     font-weight: 700;
                     margin-bottom: 1rem;
@@ -330,7 +330,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .toc {
-                    background: white;
+                    background: #ffe4e1;
                     border-radius: 15px;
                     padding: 2rem;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.05);
@@ -338,7 +338,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .toc h3 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.3rem;
                     color: var(--charcoal);
                     margin-bottom: 1.5rem;
@@ -371,7 +371,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .main-content {
-                    background: white;
+                    background: #ffe4e1;
                     border-radius: 20px;
                     padding: 3rem 4rem;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.05);
@@ -383,7 +383,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .section h2 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 2rem;
                     color: var(--terracotta);
                     margin-bottom: 1.5rem;
@@ -392,7 +392,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .section h3 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.4rem;
                     color: var(--charcoal);
                     margin: 2rem 0 1rem;
@@ -433,7 +433,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .contact-box {
-                    background: linear-gradient(135deg, #FFF8F0, #F4E8D8);
+                    background: linear-gradient(135deg, #ffe4e1, #ffe4e1);
                     color: var(--charcoal);
                     padding: 2.5rem;
                     border-radius: 15px;
@@ -443,7 +443,7 @@ export default function PrivacyPolicyPage() {
                 }
 
                 .contact-box h3 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.8rem;
                     margin-bottom: 1rem;
                     color: var(--terracotta);
@@ -459,7 +459,7 @@ export default function PrivacyPolicyPage() {
                     text-decoration: none;
                     font-weight: 600;
                     padding: 0.5rem 1rem;
-                    background: white;
+                    background: #ffe4e1;
                     border-radius: 8px;
                     display: inline-block;
                     transition: all 0.3s ease;
@@ -468,7 +468,7 @@ export default function PrivacyPolicyPage() {
 
                 .contact-box a:hover {
                     background: var(--terracotta);
-                    color: white;
+                    color: #ffe4e1;
                     transform: translateY(-2px);
                 }
 

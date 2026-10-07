@@ -66,7 +66,7 @@ export default function ProductRecommendations({ products }: ProductRecommendati
                                 <div className="product-card-price">
                                     <span>₹ {(product.priceNew || 0).toLocaleString()}</span>
                                     {product.priceOld &&
-                                        <span style={{ fontSize: '16px', color: '#999', textDecoration: 'line-through', fontWeight: 'normal' }}>
+                                        <span style={{ fontSize: '16px', color: '#bf7e81', textDecoration: 'line-through', fontWeight: 'normal' }}>
                                             ₹ {product.priceOld.toLocaleString()}
                                         </span>
                                     }

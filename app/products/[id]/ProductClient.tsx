@@ -290,7 +290,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
             "Green": "#90C695",
             "Yellow": "#FFD97D",
             "Black": "#2d2d2d",
-            "White": "#FFFFFF",
+            "White": "#ffe4e1",
             "Red": "#E63946",
             "Purple": "#6C63FF",
             "Beige": "#F5F5DC",
@@ -581,22 +581,22 @@ export default function ProductClient({ product, recommendations = [] }: Product
                 <style dangerouslySetInnerHTML={{
                     __html: `
                     .premium-reviews-container {
-                        --bg: #F2EFE0;
+                        --bg: #ffe4e1;
                         --card: transparent; /* No card background to blend better */
                         --green: #3A6B50;
                         --green-pale: #EAF4EE;
                         --gold: #B8860B;
                         --gold-blend: #C69727; 
                         --gold-pale: #FBF3DC;
-                        --text: #1A1A14;
-                        --text-sub: #6B7060;
+                        --text: #bf7e81;
+                        --text-sub: #bf7e81;
                         --border: rgba(58,107,80,0.06); /* Very subtle border */
                         --shadow: none; /* No shadow to remove layering */
                         --shadow-lg: none; 
                         --red: #C0392B;
                         --radius: 20px;
                         --radius-sm: 12px;
-                        --font-accent: 'Cormorant Garamond', serif;
+                        --font-accent: 'Vanger', serif;
                         --font-base: 'DM Sans', sans-serif;
                     }
 
@@ -708,7 +708,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
                         padding: 12px 24px;
                         border-radius: 99px;
                         background: var(--green);
-                        color: #fff;
+                        color: #ffe4e1;
                         font-family: var(--font-base);
                         font-size: 13px;
                         font-weight: 600;
@@ -766,7 +766,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
 
                     .form-close:hover {
                         background: var(--green);
-                        color: #fff;
+                        color: #ffe4e1;
                         border-color: var(--green);
                     }
 
@@ -803,7 +803,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
                         padding: 11px 14px;
                         border-radius: var(--radius-sm);
                         border: 1.5px solid var(--border);
-                        background: #FAFAF7;
+                        background: #ffe4e1;
                         font-family: var(--font-base);
                         font-size: 13.5px;
                         color: var(--text);
@@ -813,7 +813,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
 
                     .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
                         border-color: var(--green);
-                        background: #fff;
+                        background: #ffe4e1;
                         box-shadow: 0 0 0 3px rgba(58,107,80,0.08);
                     }
 
@@ -884,7 +884,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
                         padding: 12px 28px;
                         border-radius: 99px;
                         background: var(--green);
-                        color: #fff;
+                        color: #ffe4e1;
                         font-family: var(--font-base);
                         font-size: 13px;
                         font-weight: 600;
@@ -954,7 +954,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
 
                     .filter-pill.active {
                         background: var(--green);
-                        color: #fff;
+                        color: #ffe4e1;
                         border-color: var(--green);
                     }
 
@@ -1021,7 +1021,7 @@ export default function ProductClient({ product, recommendations = [] }: Product
                         justify-content: center;
                         font-size: 14px;
                         font-weight: 700;
-                        color: #fff;
+                        color: #ffe4e1;
                         flex-shrink: 0;
                     }
 

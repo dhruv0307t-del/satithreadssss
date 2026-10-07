@@ -169,7 +169,7 @@ export default function MyOrdersClient({ orders, wishlist, likedProducts }: any)
                                         {(order.trackingNumber || order.trackingNote) && (
                                             <div style={{ background: '#EAF4EE', borderRadius: 10, padding: '10px 14px', marginBottom: 14, border: '1px solid rgba(58,107,80,0.15)' }}>
                                                 {order.trackingNote && <div style={{ fontSize: 13, fontWeight: 600, color: '#3A6B50', marginBottom: order.trackingNumber ? 4 : 0 }}>{order.trackingNote}</div>}
-                                                {order.trackingNumber && <div style={{ fontSize: 12, color: '#7A8070' }}>Tracking #: <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#1A1A14' }}>{order.trackingNumber}</span></div>}
+                                                {order.trackingNumber && <div style={{ fontSize: 12, color: '#bf7e81' }}>Tracking #: <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#bf7e81' }}>{order.trackingNumber}</span></div>}
                                             </div>
                                         )}
                                         {/* Tracking Steps */}

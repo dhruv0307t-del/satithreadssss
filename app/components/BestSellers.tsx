@@ -171,7 +171,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       <style jsx>{`
         .product-card {
-          background: white;
+          background: #ffe4e1;
           border-radius: 12px;
           overflow: hidden;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -207,12 +207,12 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         .badge.sale {
           background: #ff4757;
-          color: white;
+          color: #ffe4e1;
         }
 
         .badge.new {
           background: #06d6a0;
-          color: white;
+          color: #ffe4e1;
         }
 
         .image-container {
@@ -266,7 +266,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          background: white;
+          background: #ffe4e1;
           border: none;
           display: flex;
           align-items: center;
@@ -287,7 +287,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         .product-name {
           font-size: 16px;
           font-weight: 500;
-          color: #333;
+          color: #bf7e81;
           margin-bottom: 8px;
           cursor: pointer;
           overflow: hidden;
@@ -296,7 +296,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         }
 
         .product-name:hover {
-          color: #8b7355;
+          color: #bf7e81;
         }
 
         .rating {
@@ -313,7 +313,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         .rating-count {
           font-size: 12px;
-          color: #999;
+          color: #bf7e81;
         }
 
         .price-row {
@@ -327,12 +327,12 @@ const ProductCard = ({ product }: { product: Product }) => {
         .current-price {
           font-size: 20px;
           font-weight: 700;
-          color: #333;
+          color: #bf7e81;
         }
 
         .old-price {
           font-size: 16px;
-          color: #999;
+          color: #bf7e81;
           text-decoration: line-through;
         }
 
@@ -352,7 +352,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         .size-label {
           display: block;
           font-size: 13px;
-          color: #666;
+          color: #bf7e81;
           margin-bottom: 6px;
         }
 
@@ -363,14 +363,14 @@ const ProductCard = ({ product }: { product: Product }) => {
           border-radius: 6px;
           font-size: 14px;
           cursor: pointer;
-          background: white;
+          background: #ffe4e1;
         }
 
         .add-cart-btn {
           width: 100%;
           padding: 14px;
-          background: linear-gradient(135deg, #8b7355 0%, #6d5a45 100%);
-          color: white;
+          background: linear-gradient(135deg, #bf7e81 0%, #bf7e81 100%);
+          color: #ffe4e1;
           border: none;
           border-radius: 8px;
           font-size: 15px;
@@ -486,7 +486,7 @@ export default function BestSellers() {
       <style jsx>{`
         .best-sellers {
           padding: 20px 0 60px 0;
-          background: #fafafa;
+          background: #ffe4e1;
         }
 
         .container {
@@ -500,15 +500,15 @@ export default function BestSellers() {
         }
 
         .section-title {
-          font-size: 32px;
-          color: #8b7355;
+          font-size: 48px;
+          color: #bf7e81;
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .section-subtitle {
           font-size: 16px;
-          color: #999;
+          color: #bf7e81;
           font-style: italic;
         }
 
@@ -523,8 +523,8 @@ export default function BestSellers() {
           width: 50px;
           height: 50px;
           border-radius: 50%;
-          background: white;
-          border: 2px solid #8b7355;
+          background: #ffe4e1;
+          border: 2px solid #bf7e81;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -535,8 +535,8 @@ export default function BestSellers() {
         }
 
         .scroll-btn:hover {
-          background: #8b7355;
-          color: white;
+          background: #bf7e81;
+          color: #ffe4e1;
         }
 
         .scroll-btn svg {
@@ -581,7 +581,7 @@ export default function BestSellers() {
           }
 
           .section-title {
-            font-size: 28px;
+            font-size: 38px;
           }
 
           .section-subtitle {
@@ -603,7 +603,7 @@ export default function BestSellers() {
 
         @media (max-width: 480px) {
           .section-title {
-            font-size: 24px;
+            font-size: 32px;
           }
 
           .best-sellers {

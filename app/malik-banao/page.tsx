@@ -151,8 +151,8 @@ export default function SetupAdminPage() {
                 }
 
                 .sa-input:focus {
-                    border-color: #8b7355;
-                    background: #fff;
+                    border-color: #bf7e81;
+                    background: #ffe4e1;
                     box-shadow: 0 0 0 3px rgba(139,115,85,0.12);
                 }
 

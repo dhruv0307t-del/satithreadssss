@@ -6,7 +6,7 @@
   /* very light warm cream */
   --admin-sidebar: #f9f7f2;
   /* slightly warmer sidebar */
-  --admin-card: #ffffff;
+  --admin-card: #ffe4e1;
   /* pure white cards */
   --admin-border: #e9e5dc;
   /* soft border */
@@ -54,7 +54,7 @@
   height: 48px;
   border-radius: 50%;
   background: var(--admin-accent);
-  color: white;
+  color: #ffe4e1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,7 +85,7 @@
 
 .admin-sidebar nav a.active {
   background-color: var(--admin-accent);
-  color: white;
+  color: #ffe4e1;
 }
 
 /* Bottom actions */
@@ -191,7 +191,7 @@
 .admin-main h1,
 .admin-main h2,
 .admin-main h3 {
-  color: #000000 !important;
+  color: #bf7e81 !important;
 }
 
 /* ===============================
@@ -210,7 +210,7 @@
 ================================ */
 .admin-main input,
 .admin-main textarea {
-  background-color: #ffffff;
+  background-color: #ffe4e1;
   border: 1px solid #d6d6d6;
   font-size: 15px;
 }
@@ -218,7 +218,7 @@
 .admin-main input:focus,
 .admin-main textarea:focus {
   outline: none;
-  border-color: #000000;
+  border-color: #bf7e81;
 }
 
 /* ===============================
@@ -233,14 +233,14 @@
   justify-content: center;
   font-size: 40px;
   color: #9c9c9c;
-  background: #fafafa;
+  background: #ffe4e1;
 }
 
 /* ===============================
    SECTION CARDS
 ================================ */
 .admin-section {
-  background: #ffffff;
+  background: #ffe4e1;
   border-radius: 24px;
   padding: 32px;
 }
@@ -265,7 +265,7 @@
 
 /* Section blocks */
 .admin-section,
-.admin-main .bg-white {
+.admin-main .bg-[#ffe4e1] {
   margin-bottom: 48px;
 }
 
@@ -320,7 +320,7 @@
 .admin-main,
 .admin-main * {
   background-color: transparent;
-  color: #000000;
+  color: #bf7e81;
 }
 
 /* Main page background */
@@ -336,8 +336,8 @@
 
 /* Section cards – ONE consistent look */
 .admin-section,
-.admin-main .bg-white {
-  background-color: #ffffff;
+.admin-main .bg-[#ffe4e1] {
+  background-color: #ffe4e1;
   border-radius: 18px;
   padding: 40px;
   margin-bottom: 56px;
@@ -348,13 +348,13 @@
 .admin-main h2,
 .admin-main h3,
 .admin-main h4 {
-  color: #000000 !important;
+  color: #bf7e81 !important;
   margin-bottom: 24px;
 }
 
 /* Labels */
 .label {
-  color: #000000;
+  color: #bf7e81;
   font-weight: 600;
   margin-bottom: 10px;
 }
@@ -362,9 +362,9 @@
 /* Inputs & textarea */
 .admin-main input,
 .admin-main textarea {
-  background-color: #ffffff;
+  background-color: #ffe4e1;
   border: 1px solid #cfcfcf;
-  color: #000000;
+  color: #bf7e81;
   padding: 14px 16px;
   border-radius: 10px;
   margin-bottom: 28px;
@@ -383,12 +383,12 @@
 
 /* Size buttons */
 .admin-main button {
-  color: #000000;
+  color: #bf7e81;
 }
 
 /* Image upload box */
 .admin-image-drop {
-  background-color: #ffffff;
+  background-color: #ffe4e1;
   border: 2px dashed #cfcfcf;
   border-radius: 16px;
   height: 220px;
@@ -407,7 +407,7 @@
 .admin-table th {
   padding: 14px;
   font-size: 13px;
-  color: #000;
+  color: #bf7e81;
   border-bottom: 1px solid #e5e1d8;
 }
 
@@ -421,7 +421,7 @@
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  color: #000;
+  color: #bf7e81;
   padding: 14px;
   border-bottom: 1px solid #e6e2da;
 }
@@ -444,7 +444,7 @@
   padding: 14px 16px;
   border: 1px solid #cfcfcf;
   border-radius: 10px;
-  color: #000;
+  color: #bf7e81;
 }
 
 .admin-input {
@@ -457,7 +457,7 @@
 }
 
 .admin-input:focus {
-  border-color: black;
+  border-color: #bf7e81;
 }
 
 /* ===============================
@@ -471,7 +471,7 @@
 
 /* Card container */
 .admin-card {
-  background: #ffffff;
+  background: #ffe4e1;
   border-radius: 18px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
   overflow: hidden;
@@ -480,7 +480,7 @@
 /* Search bar */
 .admin-search {
   max-width: 420px;
-  background: #ffffff;
+  background: #ffe4e1;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   padding: 14px 18px;
@@ -490,7 +490,7 @@
 
 .admin-search:focus {
   outline: none;
-  border-color: #000;
+  border-color: #bf7e81;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
@@ -501,7 +501,7 @@
 }
 
 .admin-table thead {
-  background: #fafafa;
+  background: #ffe4e1;
 }
 
 .admin-table th {
@@ -510,7 +510,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #000;
+  color: #bf7e81;
   border-bottom: 1px solid #eee;
 }
 
@@ -522,7 +522,7 @@
 
 /* Row hover */
 .admin-table tbody tr:hover {
-  background: #fafafa;
+  background: #ffe4e1;
 }
 
 /* Product image */
@@ -541,7 +541,7 @@
 }
 
 .admin-action.edit {
-  color: #000;
+  color: #bf7e81;
 }
 
 .admin-action.delete {
@@ -560,14 +560,14 @@
   padding: 10px 18px;
   border-radius: 999px;
   border: 1px solid #e5e7eb;
-  background: white;
+  background: #ffe4e1;
   font-size: 14px;
 }
 
 .admin-page-btn.active {
   background: black;
-  color: white;
-  border-color: black;
+  color: #ffe4e1;
+  border-color: #bf7e81;
 }
 
 .admin-page-btn:disabled {
@@ -614,7 +614,7 @@
   max-width: 420px;
   max-height: 520px;
   border-radius: 16px;
-  background: white;
+  background: #ffe4e1;
   padding: 12px;
 }
 
@@ -657,15 +657,15 @@
   padding: 6px 12px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
-  background: #ffffff;
+  background: #ffe4e1;
   font-size: 13px;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
 .inventory-edit-btn:hover {
-  border-color: #000;
-  background: #fafafa;
+  border-color: #bf7e81;
+  background: #ffe4e1;
 }
 
 /* ================================
@@ -675,13 +675,13 @@
 
 :root {
   --adm-bg: #f5f0e8;
-  --adm-surface: #ffffff;
+  --adm-surface: #ffe4e1;
   --adm-surface2: #ede8dc;
   --adm-border: #ddd8cc;
   --adm-accent: #4a6741;
   --adm-accent2: #6b8f67;
   --adm-muted: #9a9488;
-  --adm-text: #1e1e1a;
+  --adm-text: #bf7e81;
   --adm-text-dim: #6b6660;
 }
 
@@ -734,7 +734,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  color: #fff;
+  color: #ffe4e1;
   font-size: 14px;
   flex-shrink: 0;
 }
@@ -791,7 +791,7 @@
 
 .adm-nav-item.active {
   background: var(--adm-accent);
-  color: #fff;
+  color: #ffe4e1;
 }
 
 .adm-master.active,
@@ -844,7 +844,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 12px;
-  color: #fff;
+  color: #ffe4e1;
   flex-shrink: 0;
 }
 
@@ -892,7 +892,7 @@
 }
 
 .adm-greeting-title {
-  font-family: 'DM Serif Display', 'Georgia', serif;
+  font-family: 'Vanger', 'Georgia', serif;
   font-size: 40px;
   font-weight: 400;
   color: var(--adm-text);
@@ -984,11 +984,11 @@
 .adm-stat-card.highlight .adm-stat-label,
 .adm-stat-card.highlight .adm-stat-value,
 .adm-stat-card.highlight .adm-stat-change {
-  color: #fff;
+  color: #ffe4e1;
 }
 
 .adm-stat-card.highlight::before {
-  background: #fff;
+  background: #ffe4e1;
   opacity: 0.1;
 }
 
@@ -1001,7 +1001,7 @@
 }
 
 .adm-stat-value {
-  font-family: 'DM Serif Display', 'Georgia', serif;
+  font-family: 'Vanger', 'Georgia', serif;
   font-size: 52px;
   font-weight: 400;
   color: var(--adm-accent);
@@ -1175,7 +1175,7 @@
 }
 
 .admin-main .adm-stat-card.highlight .adm-stat-value {
-  color: #fff !important;
+  color: #ffe4e1 !important;
 }
 
 .admin-main .adm-stat-card.highlight .adm-stat-label {
@@ -1183,7 +1183,7 @@
 }
 
 .admin-main .adm-stat-card.highlight .adm-stat-change {
-  color: #fff !important;
+  color: #ffe4e1 !important;
 }
 
 .admin-main .adm-stat-label {
@@ -1207,7 +1207,7 @@
 
 .admin-main .adm-greeting-title {
   color: var(--adm-text) !important;
-  font-family: 'DM Serif Display', Georgia, serif !important;
+  font-family: 'Vanger', Georgia, serif !important;
 }
 
 .admin-main .adm-greeting-title span {
@@ -1270,5 +1270,5 @@
 }
 
 .admin-main .adm-stat-card.highlight::before {
-  background: #fff !important;
+  background: #ffe4e1 !important;
 }

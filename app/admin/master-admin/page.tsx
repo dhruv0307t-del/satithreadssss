@@ -24,21 +24,21 @@ interface AdminLog {
 
 const GLOBAL_CSS = `
 :root {
-  --bg: #F2EFE0;
-  --card: #FFFFFF;
+  --bg: #ffe4e1;
+  --card: #ffe4e1;
   --green: #3A6B50;
   --green-light: #5DA87A;
   --green-pale: #EAF4EE;
-  --label: #7A8070;
-  --text: #1A1A14;
-  --text-sub: #6B7060;
+  --label: #bf7e81;
+  --text: #bf7e81;
+  --text-sub: #bf7e81;
   --border: rgba(58,107,80,0.10);
   --shadow: 0 2px 16px rgba(40,60,40,0.07), 0 1px 3px rgba(40,60,40,0.04);
   --shadow-lg: 0 12px 40px rgba(40,60,40,0.13), 0 4px 12px rgba(40,60,40,0.07);
   --red: #C0392B;
-  --red-soft: #FDECEA;
+  --red-soft: #ffe4e1;
   --amber: #B87620;
-  --amber-soft: #FEF3E2;
+  --amber-soft: #ffe4e1;
   --blue: #2C6E8A;
   --blue-soft: #E8F4FA;
   --radius: 20px;
@@ -101,12 +101,12 @@ const GLOBAL_CSS = `
 .ma-field label { font-size: 12px; font-weight: 600; color: var(--text); }
 .ma-field input, .ma-field select {
   width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border); background: #FAFAF7;
+  border: 1.5px solid var(--border); background: #ffe4e1;
   font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text);
   outline: none; transition: border-color 0.17s, box-shadow 0.17s, background 0.17s;
   appearance: none; -webkit-appearance: none;
 }
-.ma-field input:focus, .ma-field select:focus { border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(58,107,80,0.08); }
+.ma-field input:focus, .ma-field select:focus { border-color: var(--green); background: #ffe4e1; box-shadow: 0 0 0 3px rgba(58,107,80,0.08); }
 .ma-field input::placeholder { color: #B0B5A8; }
 .ma-form-row { display: grid; gap: 14px; margin-bottom: 16px; }
 .ma-form-row.cols-2 { grid-template-columns: 1fr 1fr; }
@@ -117,15 +117,15 @@ const GLOBAL_CSS = `
 
 /* ── Buttons ── */
 .ma-btn { display: inline-flex; align-items: center; gap: 7px; padding: 11px 22px; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.17s; }
-.ma-btn-primary { background: var(--green); color: #fff; box-shadow: 0 2px 10px rgba(58,107,80,0.25); }
+.ma-btn-primary { background: var(--green); color: #ffe4e1; box-shadow: 0 2px 10px rgba(58,107,80,0.25); }
 .ma-btn-primary:hover { background: #2e5640; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(58,107,80,0.3); }
 .ma-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.ma-btn-blue { background: var(--blue); color: #fff; box-shadow: 0 2px 10px rgba(44,110,138,0.25); }
+.ma-btn-blue { background: var(--blue); color: #ffe4e1; box-shadow: 0 2px 10px rgba(44,110,138,0.25); }
 .ma-btn-blue:hover { background: #235A72; transform: translateY(-1px); }
 .ma-btn-ghost { background: var(--card); color: var(--text-sub); border: 1.5px solid var(--border); }
 .ma-btn-ghost:hover { border-color: var(--green); color: var(--green); }
 .ma-btn-danger { background: var(--red-soft); color: var(--red); border: 1.5px solid rgba(192,57,43,0.15); }
-.ma-btn-danger:hover { background: var(--red); color: #fff; }
+.ma-btn-danger:hover { background: var(--red); color: #ffe4e1; }
 .ma-btn-full { width: 100%; justify-content: center; margin-top: 8px; }
 
 /* ── OR divider ── */
@@ -144,14 +144,14 @@ const GLOBAL_CSS = `
 .ma-admins-table td { padding: 14px; font-size: 13px; vertical-align: middle; }
 .ma-admins-table td:last-child { text-align: right; }
 .ma-admin-cell { display: flex; align-items: center; gap: 11px; }
-.ma-admin-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.ma-admin-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #ffe4e1; flex-shrink: 0; }
 .ma-admin-name { font-size: 13px; font-weight: 600; color: var(--text); }
 .ma-admin-email { font-size: 11px; color: var(--text-sub); font-family: 'DM Mono', monospace; margin-top: 1px; }
 
 /* ── Role badge ── */
 .ma-role-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 11px; border-radius: 99px; font-size: 11px; font-weight: 600; }
 .ma-role-badge::before { content: '●'; font-size: 7px; }
-.rb-master { background: #FEF3E2; color: #9B6B3A; }
+.rb-master { background: #ffe4e1; color: #9B6B3A; }
 .rb-admin { background: var(--blue-soft); color: var(--blue); }
 
 /* ── Row actions ── */
@@ -279,7 +279,7 @@ export default function MasterAdminPage() {
 
     const showToast = (msg: string, type: 'success' | 'error') => {
         const t = document.createElement('div');
-        t.style.cssText = `position:fixed;bottom:30px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,0.15);font-family:DM Sans,sans-serif;background:${type === 'success' ? 'var(--green)' : 'var(--red)'};color:#fff;transition:all 0.3s`;
+        t.style.cssText = `position:fixed;bottom:30px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,0.15);font-family:DM Sans,sans-serif;background:${type === 'success' ? 'var(--green)' : 'var(--red)'};color:#ffe4e1;transition:all 0.3s`;
         t.textContent = msg;
         document.body.appendChild(t);
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
@@ -372,7 +372,7 @@ export default function MasterAdminPage() {
     const regularCount = stats.regularAdmins || admins.filter(a => a.role !== 'master_admin').length;
 
     if (status === 'loading') return (
-        <div style={{ padding: '40px', fontFamily: 'DM Sans, sans-serif', color: '#7A8070' }}>Loading…</div>
+        <div style={{ padding: '40px', fontFamily: 'DM Sans, sans-serif', color: '#bf7e81' }}>Loading…</div>
     );
 
     return (
@@ -612,7 +612,7 @@ export default function MasterAdminPage() {
             {activeTab === 'logs' && (
                 <div className="ma-card">
                     <div className="ma-sec-header">
-                        <div className="ma-sec-icon" style={{ background: '#F5F5F0', fontSize: '18px' }}>📜</div>
+                        <div className="ma-sec-icon" style={{ background: '#ffe4e1', fontSize: '18px' }}>📜</div>
                         <div>
                             <div className="ma-sec-title">Activity Logs</div>
                             <div className="ma-sec-sub">All admin actions recorded in real time</div>
@@ -673,7 +673,7 @@ export default function MasterAdminPage() {
             {/* ── REMOVE MODAL ── */}
             <div className={`ma-overlay${removeOverlay ? ' open' : ''}`} onClick={e => { if (e.target === e.currentTarget) setRemoveOverlay(false); }}>
                 <div className="ma-modal">
-                    <div className="ma-modal-header" style={{ background: 'linear-gradient(135deg, #FFF5F5, #FFF)' }}>
+                    <div className="ma-modal-header" style={{ background: 'linear-gradient(135deg, #FFF5F5, #ffe4e1)' }}>
                         <div className="ma-modal-title" style={{ color: 'var(--red)' }}>Remove Admin?</div>
                         <div className="ma-modal-sub">Remove admin access for {removingAdmin?.name}?</div>
                     </div>
@@ -684,7 +684,7 @@ export default function MasterAdminPage() {
                     </div>
                     <div className="ma-modal-footer">
                         <button className="ma-btn ma-btn-ghost" onClick={() => setRemoveOverlay(false)}>Cancel</button>
-                        <button className="ma-btn" style={{ background: 'var(--red)', color: '#fff' }} onClick={confirmRemove}>Yes, Remove Admin</button>
+                        <button className="ma-btn" style={{ background: 'var(--red)', color: '#ffe4e1' }} onClick={confirmRemove}>Yes, Remove Admin</button>
                     </div>
                 </div>
             </div>

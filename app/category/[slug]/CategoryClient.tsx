@@ -198,7 +198,7 @@ export default function CategoryClient({
   topImage,
 }: any) {
   return (
-    <div className="bg-[#FFF7EC] min-h-screen">
+    <div className="bg-[#ffe4e1] min-h-screen">
       {/* TOP IMAGE */}
       <img
         src={topImage}
@@ -216,7 +216,7 @@ export default function CategoryClient({
               ))
             ) : (
               <div className="col-span-4 text-center py-20">
-                <p className="text-xl text-gray-500">No products found in this category.</p>
+                <p className="text-xl text-[#bf7e81]">No products found in this category.</p>
               </div>
             )}
           </div>

@@ -215,11 +215,11 @@ export default function CartDrawer() {
       {/* Scoped styles */}
       <style>{`
         :root {
-          --cd-brown: #3d2415;
-          --cd-brown-dark: #2d1810;
-          --cd-brown-mid: #5a3825;
-          --cd-amber: #D4A574;
-          --cd-cream: #FFF7EC;
+          --cd-brown: #bf7e81;
+          --cd-brown-dark: #bf7e81;
+          --cd-brown-mid: #bf7e81;
+          --cd-amber: #bf7e81;
+          --cd-cream: #ffe4e1;
         }
 
         /* Overlay */
@@ -245,7 +245,7 @@ export default function CartDrawer() {
           right: 0;
           width: 480px;
           height: 100vh;
-          background: white;
+          background: #ffe4e1;
           box-shadow: -5px 0 30px rgba(0,0,0,0.15);
           transform: translateX(100%);
           transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
@@ -262,7 +262,7 @@ export default function CartDrawer() {
         .cd-header {
           padding: 28px 28px;
           background: linear-gradient(135deg, var(--cd-brown) 0%, var(--cd-brown-dark) 100%);
-          color: white;
+          color: #ffe4e1;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -273,7 +273,7 @@ export default function CartDrawer() {
           display: flex;
           align-items: center;
           gap: 12px;
-          font-family: 'DM Serif Display', Georgia, serif;
+          font-family: 'Vanger', Georgia, serif;
           font-size: 26px;
           font-weight: 400;
         }
@@ -295,7 +295,7 @@ export default function CartDrawer() {
           height: 40px;
           border: none;
           background: rgba(255,255,255,0.1);
-          color: white;
+          color: #ffe4e1;
           border-radius: 50%;
           cursor: pointer;
           display: flex;
@@ -353,7 +353,7 @@ export default function CartDrawer() {
           display: flex;
           gap: 16px;
           padding: 18px;
-          background: white;
+          background: #ffe4e1;
           border-radius: 16px;
           margin-bottom: 12px;
           box-shadow: 0 2px 12px rgba(0,0,0,0.06);
@@ -433,7 +433,7 @@ export default function CartDrawer() {
         /* Summary */
         .cd-summary {
           padding: 22px 22px 24px;
-          background: white;
+          background: #ffe4e1;
           border-top: 2px solid rgba(212,165,116,0.2);
           flex-shrink: 0;
         }
@@ -466,7 +466,7 @@ export default function CartDrawer() {
         .cd-coupon-btn {
           padding: 11px 20px;
           background: var(--cd-amber);
-          color: white;
+          color: #ffe4e1;
           border: none;
           border-radius: 10px;
           font-size: 13px;
@@ -479,7 +479,7 @@ export default function CartDrawer() {
           white-space: nowrap;
         }
         .cd-coupon-btn:hover {
-          background: #C99156;
+          background: #bf7e81;
           transform: translateY(-1px);
         }
         .cd-coupon-msg {
@@ -556,7 +556,7 @@ export default function CartDrawer() {
           font-size: 24px;
           font-weight: 800;
           color: var(--cd-amber);
-          font-family: 'DM Serif Display', Georgia, serif;
+          font-family: 'Vanger', Georgia, serif;
         }
 
         /* Actions */
@@ -565,7 +565,7 @@ export default function CartDrawer() {
           width: 100%;
           padding: 17px;
           background: linear-gradient(135deg, var(--cd-brown) 0%, var(--cd-brown-dark) 100%);
-          color: white;
+          color: #ffe4e1;
           border: none;
           border-radius: 12px;
           font-size: 15px;
@@ -584,7 +584,7 @@ export default function CartDrawer() {
         .cd-clear-btn {
           width: 100%;
           padding: 13px;
-          background: white;
+          background: #ffe4e1;
           color: var(--cd-brown-mid);
           border: 2px solid #E5DDD3;
           border-radius: 12px;

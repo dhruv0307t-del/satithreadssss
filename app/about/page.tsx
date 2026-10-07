@@ -152,9 +152,9 @@ export default function AboutPage() {
                 :root {
                     --terracotta: #D4695B;
                     --deep-rust: #8B4513;
-                    --sand: #F4E8D8;
-                    --warm-cream: #FFF8F0;
-                    --charcoal: #2C2C2C;
+                    --sand: #ffe4e1;
+                    --warm-cream: #ffe4e1;
+                    --charcoal: #bf7e81;
                     --gold: #C9A961;
                     --sage: #8B9D83;
                 }
@@ -194,7 +194,7 @@ export default function AboutPage() {
                 }
 
                 .about-nav-links li {
-                    font-family: 'Cormorant Garamond', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.1rem;
                     font-weight: 500;
                     color: var(--charcoal);
@@ -298,7 +298,7 @@ export default function AboutPage() {
                 }
 
                 .about-hero h1 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 5rem;
                    font-weight: 700;
                     color: var(--charcoal);
@@ -443,7 +443,7 @@ export default function AboutPage() {
                 }
 
                 .step-content h3 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.5rem;
                     color: var(--charcoal);
                     margin-bottom: 0.5rem;
@@ -507,7 +507,7 @@ export default function AboutPage() {
                 }
 
                 .values-content h2 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 3.5rem;
                     color: var(--warm-cream);
                     text-align: center;
@@ -564,7 +564,7 @@ export default function AboutPage() {
                 }
 
                 .value-card h3 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.8rem;
                     color: var(--terracotta);
                     margin-bottom: 1rem;
@@ -584,7 +584,7 @@ export default function AboutPage() {
                 }
 
                 .about-cta-content h2 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 3rem;
                     color: var(--charcoal);
                     margin-bottom: 3rem;
@@ -598,7 +598,7 @@ export default function AboutPage() {
 
                 .btn {
                     padding: 1.2rem 3rem;
-                    font-family: 'Cormorant Garamond', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.2rem;
                     font-weight: 600;
                     text-decoration: none;

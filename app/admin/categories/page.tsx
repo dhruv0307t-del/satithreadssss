@@ -14,21 +14,21 @@ interface Category {
 
 const GLOBAL_CSS = `
 :root {
-  --bg: #F2EFE0;
-  --card: #FFFFFF;
+  --bg: #ffe4e1;
+  --card: #ffe4e1;
   --green: #3A6B50;
   --green-light: #5DA87A;
   --green-pale: #EAF4EE;
-  --label: #7A8070;
-  --text: #1A1A14;
-  --text-sub: #6B7060;
+  --label: #bf7e81;
+  --text: #bf7e81;
+  --text-sub: #bf7e81;
   --border: rgba(58,107,80,0.12);
   --shadow: 0 2px 16px rgba(40,60,40,0.07), 0 1px 3px rgba(40,60,40,0.04);
   --shadow-lg: 0 12px 40px rgba(40,60,40,0.13), 0 4px 12px rgba(40,60,40,0.07);
   --red: #C0392B;
-  --red-soft: #FDECEA;
+  --red-soft: #ffe4e1;
   --amber: #B87620;
-  --amber-soft: #FEF3E2;
+  --amber-soft: #ffe4e1;
   --blue: #2C6E8A;
   --blue-soft: #E8F4FA;
   --radius: 20px;
@@ -60,24 +60,24 @@ const GLOBAL_CSS = `
 /* Form Fields */
 .ac-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
 .ac-field label { font-size: 12px; font-weight: 600; color: var(--text); }
-.ac-field input { width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #FAFAF7; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); outline: none; transition: all 0.17s; }
-.ac-field input:focus { border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(58,107,80,0.08); }
+.ac-field input { width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #ffe4e1; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); outline: none; transition: all 0.17s; }
+.ac-field input:focus { border-color: var(--green); background: #ffe4e1; box-shadow: 0 0 0 3px rgba(58,107,80,0.08); }
 .ac-field input::placeholder { color: #B0B5A8; }
 
 /* File Uploader */
 .ac-upload-zone { border: 2px dashed rgba(58,107,80,0.15); border-radius: var(--radius-sm); padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: rgba(250,250,247,0.5); position: relative; overflow: hidden; }
 .ac-upload-zone:hover { border-color: var(--green); background: rgba(58,107,80,0.03); }
-.ac-upload-icon { width: 32px; height: 32px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--green); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.ac-upload-icon { width: 32px; height: 32px; background: #ffe4e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--green); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 .ac-upload-text { font-size: 12px; color: var(--text-sub); font-weight: 500; }
 .ac-upload-preview { width: 100%; height: 100px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; }
 .ac-upload-preview.banner { height: 60px; object-fit: cover; }
-.ac-remove-img { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; opacity: 0; transition: opacity 0.2s; }
+.ac-remove-img { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #ffe4e1; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; opacity: 0; transition: opacity 0.2s; }
 .ac-upload-zone:hover .ac-remove-img { opacity: 1; }
 .ac-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
 
 /* Buttons */
 .ac-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 22px; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.17s; }
-.ac-btn-primary { background: var(--green); color: #fff; box-shadow: 0 2px 10px rgba(58,107,80,0.25); }
+.ac-btn-primary { background: var(--green); color: #ffe4e1; box-shadow: 0 2px 10px rgba(58,107,80,0.25); }
 .ac-btn-primary:hover:not(:disabled) { background: #2e5640; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(58,107,80,0.3); }
 .ac-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 .ac-btn-ghost { background: var(--card); color: var(--text-sub); border: 1.5px solid var(--border); }
@@ -143,7 +143,7 @@ export default function AdminCategoriesPage() {
 
     const showToast = (msg: string, type: 'success' | 'error') => {
         const t = document.createElement('div');
-        t.style.cssText = `position:fixed;bottom:30px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,0.15);font-family:DM Sans,sans-serif;background:${type === 'success' ? 'var(--green)' : 'var(--red)'};color:#fff;transition:all 0.3s`;
+        t.style.cssText = `position:fixed;bottom:30px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,0.15);font-family:DM Sans,sans-serif;background:${type === 'success' ? 'var(--green)' : 'var(--red)'};color:#ffe4e1;transition:all 0.3s`;
         t.textContent = msg;
         document.body.appendChild(t);
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);

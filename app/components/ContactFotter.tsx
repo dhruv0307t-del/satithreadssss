@@ -126,7 +126,7 @@ export default function ContactFooter() {
       <style jsx>{`
         .contact-footer {
           padding: 50px 20px;
-          background: white;
+          background: #ffe4e1;
         }
 
         .contact-grid {
@@ -143,9 +143,9 @@ export default function ContactFooter() {
         }
 
         .brand-text {
-          font-size: 15px;
+          font-size: 20px;
           line-height: 1.6;
-          color: #666;
+          color: #bf7e81;
           margin-bottom: 20px;
         }
 
@@ -162,7 +162,7 @@ export default function ContactFooter() {
         .social span {
           width: 48px;
           height: 48px;
-          border: 2px solid #333;
+          border: 2px solid #bf7e81;
           border-radius: 50%;
           display: inline-flex;
           align-items: center;
@@ -172,8 +172,8 @@ export default function ContactFooter() {
         }
 
         .social span:hover {
-          background: #8b7355;
-          border-color: #8b7355;
+          background: #bf7e81;
+          border-color: #bf7e81;
           transform: scale(1.1);
         }
 
@@ -200,13 +200,13 @@ export default function ContactFooter() {
 
         .contact-item p {
           margin: 0;
-          color: #666;
-          font-size: 14px;
+          color: #bf7e81;
+          font-size: 18px;
           line-height: 1.6;
         }
 
         .contact-item a {
-          color: #8b7355;
+          color: #bf7e81;
           text-decoration: none;
         }
 
@@ -224,31 +224,31 @@ export default function ContactFooter() {
           flex: 1;
           padding: 14px 20px;
           border-radius: 6px;
-          font-size: 15px;
+          font-size: 20px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .footer-actions button.filled {
-          background: #8b7355;
-          color: white;
+          background: #bf7e81;
+          color: #ffe4e1;
           border: none;
         }
 
         .footer-actions button.filled:hover {
-          background: #6d5a45;
+          background: #bf7e81;
         }
 
         .footer-actions button.outline {
-          background: white;
-          color: #8b7355;
-          border: 2px solid #8b7355;
+          background: #ffe4e1;
+          color: #bf7e81;
+          border: 2px solid #bf7e81;
         }
 
         .footer-actions button.outline:hover {
-          background: #8b7355;
-          color: white;
+          background: #bf7e81;
+          color: #ffe4e1;
         }
 
         .footer-links {
@@ -257,9 +257,9 @@ export default function ContactFooter() {
         }
 
         .footer-heading {
-          font-size: 16px;
-          color: white !important;
-          background: #8b7355 !important;
+          font-size: 22px;
+          color: #ffe4e1 !important;
+          background: #bf7e81 !important;
           margin-bottom: 20px;
           font-weight: 600;
           letter-spacing: 1px;
@@ -271,7 +271,7 @@ export default function ContactFooter() {
         }
 
         .dropdown-arrow {
-          font-size: 12px;
+          font-size: 22px;
           transition: transform 0.3s ease;
           display: inline-block;
         }
@@ -288,15 +288,15 @@ export default function ContactFooter() {
 
         .footer-list li {
           padding: 12px 0;
-          font-size: 14px;
-          color: #666;
-          border-bottom: 1px solid #f5f5f5;
+          font-size: 18px;
+          color: #bf7e81;
+          border-bottom: 1px solid #ffe4e1;
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
         .footer-list li:hover {
-          color: #8b7355;
+          color: #bf7e81;
           padding-left: 5px;
         }
 

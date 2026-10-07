@@ -418,7 +418,7 @@ export default function CheckoutModal() {
                             value={address.state}
                             onChange={(e) => setAddress({ ...address, state: e.target.value })}
                             className="checkout-input"
-                            style={{ backgroundColor: "#fff" }}
+                            style={{ backgroundColor: "#ffe4e1" }}
                         >
                             <option value="">Select State</option>
                             {INDIAN_STATES.sort().map(s => (
@@ -438,14 +438,14 @@ export default function CheckoutModal() {
 
                     {/* Save address checkbox (only for logged-in users) */}
                     {status === "authenticated" && (
-                        <label style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0 0", cursor: "pointer", userSelect: "none", padding: "12px 16px", borderRadius: 12, border: `1.5px solid ${saveAddress ? "rgba(58,107,80,0.3)" : "#E5E7EB"}`, background: saveAddress ? "#EAF4EE" : "#fff", transition: "all 0.15s" }}>
+                        <label style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0 0", cursor: "pointer", userSelect: "none", padding: "12px 16px", borderRadius: 12, border: `1.5px solid ${saveAddress ? "rgba(58,107,80,0.3)" : "#E5E7EB"}`, background: saveAddress ? "#EAF4EE" : "#ffe4e1", transition: "all 0.15s" }}>
                             <div style={{ width: 20, height: 20, borderRadius: 6, border: `2px solid ${saveAddress ? "#3A6B50" : "#D1D5DB"}`, background: saveAddress ? "#3A6B50" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", flexShrink: 0 }} onClick={() => setSaveAddress(!saveAddress)}>
                                 {saveAddress && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>}
                             </div>
                             <input type="checkbox" checked={saveAddress} onChange={e => setSaveAddress(e.target.checked)} style={{ display: "none" }} />
                             <div>
-                                <div style={{ fontSize: 13, fontWeight: 600, color: "#1A1A14" }}>Save this address for later</div>
-                                <div style={{ fontSize: 11.5, color: "#6B7060", marginTop: 1 }}>Add to your saved addresses in My Profile</div>
+                                <div style={{ fontSize: 13, fontWeight: 600, color: "#bf7e81" }}>Save this address for later</div>
+                                <div style={{ fontSize: 11.5, color: "#bf7e81", marginTop: 1 }}>Add to your saved addresses in My Profile</div>
                             </div>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={saveAddress ? "#3A6B50" : "#9CA3AF"} strokeWidth="2" style={{ marginLeft: "auto", flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                         </label>
@@ -470,7 +470,7 @@ export default function CheckoutModal() {
                                         padding: "14px",
                                         borderRadius: "12px",
                                         border: `2px solid ${paymentMethod === method.id ? "#3A6B50" : "#E5E7EB"}`,
-                                        backgroundColor: paymentMethod === method.id ? "#F0FDF4" : "#fff",
+                                        backgroundColor: paymentMethod === method.id ? "#F0FDF4" : "#ffe4e1",
                                         cursor: "pointer",
                                         transition: "all 0.2s"
                                     }}
@@ -485,7 +485,7 @@ export default function CheckoutModal() {
                                         justifyContent: "center",
                                         backgroundColor: paymentMethod === method.id ? "#3A6B50" : "transparent"
                                     }}>
-                                        {paymentMethod === method.id && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                                        {paymentMethod === method.id && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#ffe4e1" }} />}
                                     </div>
                                     <span style={{ fontWeight: "600", fontSize: "14px", color: "#1A202C" }}>{method.label}</span>
                                 </div>
@@ -505,7 +505,7 @@ export default function CheckoutModal() {
                                 padding: "16px",
                                 borderRadius: "12px",
                                 border: `2px solid ${isExpress ? "#3A6B50" : "#E5E7EB"}`,
-                                backgroundColor: isExpress ? "#F0FDF4" : "#fff",
+                                backgroundColor: isExpress ? "#F0FDF4" : "#ffe4e1",
                                 cursor: "pointer",
                                 transition: "all 0.2s"
                             }}
@@ -520,7 +520,7 @@ export default function CheckoutModal() {
                                 justifyContent: "center",
                                 backgroundColor: isExpress ? "#3A6B50" : "transparent"
                             }}>
-                                {isExpress && <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                                {isExpress && <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ffe4e1" }} />}
                             </div>
                             <div style={{ flex: 1 }}>
                                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -561,7 +561,7 @@ export default function CheckoutModal() {
                                 onChange={(e) => setCouponCode(e.target.value)}
                                 style={{ flex: 1, padding: "10px", border: "1px solid #D1D5DB", borderRadius: "8px" }}
                             />
-                            <button onClick={(e) => { e.preventDefault(); validateCoupon(); }} style={{ padding: "10px 20px", backgroundColor: "#333", color: "#fff", borderRadius: "8px", fontWeight: "600" }}>Apply</button>
+                            <button onClick={(e) => { e.preventDefault(); validateCoupon(); }} style={{ padding: "10px 20px", backgroundColor: "#bf7e81", color: "#ffe4e1", borderRadius: "8px", fontWeight: "600" }}>Apply</button>
                         </div>
                         {couponError && <p style={{ color: "red", fontSize: "14px", marginBottom: "10px" }}>{couponError}</p>}
                         {couponDetails && (

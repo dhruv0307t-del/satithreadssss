@@ -27,10 +27,10 @@ export default function CouponsPage() {
     return (
         <div className="bg-[#efe9df] min-h-screen py-20 px-6">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-4xl md:text-5xl font-serif text-center mb-4 text-[#3d2415]">
+                <h1 className="text-4xl md:text-5xl font-['Vanger'] text-center mb-4 text-[#bf7e81]">
                     Exclusive Offers
                 </h1>
-                <p className="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
+                <p className="text-center text-[#bf7e81] mb-16 max-w-2xl mx-auto">
                     Grab the best deals on our handcrafted collection. Use these codes at checkout.
                 </p>
 
@@ -38,9 +38,9 @@ export default function CouponsPage() {
                     {coupons.map((coupon) => (
                         <div
                             key={coupon._id}
-                            className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition group"
+                            className="bg-[#ffe4e1] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition group"
                         >
-                            <div className="relative h-48 bg-gray-100">
+                            <div className="relative h-48 bg-[#ffe4e1]">
                                 {coupon.imageUrl ? (
                                     <Image
                                         src={coupon.imageUrl}
@@ -49,7 +49,7 @@ export default function CouponsPage() {
                                         className="object-cover"
                                     />
                                 ) : (
-                                    <div className="flex items-center justify-center h-full bg-black text-white text-3xl font-bold">
+                                    <div className="flex items-center justify-center h-full bg-[#bf7e81] text-[#ffe4e1] text-3xl font-bold">
                                         {coupon.discount}
                                         {coupon.type === "percent" ? "%" : " FLAT"} OFF
                                     </div>
@@ -57,22 +57,22 @@ export default function CouponsPage() {
                             </div>
 
                             <div className="p-6 text-center space-y-4">
-                                <h3 className="text-xl font-bold text-gray-800">
+                                <h3 className="text-xl font-bold text-[#bf7e81]">
                                     {coupon.discount}
                                     {coupon.type === "percent" ? "%" : "₹"} OFF
                                 </h3>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-[#bf7e81]">
                                     On orders above ₹{coupon.minCartValue}
                                 </p>
 
                                 <div
                                     onClick={() => copyToClipboard(coupon.code)}
-                                    className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg py-3 px-4 cursor-pointer hover:bg-gray-50 transition relative"
+                                    className="bg-[#ffe4e1] border-2 border-dashed border-[#bf7e81] rounded-lg py-3 px-4 cursor-pointer hover:bg-gray-50 transition relative"
                                 >
-                                    <span className="font-mono text-lg font-bold tracking-widest text-black">
+                                    <span className="font-mono text-lg font-bold tracking-widest text-[#bf7e81]">
                                         {coupon.code}
                                     </span>
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#bf7e81]">
                                         COPY
                                     </span>
                                 </div>
@@ -82,7 +82,7 @@ export default function CouponsPage() {
                 </div>
 
                 {coupons.length === 0 && (
-                    <div className="text-center text-gray-500 text-lg">
+                    <div className="text-center text-[#bf7e81] text-lg">
                         No active coupons at the moment. Check back later!
                     </div>
                 )}

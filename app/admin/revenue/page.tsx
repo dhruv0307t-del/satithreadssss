@@ -32,21 +32,21 @@ ChartJS.register(
 
 const GLOBAL_CSS = `
   :root {
-    --bg: #F2EFE0;
-    --card: #FFFFFF;
+    --bg: #ffe4e1;
+    --card: #ffe4e1;
     --green: #3A6B50;
     --green-light: #4D8C6A;
     --green-muted: #5A8F72;
-    --label: #7A8070;
-    --text: #1A1A14;
-    --text-sub: #6B7060;
+    --label: #bf7e81;
+    --text: #bf7e81;
+    --text-sub: #bf7e81;
     --border: rgba(58,107,80,0.10);
     --shadow: 0 2px 16px rgba(40,60,40,0.07), 0 1px 3px rgba(40,60,40,0.05);
     --shadow-lg: 0 8px 32px rgba(40,60,40,0.10), 0 2px 8px rgba(40,60,40,0.06);
     --red: #C0392B;
-    --red-soft: #FDECEA;
+    --red-soft: #ffe4e1;
     --amber: #C07A20;
-    --amber-soft: #FEF3E2;
+    --amber-soft: #ffe4e1;
     --radius: 18px;
     --radius-sm: 12px;
   }
@@ -72,7 +72,7 @@ const GLOBAL_CSS = `
     border: 1.5px solid var(--border); background: var(--card); color: var(--text-sub);
   }
   .filter-btn:hover { border-color: var(--green); color: var(--green); }
-  .filter-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .filter-btn.active { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 
   .section { margin-bottom: 36px; }
   .section-title {
@@ -102,7 +102,7 @@ const GLOBAL_CSS = `
     display: inline-flex; align-items: center; gap: 3px; margin-top: 8px;
     font-size: 12px; font-weight: 500; padding: 3px 8px; border-radius: 99px;
   }
-  .kpi-badge.up   { background: #E6F4EC; color: var(--green); }
+  .kpi-badge.up   { background: #ffe4e1; color: var(--green); }
   .kpi-badge.down { background: var(--red-soft); color: var(--red); }
   .kpi-badge.neutral { background: #F0F0EA; color: var(--label); }
 
@@ -153,7 +153,7 @@ const GLOBAL_CSS = `
   .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
 
   .loading-shimmer {
-    background: linear-gradient(90deg, #eee 25%, #f5f5f0 50%, #eee 75%);
+    background: linear-gradient(90deg, #eee 25%, #ffe4e1 50%, #eee 75%);
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
     border-radius: var(--radius-sm);
@@ -226,13 +226,13 @@ export default function RevenuePage() {
     scales: {
       x: {
         grid: { display: false },
-        ticks: { font: { family: "'DM Mono', monospace", size: 10 }, color: "#7A8070" },
+        ticks: { font: { family: "'DM Mono', monospace", size: 10 }, color: "#bf7e81" },
       },
       y: {
         grid: { color: "rgba(58,107,80,0.05)" },
         ticks: {
           font: { family: "'DM Mono', monospace", size: 10 },
-          color: "#7A8070",
+          color: "#bf7e81",
           callback: (v: any) => v >= 1000 ? `₹${(v / 1000).toFixed(0)}k` : `₹${v}`,
         },
       },

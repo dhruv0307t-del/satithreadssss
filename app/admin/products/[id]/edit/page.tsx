@@ -6,22 +6,22 @@ import Link from "next/link";
 
 const GLOBAL_CSS = `
 :root {
-  --bg: #F2EFE0;
-  --card: #FFFFFF;
+  --bg: #ffe4e1;
+  --card: #ffe4e1;
   --green: #3A6B50;
   --green-light: #5DA87A;
   --green-pale: #EAF4EE;
-  --label: #7A8070;
-  --text: #1A1A14;
-  --text-sub: #6B7060;
+  --label: #bf7e81;
+  --text: #bf7e81;
+  --text-sub: #bf7e81;
   --border: rgba(58,107,80,0.12);
   --border-focus: #3A6B50;
   --shadow: 0 2px 16px rgba(40,60,40,0.07), 0 1px 3px rgba(40,60,40,0.04);
   --shadow-lg: 0 8px 32px rgba(40,60,40,0.10);
   --red: #C0392B;
-  --red-soft: #FDECEA;
+  --red-soft: #ffe4e1;
   --amber: #B87620;
-  --amber-soft: #FEF3E2;
+  --amber-soft: #ffe4e1;
   --radius: 20px;
   --radius-sm: 12px;
   --radius-xs: 8px;
@@ -78,13 +78,13 @@ const GLOBAL_CSS = `
 .ap-field label .hint { font-size: 11px; font-weight: 400; color: var(--text-sub); margin-left: 6px; }
 .ap-field input, .ap-field textarea, .ap-field select {
   width: 100%; padding: 10px 13px; border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border); background: #FAFAF7;
+  border: 1.5px solid var(--border); background: #ffe4e1;
   font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text);
   outline: none; transition: border-color 0.17s, box-shadow 0.17s, background 0.17s;
   appearance: none; -webkit-appearance: none;
 }
 .ap-field input:focus, .ap-field textarea:focus, .ap-field select:focus {
-  border-color: var(--border-focus); background: #fff;
+  border-color: var(--border-focus); background: #ffe4e1;
   box-shadow: 0 0 0 3px rgba(58,107,80,0.08);
 }
 .ap-field textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
@@ -99,12 +99,12 @@ const GLOBAL_CSS = `
 
 /* ── Size selector ── */
 .ap-sizes-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.ap-size-btn { width: 54px; height: 54px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #FAFAF7; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+.ap-size-btn { width: 54px; height: 54px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #ffe4e1; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
 .ap-size-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-pale); }
-.ap-size-btn.selected { background: var(--green); color: #fff; border-color: var(--green); box-shadow: 0 2px 8px rgba(58,107,80,0.3); }
+.ap-size-btn.selected { background: var(--green); color: #ffe4e1; border-color: var(--green); box-shadow: 0 2px 8px rgba(58,107,80,0.3); }
 
 /* Stock per size table */
-.ap-size-stock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; padding: 16px; background: #F9F8F3; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.ap-size-stock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; padding: 16px; background: #ffe4e1; border-radius: var(--radius-sm); border: 1px solid var(--border); }
 .ap-size-stock-item label { font-size: 11px; font-weight: 600; color: var(--text-sub); display: block; margin-bottom: 4px; }
 
 /* ── Color tags ── */
@@ -113,10 +113,10 @@ const GLOBAL_CSS = `
 .ap-color-tag button { background: none; border: none; cursor: pointer; color: inherit; font-size: 14px; line-height: 1; padding: 0; opacity: 0.6; }
 .ap-color-input-row { display: flex; gap: 8px; align-items: center; }
 .ap-color-input-row input { flex: 1; }
-.ap-add-color-btn { padding: 10px 16px; border-radius: var(--radius-sm); background: var(--green); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; border: none; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.ap-add-color-btn { padding: 10px 16px; border-radius: var(--radius-sm); background: var(--green); color: #ffe4e1; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; border: none; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
 
 /* ── Toggle switch ── */
-.ap-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #FAFAF7; transition: border-color 0.15s, background 0.15s; cursor: pointer; }
+.ap-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #ffe4e1; transition: border-color 0.15s, background 0.15s; cursor: pointer; }
 .ap-toggle-row:hover { border-color: rgba(58,107,80,0.2); background: var(--green-pale); }
 .ap-toggle-row.active { border-color: rgba(58,107,80,0.3); background: var(--green-pale); }
 .ap-toggle-label { display: flex; align-items: center; gap: 10px; pointer-events: none; }
@@ -126,18 +126,18 @@ const GLOBAL_CSS = `
 .ap-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
 .ap-switch input { opacity: 0; width: 0; height: 0; }
 .ap-slider { position: absolute; inset: 0; background: #D0D5C8; border-radius: 99px; cursor: pointer; transition: background 0.2s; }
-.ap-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.ap-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #ffe4e1; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
 .ap-switch input:checked + .ap-slider { background: var(--green); }
 .ap-switch input:checked + .ap-slider::before { transform: translateX(20px); }
 
 /* ── Upload zone ── */
-.ap-upload-zone { border: 2px dashed rgba(58,107,80,0.25); border-radius: var(--radius-sm); background: #FAFAF7; text-align: center; padding: 28px 20px; cursor: pointer; transition: all 0.18s; position: relative; }
+.ap-upload-zone { border: 2px dashed rgba(58,107,80,0.25); border-radius: var(--radius-sm); background: #ffe4e1; text-align: center; padding: 28px 20px; cursor: pointer; transition: all 0.18s; position: relative; }
 .ap-upload-zone:hover { border-color: var(--green); background: var(--green-pale); }
 .ap-upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .ap-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 8px; margin-top: 12px; }
 .ap-preview-thumb { position: relative; width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); background: var(--bg); }
 .ap-preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.ap-remove-img { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,0.55); color: #fff; border: none; cursor: pointer; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+.ap-remove-img { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,0.55); color: #ffe4e1; border: none; cursor: pointer; font-size: 11px; display: flex; align-items: center; justify-content: center; }
 
 /* ── Sticky footer ── */
 .ap-form-footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 13px 32px; display: flex; align-items: center; justify-content: space-between; z-index: 50; }
@@ -146,15 +146,15 @@ const GLOBAL_CSS = `
 .ap-btn-ghost { background: transparent; color: var(--text-sub); border: 1.5px solid var(--border); }
 .ap-btn-ghost:hover { border-color: var(--green); color: var(--green); }
 .ap-btn-danger { background: var(--red-soft); color: var(--red); border: 1.5px solid rgba(192,57,43,0.18); }
-.ap-btn-danger:hover { background: var(--red); color: #fff; }
-.ap-btn-primary { background: var(--green); color: #fff; box-shadow: 0 2px 10px rgba(58,107,80,0.25); }
+.ap-btn-danger:hover { background: var(--red); color: #ffe4e1; }
+.ap-btn-primary { background: var(--green); color: #ffe4e1; box-shadow: 0 2px 10px rgba(58,107,80,0.25); }
 .ap-btn-primary:hover { background: #2e5640; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(58,107,80,0.3); }
 .ap-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 /* ── Toast ── */
 .ap-toast { position: fixed; bottom: 80px; right: 24px; padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 600; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.15); font-family: 'DM Sans', sans-serif; }
-.ap-toast.success { background: var(--green); color: #fff; }
-.ap-toast.error { background: var(--red); color: #fff; }
+.ap-toast.success { background: var(--green); color: #ffe4e1; }
+.ap-toast.error { background: var(--red); color: #ffe4e1; }
 
 @keyframes apFadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 

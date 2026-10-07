@@ -12,7 +12,7 @@ const DROPDOWN_CSS = `
   top: calc(100% + 12px);
   right: -10px;
   width: 288px;
-  background: #FFFFFF;
+  background: #ffe4e1;
   border-radius: 18px;
   border: 1px solid rgba(58,107,80,0.10);
   box-shadow: 0 8px 40px rgba(40,60,40,0.13), 0 2px 8px rgba(40,60,40,0.07);
@@ -42,7 +42,7 @@ const DROPDOWN_CSS = `
   background: #3A6B50;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 700;
-  color: #fff;
+  color: #ffe4e1;
   flex-shrink: 0;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 8px rgba(58,107,80,0.25);
@@ -55,7 +55,7 @@ const DROPDOWN_CSS = `
 .ad-user-name {
   font-size: 14px;
   font-weight: 600;
-  color: #1A1A14;
+  color: #bf7e81;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,7 +63,7 @@ const DROPDOWN_CSS = `
 }
 .ad-user-email {
   font-size: 11.5px;
-  color: #6B7060;
+  color: #bf7e81;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -93,7 +93,7 @@ const DROPDOWN_CSS = `
   padding: 10px 10px;
   border-radius: 10px;
   text-decoration: none;
-  color: #1A1A14;
+  color: #bf7e81;
   transition: background 0.13s;
   cursor: pointer;
   border: none;
@@ -103,12 +103,12 @@ const DROPDOWN_CSS = `
   text-align: left;
 }
 .ad-menu-item:hover {
-  background: #F2EFE0;
+  background: #ffe4e1;
 }
 .ad-item-icon {
   width: 32px; height: 32px;
   border-radius: 8px;
-  background: #F2EFE0;
+  background: #ffe4e1;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: background 0.13s;
@@ -122,12 +122,12 @@ const DROPDOWN_CSS = `
 .ad-item-label {
   font-size: 13px;
   font-weight: 600;
-  color: #1A1A14;
+  color: #bf7e81;
   line-height: 1.2;
 }
 .ad-item-desc {
   font-size: 11px;
-  color: #7A8070;
+  color: #bf7e81;
   margin-top: 1px;
 }
 .ad-item-arrow {
@@ -154,13 +154,13 @@ const DROPDOWN_CSS = `
 .ad-menu-item.logout .ad-item-label { color: #C0392B; }
 .ad-menu-item.logout .ad-item-desc { color: #D47A72; }
 .ad-menu-item.logout .ad-item-icon {
-  background: #FDECEA;
+  background: #ffe4e1;
 }
 .ad-menu-item.logout:hover {
   background: #FFF5F5;
 }
 .ad-menu-item.logout:hover .ad-item-icon {
-  background: #FDECEA;
+  background: #ffe4e1;
 }
 .ad-menu-item.logout .ad-item-arrow { color: #E8A09A; }
 .ad-menu-item.logout:hover .ad-item-arrow { color: #C0392B; transform: translateX(2px); }

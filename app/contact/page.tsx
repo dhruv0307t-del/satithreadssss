@@ -275,9 +275,9 @@ export default function ContactPage() {
                 :root {
                     --terracotta: #D4695B;
                     --deep-rust: #8B4513;
-                    --sand: #F4E8D8;
-                    --warm-cream: #FFF8F0;
-                    --charcoal: #2C2C2C;
+                    --sand: #ffe4e1;
+                    --warm-cream: #ffe4e1;
+                    --charcoal: #bf7e81;
                     --gold: #C9A961;
                     --sage: #8B9D83;
                 }
@@ -317,7 +317,7 @@ export default function ContactPage() {
                 }
 
                 .contact-nav-links li {
-                    font-family: 'Cormorant Garamond', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.1rem;
                     font-weight: 500;
                     color: var(--charcoal);
@@ -367,7 +367,7 @@ export default function ContactPage() {
                 }
 
                 .contact-hero h1 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 4.5rem;
                     font-weight: 700;
                     color: var(--charcoal);
@@ -440,7 +440,7 @@ export default function ContactPage() {
                 }
 
                 .info-card h2 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 2.5rem;
                     margin-bottom: 1.5rem;
                     position: relative;
@@ -538,7 +538,7 @@ export default function ContactPage() {
 
                 /* Contact Form */
                 .contact-form-card {
-                    background: white;
+                    background: #ffe4e1;
                     padding: 3rem;
                     border-radius: 20px;
                     box-shadow: 0 20px 60px rgba(0,0,0,0.08);
@@ -561,7 +561,7 @@ export default function ContactPage() {
                 }
 
                 .form-header h2 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 2rem;
                     color: var(--charcoal);
                     margin-bottom: 0.5rem;
@@ -623,7 +623,7 @@ export default function ContactPage() {
                 .form-group textarea {
                     width: 100%;
                     padding: 1rem 1.5rem;
-                    font-family: 'Cormorant Garamond', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.1rem;
                     border: 2px solid #e0e0e0;
                     border-radius: 12px;
@@ -636,7 +636,7 @@ export default function ContactPage() {
                 .form-group textarea:focus {
                     outline: none;
                     border-color: var(--terracotta);
-                    background: white;
+                    background: #ffe4e1;
                     box-shadow: 0 5px 20px rgba(212, 105, 91, 0.1);
                     transform: translateY(-2px);
                 }
@@ -668,7 +668,7 @@ export default function ContactPage() {
                 .btn-submit {
                     flex: 1;
                     padding: 1.3rem 3rem;
-                    font-family: 'Cormorant Garamond', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.2rem;
                     font-weight: 600;
                     color: var(--warm-cream);
@@ -724,7 +724,7 @@ export default function ContactPage() {
                 }
 
                 .info-box {
-                    background: white;
+                    background: #ffe4e1;
                     padding: 2rem;
                     border-radius: 15px;
                     text-align: center;
@@ -744,7 +744,7 @@ export default function ContactPage() {
                 }
 
                 .info-box h3 {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Vanger', serif;
                     font-size: 1.3rem;
                     color: var(--charcoal);
                     margin-bottom: 0.8rem;

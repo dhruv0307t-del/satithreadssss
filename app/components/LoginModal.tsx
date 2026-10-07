@@ -260,7 +260,7 @@ export default function LoginModal() {
                                 border: "1px solid #D1D5DB",
                                 borderRadius: "8px",
                                 fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
+                                backgroundColor: "#ffe4e1",
                                 color: "#1F2937",
                                 outline: "none",
                                 transition: "all 0.2s",
@@ -283,7 +283,7 @@ export default function LoginModal() {
                             border: "1px solid #D1D5DB",
                             borderRadius: "8px",
                             fontSize: "15px",
-                            backgroundColor: "#FFFFFF",
+                            backgroundColor: "#ffe4e1",
                             color: "#1F2937",
                             outline: "none",
                             transition: "all 0.2s",
@@ -305,7 +305,7 @@ export default function LoginModal() {
                                 border: "1px solid #D1D5DB",
                                 borderRadius: "8px",
                                 fontSize: "15px",
-                                backgroundColor: "#FFFFFF",
+                                backgroundColor: "#ffe4e1",
                                 color: "#1F2937",
                                 outline: "none",
                                 transition: "border-color 0.2s",
@@ -351,7 +351,7 @@ export default function LoginModal() {
                                     border: "1px solid #D1D5DB",
                                     borderRadius: "8px",
                                     fontSize: "15px",
-                                    backgroundColor: "#FFFFFF",
+                                    backgroundColor: "#ffe4e1",
                                     color: "#1F2937",
                                     outline: "none",
                                     transition: "border-color 0.2s",
@@ -427,7 +427,7 @@ export default function LoginModal() {
                             width: "100%",
                             padding: "14px",
                             backgroundColor: "#2C3E50",
-                            color: "#FFFFFF",
+                            color: "#ffe4e1",
                             border: "none",
                             borderRadius: "8px",
                             fontSize: "14px",
@@ -488,7 +488,7 @@ export default function LoginModal() {
                     style={{
                         width: "100%",
                         padding: "14px",
-                        backgroundColor: "#FFFFFF",
+                        backgroundColor: "#ffe4e1",
                         color: "#1F2937",
                         border: "1px solid #D1D5DB",
                         borderRadius: "8px",
@@ -503,7 +503,7 @@ export default function LoginModal() {
                         e.currentTarget.style.borderColor = "#9CA3AF";
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "#FFFFFF";
+                        e.currentTarget.style.backgroundColor = "#ffe4e1";
                         e.currentTarget.style.borderColor = "#D1D5DB";
                     }}
                 >

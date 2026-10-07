@@ -2,7 +2,7 @@
 
 .category-products-section {
     padding: 60px 0 100px 0;
-    background: #FFF7EC;
+    background: #ffe4e1;
 }
 
 .cp-container {
@@ -21,7 +21,7 @@
 
 /* Product Card */
 .cp-product-card {
-    background: white;
+    background: #ffe4e1;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(61, 36, 21, 0.1);
@@ -57,7 +57,7 @@
     position: relative;
     aspect-ratio: 3/4;
     overflow: hidden;
-    background: #f5f5f5;
+    background: #ffe4e1;
 }
 
 .cp-product-image {
@@ -98,8 +98,8 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    background: linear-gradient(135deg, #D4A574 0%, #C99156 100%);
-    color: #2d1810;
+    background: linear-gradient(135deg, #bf7e81 0%, #bf7e81 100%);
+    color: #bf7e81;
     padding: 8px 18px;
     border-radius: 30px;
     font-size: 13px;
@@ -111,13 +111,13 @@
 }
 
 .cp-product-badge.sold-out {
-    background: linear-gradient(135deg, #999 0%, #666 100%);
-    color: white;
+    background: linear-gradient(135deg, #bf7e81 0%, #bf7e81 100%);
+    color: #ffe4e1;
 }
 
 .cp-product-badge.sale {
     background: linear-gradient(135deg, #E63946 0%, #D62828 100%);
-    color: white;
+    color: #ffe4e1;
 }
 
 /* Quick Actions */
@@ -142,7 +142,7 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: white;
+    background: #ffe4e1;
     border: none;
     cursor: pointer;
     display: flex;
@@ -155,8 +155,8 @@
 
 .cp-quick-action-btn:hover {
     transform: scale(1.15);
-    background: #3d2415;
-    color: white;
+    background: #bf7e81;
+    color: #ffe4e1;
 }
 
 /* Product Info */
@@ -165,10 +165,10 @@
 }
 
 .cp-product-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Vanger', serif;
     font-size: 20px;
     font-weight: 600;
-    color: #3d2415;
+    color: #bf7e81;
     margin-bottom: 8px;
     transition: color 0.3s ease;
     cursor: pointer;
@@ -181,7 +181,7 @@
 }
 
 .cp-product-title:hover {
-    color: #D4A574;
+    color: #bf7e81;
 }
 
 .cp-product-rating {
@@ -200,7 +200,7 @@
 
 .cp-rating-count {
     font-size: 13px;
-    color: #999;
+    color: #bf7e81;
 }
 
 /* Price */
@@ -215,12 +215,12 @@
 .cp-current-price {
     font-size: 26px;
     font-weight: 700;
-    color: #D4A574;
+    color: #bf7e81;
 }
 
 .cp-original-price {
     font-size: 16px;
-    color: #999;
+    color: #bf7e81;
     text-decoration: line-through;
 }
 
@@ -240,7 +240,7 @@
 
 .cp-size-label {
     font-size: 12px;
-    color: #666;
+    color: #bf7e81;
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -254,19 +254,19 @@
     border-radius: 10px;
     font-size: 14px;
     font-family: 'Lato', sans-serif;
-    color: #3d2415;
-    background: white;
+    color: #bf7e81;
+    background: #ffe4e1;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .cp-size-select:hover {
-    border-color: #D4A574;
+    border-color: #bf7e81;
 }
 
 .cp-size-select:focus {
     outline: none;
-    border-color: #D4A574;
+    border-color: #bf7e81;
     box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
 }
 
@@ -274,8 +274,8 @@
 .cp-add-to-cart-btn {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #3d2415 0%, #2d1810 100%);
-    color: white;
+    background: linear-gradient(135deg, #bf7e81 0%, #bf7e81 100%);
+    color: #ffe4e1;
     border: none;
     border-radius: 12px;
     font-size: 14px;

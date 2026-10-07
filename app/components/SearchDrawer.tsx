@@ -181,7 +181,7 @@ export default function SearchDrawer() {
           right: 0;
           width: 480px;
           height: 100vh;
-          background: white;
+          background: #ffe4e1;
           z-index: 1501;
           transform: translateX(100%);
           transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -201,17 +201,17 @@ export default function SearchDrawer() {
           align-items: center;
         }
         .sd-header-title {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Vanger', serif;
           font-size: 24px;
           font-weight: 600;
-          color: #3b1f23;
+          color: #bf7e81;
         }
         .sd-close {
           background: none;
           border: none;
           font-size: 20px;
           cursor: pointer;
-          color: #3b1f23;
+          color: #bf7e81;
           padding: 4px;
         }
 
@@ -233,7 +233,7 @@ export default function SearchDrawer() {
         .sd-input {
           width: 100%;
           padding: 14px 44px 14px 16px;
-          border: 2px solid #3b1f23;
+          border: 2px solid #bf7e81;
           border-radius: 4px;
           font-size: 16px;
           outline: none;
@@ -245,7 +245,7 @@ export default function SearchDrawer() {
           top: 50%;
           transform: translateY(-50%);
           font-size: 20px;
-          color: #3b1f23;
+          color: #bf7e81;
         }
 
         .sd-section {
@@ -262,8 +262,8 @@ export default function SearchDrawer() {
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 1.5px;
-          color: #3b1f23;
-          border-bottom: 2px solid #3b1f23;
+          color: #bf7e81;
+          border-bottom: 2px solid #bf7e81;
           padding-bottom: 4px;
           display: inline-block;
         }
@@ -275,14 +275,14 @@ export default function SearchDrawer() {
         }
         .sd-suggestion-item {
           font-size: 16px;
-          color: #666;
+          color: #bf7e81;
           cursor: pointer;
           transition: color 0.2s;
           padding: 4px 0;
           border-bottom: 1px dotted #ccc;
         }
         .sd-suggestion-item:hover {
-          color: #3b1f23;
+          color: #bf7e81;
         }
 
         .sd-results {
@@ -317,7 +317,7 @@ export default function SearchDrawer() {
         .sd-product-name {
           font-size: 15px;
           font-weight: 500;
-          color: #333;
+          color: #bf7e81;
           margin: 0;
           line-height: 1.4;
         }
@@ -327,8 +327,8 @@ export default function SearchDrawer() {
           gap: 8px;
           font-size: 12px;
         }
-        .sd-stars { color: #000; }
-        .sd-reviews { color: #666; }
+        .sd-stars { color: #bf7e81; }
+        .sd-reviews { color: #bf7e81; }
         .sd-product-price {
           display: flex;
           gap: 8px;
@@ -337,20 +337,20 @@ export default function SearchDrawer() {
         }
         .sd-price-old {
           text-decoration: line-through;
-          color: #999;
+          color: #bf7e81;
           font-size: 13px;
         }
         .sd-price-new {
           font-weight: 700;
-          color: #333;
+          color: #bf7e81;
           font-size: 16px;
         }
         .sd-quick-view {
           margin-top: auto;
           padding: 8px 16px;
-          border: 1px solid #333;
-          background: white;
-          color: #333;
+          border: 1px solid #bf7e81;
+          background: #ffe4e1;
+          color: #bf7e81;
           font-size: 14px;
           font-weight: 500;
           cursor: pointer;
@@ -358,15 +358,15 @@ export default function SearchDrawer() {
           width: fit-content;
         }
         .sd-quick-view:hover {
-          background: #333;
-          color: white;
+          background: #bf7e81;
+          color: #ffe4e1;
         }
 
         .sd-loading-spinner {
           width: 16px;
           height: 16px;
           border: 2px solid #E5DDD3;
-          border-top: 2px solid #3b1f23;
+          border-top: 2px solid #bf7e81;
           border-radius: 50%;
           animation: spin 0.8s linear infinite;
         }
@@ -374,7 +374,7 @@ export default function SearchDrawer() {
 
         .sd-no-results {
           padding: 20px 0;
-          color: #999;
+          color: #bf7e81;
           font-style: italic;
         }
 

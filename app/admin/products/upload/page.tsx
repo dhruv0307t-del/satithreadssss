@@ -80,27 +80,27 @@ export default function BulkUploadPage() {
     };
 
     return (
-        <div className="admin-main text-black min-h-screen p-10 bg-[#f8f5f2]">
+        <div className="admin-main text-[#bf7e81] min-h-screen p-10 bg-[#f8f5f2]">
             {/* HEADER */}
             <div className="flex justify-between items-end mb-10">
                 <div>
-                    <h1 className="text-4xl font-serif font-bold text-[#3b1f23]">
+                    <h1 className="text-4xl font-['Vanger'] font-bold text-[#bf7e81]">
                         Bulk Upload Products
                     </h1>
-                    <p className="text-black/60 mt-2">
+                    <p className="text-[#bf7e81]/60 mt-2">
                         Upload multiple products instantly using Excel or CSV.
                     </p>
                 </div>
 
                 <div className="flex gap-4">
                     <Link href="/admin/products">
-                        <button className="px-6 py-3 border border-[#3b1f23] rounded-xl text-[#3b1f23] hover:bg-[#3b1f23] hover:text-white transition-all">
+                        <button className="px-6 py-3 border border-[#bf7e81] rounded-xl text-[#bf7e81] hover:bg-[#bf7e81] hover:text-[#ffe4e1] transition-all">
                             Cancel
                         </button>
                     </Link>
                     <button
                         onClick={downloadTemplate}
-                        className="px-6 py-3 bg-[#3b1f23] text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+                        className="px-6 py-3 bg-[#bf7e81] text-[#ffe4e1] rounded-xl shadow-lg hover:shadow-xl transition-all"
                     >
                         Download Template
                     </button>
@@ -108,21 +108,21 @@ export default function BulkUploadPage() {
             </div>
 
             {/* UPLOAD BOX */}
-            <div className="bg-white p-10 rounded-2xl shadow-sm border border-[#e5e5e5] text-center mb-10">
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 hover:border-[#3b1f23] transition-colors">
-                    <p className="text-lg font-medium text-gray-700 mb-4">
+            <div className="bg-[#ffe4e1] p-10 rounded-2xl shadow-sm border border-[#e5e5e5] text-center mb-10">
+                <div className="border-2 border-dashed border-[#bf7e81] rounded-xl p-10 hover:border-[#bf7e81] transition-colors">
+                    <p className="text-lg font-medium text-[#bf7e81] mb-4">
                         Drag and drop your Excel file here, or click to selecting
                     </p>
                     <input
                         type="file"
                         accept=".xlsx, .xls, .csv"
                         onChange={handleFileUpload}
-                        className="block w-full text-sm text-gray-500
+                        className="block w-full text-sm text-[#bf7e81]
               file:mr-4 file:py-3 file:px-6
               file:rounded-full file:border-0
               file:text-sm file:font-semibold
-              file:bg-[#3b1f23]/10 file:text-[#3b1f23]
-              hover:file:bg-[#3b1f23]/20
+              file:bg-[#bf7e81]/10 file:text-[#bf7e81]
+              hover:file:bg-[#bf7e81]/20
               cursor-pointer mx-auto max-w-sm
             "
                     />
@@ -131,13 +131,13 @@ export default function BulkUploadPage() {
 
             {/* PREVIEW TABLE */}
             {data.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm border border-[#e5e5e5] overflow-hidden">
-                    <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+                <div className="bg-[#ffe4e1] rounded-2xl shadow-sm border border-[#e5e5e5] overflow-hidden">
+                    <div className="p-6 border-b border-[#bf7e81] flex justify-between items-center">
                         <h3 className="text-xl font-bold">Preview Data ({data.length})</h3>
                         <button
                             onClick={uploadProducts}
                             disabled={loading}
-                            className="px-8 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all disabled:opacity-50"
+                            className="px-8 py-3 bg-green-600 text-[#ffe4e1] rounded-xl font-bold hover:bg-green-700 transition-all disabled:opacity-50"
                         >
                             {loading ? "Uploading..." : "Confirm & Upload"}
                         </button>
@@ -145,7 +145,7 @@ export default function BulkUploadPage() {
                     <div className="overflow-x-auto max-h-[500px]">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-gray-50 text-gray-600 text-sm uppercase tracking-wider">
+                                <tr className="bg-gray-50 text-[#bf7e81] text-sm uppercase tracking-wider">
                                     <th className="p-4 border-b">Name</th>
                                     <th className="p-4 border-b">Category</th>
                                     <th className="p-4 border-b">Price</th>
@@ -160,7 +160,7 @@ export default function BulkUploadPage() {
                                         <td className="p-4">{row.Category}</td>
                                         <td className="p-4">₹{row.Price}</td>
                                         <td className="p-4">{row.Sizes}</td>
-                                        <td className="p-4 truncate max-w-[200px] text-gray-400">
+                                        <td className="p-4 truncate max-w-[200px] text-[#bf7e81]">
                                             {row.MainImage}
                                         </td>
                                     </tr>

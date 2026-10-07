@@ -319,7 +319,7 @@ export default function CouponsPage() {
                 }
 
                 .coup-page-title {
-                    font-family: 'DM Serif Display', Georgia, serif;
+                    font-family: 'Vanger', Georgia, serif;
                     font-size: 30px;
                     font-weight: 400;
                     color: var(--adm-text) !important;
@@ -444,7 +444,7 @@ export default function CouponsPage() {
                     width: 100%;
                     padding: 11px;
                     background: var(--adm-accent);
-                    color: #fff !important;
+                    color: #ffe4e1 !important;
                     border: none;
                     border-radius: 10px;
                     font-size: 13px;
@@ -662,7 +662,7 @@ export default function CouponsPage() {
 
                 .coup-lightbox-inner {
                     position: relative;
-                    background: #fff;
+                    background: #ffe4e1;
                     border-radius: 16px;
                     padding: 12px;
                     max-width: 480px;
@@ -686,8 +686,8 @@ export default function CouponsPage() {
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
-                    background: #1e1e1a;
-                    color: #fff;
+                    background: #bf7e81;
+                    color: #ffe4e1;
                     border: none;
                     cursor: pointer;
                     font-size: 14px;

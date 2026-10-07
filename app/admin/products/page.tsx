@@ -6,21 +6,21 @@ import { useRouter } from "next/navigation";
 
 const GLOBAL_CSS = `
 :root {
-  --bg: #F2EFE0;
-  --card: #FFFFFF;
+  --bg: #ffe4e1;
+  --card: #ffe4e1;
   --green: #3A6B50;
   --green-light: #5DA87A;
   --green-pale: #EAF4EE;
-  --label: #7A8070;
-  --text: #1A1A14;
-  --text-sub: #6B7060;
+  --label: #bf7e81;
+  --text: #bf7e81;
+  --text-sub: #bf7e81;
   --border: rgba(58,107,80,0.10);
   --shadow: 0 2px 16px rgba(40,60,40,0.07), 0 1px 3px rgba(40,60,40,0.04);
   --shadow-lg: 0 16px 56px rgba(40,60,40,0.15), 0 4px 14px rgba(40,60,40,0.08);
   --red: #C0392B;
-  --red-soft: #FDECEA;
+  --red-soft: #ffe4e1;
   --amber: #B87620;
-  --amber-soft: #FEF3E2;
+  --amber-soft: #ffe4e1;
   --radius: 20px;
   --radius-sm: 12px;
 }
@@ -34,12 +34,12 @@ const GLOBAL_CSS = `
 .p-header p { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
 .p-header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .p-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.17s; text-decoration: none; }
-.p-btn-primary { background: var(--green); color: #fff; }
+.p-btn-primary { background: var(--green); color: #ffe4e1; }
 .p-btn-primary:hover { background: #2e5640; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(58,107,80,0.3); }
 .p-btn-ghost { background: var(--card); color: var(--text-sub); border: 1.5px solid var(--border); }
 .p-btn-ghost:hover { border-color: var(--green); color: var(--green); }
 .p-btn-danger { background: var(--red-soft); color: var(--red); border: 1.5px solid rgba(192,57,43,0.18); }
-.p-btn-danger:hover { background: var(--red); color: #fff; }
+.p-btn-danger:hover { background: var(--red); color: #ffe4e1; }
 
 /* ── Stats strip ── */
 .p-stats-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; animation: pFadeUp 0.35s ease both; }
@@ -50,7 +50,7 @@ const GLOBAL_CSS = `
 .p-s-val.amber { color: var(--amber); }
 .p-s-val.red { color: var(--red); }
 .p-s-badge { display: inline-flex; align-items: center; gap: 3px; margin-top: 6px; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
-.p-s-badge.up { background: #E6F4EC; color: var(--green); }
+.p-s-badge.up { background: #ffe4e1; color: var(--green); }
 .p-s-badge.warn { background: var(--amber-soft); color: var(--amber); }
 .p-s-badge.neutral { background: #F0F0EA; color: var(--label); }
 
@@ -63,11 +63,11 @@ const GLOBAL_CSS = `
 .p-filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
 .p-filter-pill { padding: 8px 14px; border-radius: 99px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1.5px solid var(--border); background: var(--card); color: var(--text-sub); transition: all 0.15s; font-family: 'DM Sans', sans-serif; white-space: nowrap; box-shadow: var(--shadow); }
 .p-filter-pill:hover { border-color: var(--green); color: var(--green); }
-.p-filter-pill.active { background: var(--green); color: #fff; border-color: var(--green); }
+.p-filter-pill.active { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 .p-sort-select { padding: 9px 14px; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 12px; border: 1.5px solid var(--border); background: var(--card); color: var(--text-sub); outline: none; cursor: pointer; box-shadow: var(--shadow); }
 .p-view-toggle { display: flex; gap: 3px; background: var(--card); border: 1.5px solid var(--border); border-radius: 99px; padding: 3px; box-shadow: var(--shadow); }
 .p-view-btn { width: 30px; height: 30px; border-radius: 99px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-sub); transition: all 0.14s; }
-.p-view-btn.active { background: var(--green); color: #fff; }
+.p-view-btn.active { background: var(--green); color: #ffe4e1; }
 
 /* ── Bulk action bar ── */
 .p-bulk-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--green-pale); border-radius: var(--radius-sm); margin-bottom: 12px; border: 1.5px solid rgba(58,107,80,0.15); transition: opacity 0.2s; }
@@ -96,7 +96,7 @@ const GLOBAL_CSS = `
 .p-prod-name-btn { font-size: 13.5px; font-weight: 600; color: var(--green); background: none; border: none; font-family: 'DM Sans', sans-serif; cursor: pointer; padding: 0; text-align: left; transition: color 0.14s; display: block; }
 .p-prod-name-btn:hover { color: var(--green-light); }
 .p-prod-type { font-size: 11px; color: var(--text-sub); margin-top: 2px; text-transform: capitalize; }
-.p-prod-sku { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--label); background: #F5F5F0; padding: 2px 6px; border-radius: 5px; margin-top: 3px; display: inline-block; }
+.p-prod-sku { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--label); background: #ffe4e1; padding: 2px 6px; border-radius: 5px; margin-top: 3px; display: inline-block; }
 
 /* ── Category badge ── */
 .p-cat-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 99px; font-size: 11px; font-weight: 600; background: var(--green-pale); color: var(--green); white-space: nowrap; text-transform: capitalize; }
@@ -104,7 +104,7 @@ const GLOBAL_CSS = `
 /* ── Price ── */
 .p-price-cell { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600; color: var(--text); }
 .p-price-mrp { font-size: 11px; color: var(--text-sub); text-decoration: line-through; margin-top: 2px; font-family: 'DM Mono', monospace; }
-.p-discount-chip { font-size: 10px; font-weight: 600; background: #E6F4EC; color: var(--green); padding: 1px 6px; border-radius: 5px; margin-top: 2px; display: inline-block; }
+.p-discount-chip { font-size: 10px; font-weight: 600; background: #ffe4e1; color: var(--green); padding: 1px 6px; border-radius: 5px; margin-top: 2px; display: inline-block; }
 
 /* ── Stock ── */
 .p-stock-wrap { display: flex; flex-direction: column; gap: 3px; align-items: center; }
@@ -115,7 +115,7 @@ const GLOBAL_CSS = `
 /* ── Status badge ── */
 .p-status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
 .p-status-badge::before { content: '●'; font-size: 7px; }
-.p-sb-active { background: #E6F4EC; color: var(--green); }
+.p-sb-active { background: #ffe4e1; color: var(--green); }
 .p-sb-draft { background: #F0F0EA; color: var(--label); }
 .p-sb-out { background: var(--red-soft); color: var(--red); }
 
@@ -145,7 +145,7 @@ const GLOBAL_CSS = `
 .p-page-info { font-size: 12px; color: var(--text-sub); }
 .p-page-btns { display: flex; gap: 4px; }
 .p-page-btn { width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card); font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; color: var(--text-sub); transition: all 0.13s; display: flex; align-items: center; justify-content: center; }
-.p-page-btn:hover, .p-page-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+.p-page-btn:hover, .p-page-btn.active { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 
 /* ═══ PRODUCT DETAIL MODAL ═══ */
 .p-overlay { position: fixed; inset: 0; background: rgba(15,25,15,0.38); backdrop-filter: blur(5px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.22s; }
@@ -154,7 +154,7 @@ const GLOBAL_CSS = `
 .p-overlay.open .p-modal { transform: none; }
 .p-modal-hero { display: grid; grid-template-columns: 200px 1fr; background: linear-gradient(135deg, #EAF4EE 0%, #F8F6EC 100%); border-bottom: 1px solid var(--border); position: relative; min-height: 200px; }
 .p-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-sub); transition: all 0.15s; font-size: 14px; z-index: 1; }
-.p-modal-close:hover { background: var(--green); color: #fff; border-color: var(--green); }
+.p-modal-close:hover { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 .p-modal-hero-img { width: 200px; height: 200px; object-fit: cover; display: block; }
 .p-modal-hero-img-ph { width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: linear-gradient(135deg, var(--green-pale), rgba(93,168,122,0.2)); }
 .p-modal-hero-info { padding: 22px 52px 22px 22px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -169,7 +169,7 @@ const GLOBAL_CSS = `
 .p-modal-section-title { font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--label); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 .p-modal-section-title::after { content:''; flex:1; height:1px; background: var(--border); }
 .p-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.p-ms { background: #F9F8F3; border-radius: var(--radius-sm); padding: 13px 15px; border: 1px solid var(--border); }
+.p-ms { background: #ffe4e1; border-radius: var(--radius-sm); padding: 13px 15px; border: 1px solid var(--border); }
 .p-ms-label { font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--label); margin-bottom: 4px; }
 .p-ms-val { font-size: 18px; font-weight: 700; color: var(--green); letter-spacing: -0.3px; }
 .p-info-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(58,107,80,0.06); gap: 12px; }
@@ -292,7 +292,7 @@ export default function ProductsPage() {
   };
 
   if (loading) return (
-    <div style={{ padding: '40px', fontFamily: 'DM Sans, sans-serif', color: '#7A8070' }}>
+    <div style={{ padding: '40px', fontFamily: 'DM Sans, sans-serif', color: '#bf7e81' }}>
       Loading products...
     </div>
   );
@@ -626,7 +626,7 @@ export default function ProductsPage() {
             <div className="p-confirm-sub">Are you sure you want to delete "{deleteTarget.name}"? This action cannot be undone.</div>
             <div className="p-confirm-btns">
               <button className="p-btn p-btn-ghost" onClick={() => setDeleteTarget(null)}>Cancel</button>
-              <button className="p-btn p-btn-danger" style={{ background: 'var(--red)', color: '#fff', border: 'none' }} onClick={() => handleDelete(deleteTarget)}>
+              <button className="p-btn p-btn-danger" style={{ background: 'var(--red)', color: '#ffe4e1', border: 'none' }} onClick={() => handleDelete(deleteTarget)}>
                 Yes, Delete
               </button>
             </div>

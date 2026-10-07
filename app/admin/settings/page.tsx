@@ -101,7 +101,7 @@ export default function AdminSettingsPage() {
 
                 .sets-banner-icon {
                     width: 44px; height: 44px;
-                    background: #ffffff;
+                    background: #ffe4e1;
                     border: 1px solid #ddd8cc;
                     border-radius: 12px;
                     display: flex; align-items: center; justify-content: center;
@@ -109,9 +109,9 @@ export default function AdminSettingsPage() {
                 }
 
                 .sets-page-title {
-                    font-family: 'DM Serif Display', Georgia, serif;
+                    font-family: 'Vanger', Georgia, serif;
                     font-size: 34px;
-                    color: #1e1e1a;
+                    color: #bf7e81;
                     font-weight: 400;
                     letter-spacing: -0.5px;
                 }
@@ -127,11 +127,11 @@ export default function AdminSettingsPage() {
                     font-size: 12px; color: #9a9488; margin-bottom: 28px;
                 }
 
-                .sets-breadcrumb .sets-bc-active { color: #1e1e1a; }
+                .sets-breadcrumb .sets-bc-active { color: #bf7e81; }
                 .sets-breadcrumb .sets-bc-sep    { color: #ddd8cc; }
 
                 .sets-card {
-                    background: #ffffff;
+                    background: #ffe4e1;
                     border: 1px solid #ddd8cc;
                     border-radius: 16px;
                     overflow: hidden;
@@ -146,10 +146,10 @@ export default function AdminSettingsPage() {
                 }
 
                 .sets-card-title {
-                    font-family: 'DM Serif Display', Georgia, serif;
+                    font-family: 'Vanger', Georgia, serif;
                     font-size: 22px;
                     font-weight: 400;
-                    color: #1e1e1a;
+                    color: #bf7e81;
                     letter-spacing: -0.3px;
                 }
 
@@ -204,14 +204,14 @@ export default function AdminSettingsPage() {
                     color: #6b6660;
                 }
 
-                .sets-logged-in strong { color: #1e1e1a; font-weight: 500; }
+                .sets-logged-in strong { color: #bf7e81; font-weight: 500; }
                 .sets-logged-in svg { flex-shrink: 0; color: #4a6741; }
 
                 .sets-form-fields { display: flex; flex-direction: column; gap: 20px; }
 
                 .sets-field { display: flex; flex-direction: column; gap: 6px; }
 
-                .sets-field-label  { font-size: 13px; font-weight: 500; color: #1e1e1a; }
+                .sets-field-label  { font-size: 13px; font-weight: 500; color: #bf7e81; }
                 .sets-field-hint   { font-size: 11px; color: #9a9488; }
 
                 .sets-input-wrap { position: relative; }
@@ -219,12 +219,12 @@ export default function AdminSettingsPage() {
                 .sets-input {
                     width: 100%;
                     padding: 11px 44px 11px 14px;
-                    background: #ffffff;
+                    background: #ffe4e1;
                     border: 1.5px solid #ddd8cc;
                     border-radius: 10px;
                     font-family: 'DM Sans', sans-serif;
                     font-size: 13px;
-                    color: #1e1e1a;
+                    color: #bf7e81;
                     transition: border-color 0.15s, box-shadow 0.15s;
                     outline: none;
                 }
@@ -249,7 +249,7 @@ export default function AdminSettingsPage() {
                     transition: color 0.15s;
                 }
 
-                .sets-toggle:hover { color: #1e1e1a; }
+                .sets-toggle:hover { color: #bf7e81; }
 
                 .sets-mismatch-msg {
                     font-size: 11px;
@@ -299,7 +299,7 @@ export default function AdminSettingsPage() {
 
                 .sets-btn-ghost:hover {
                     border-color: #6b6660;
-                    color: #1e1e1a;
+                    color: #bf7e81;
                 }
 
                 .sets-btn-primary {
@@ -310,7 +310,7 @@ export default function AdminSettingsPage() {
                     font-weight: 500;
                     cursor: pointer;
                     background: #4a6741;
-                    color: #fff;
+                    color: #ffe4e1;
                     border: none;
                     display: flex; align-items: center; gap: 8px;
                     transition: all 0.15s;

@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 
 const GLOBAL_CSS = `
 :root {
-  --bg: #F2EFE0;
-  --card: #FFFFFF;
+  --bg: #ffe4e1;
+  --card: #ffe4e1;
   --green: #3A6B50;
   --green-light: #5DA87A;
   --green-pale: #EAF4EE;
-  --label: #7A8070;
-  --text: #1A1A14;
-  --text-sub: #6B7060;
+  --label: #bf7e81;
+  --text: #bf7e81;
+  --text-sub: #bf7e81;
   --border: rgba(58,107,80,0.10);
   --shadow: 0 2px 16px rgba(40,60,40,0.07), 0 1px 3px rgba(40,60,40,0.04);
   --shadow-lg: 0 12px 48px rgba(40,60,40,0.14), 0 4px 12px rgba(40,60,40,0.08);
   --red: #C0392B;
-  --red-soft: #FDECEA;
+  --red-soft: #ffe4e1;
   --radius: 20px;
   --radius-sm: 12px;
 }
@@ -36,7 +36,7 @@ const GLOBAL_CSS = `
   padding: 9px 18px; border-radius: 99px; font-family: 'DM Sans', sans-serif;
   font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.17s;
 }
-.u-btn-primary { background: var(--green); color: #fff; }
+.u-btn-primary { background: var(--green); color: #ffe4e1; }
 .u-btn-primary:hover { background: #2e5640; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(58,107,80,0.3); }
 .u-btn-ghost { background: var(--card); color: var(--text-sub); border: 1.5px solid var(--border); }
 .u-btn-ghost:hover { border-color: var(--green); color: var(--green); }
@@ -46,7 +46,7 @@ const GLOBAL_CSS = `
 .u-stat-card { background: var(--card); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8); }
 .u-stat-card .s-label { font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--label); margin-bottom: 6px; }
 .u-stat-card .s-val { font-size: 26px; font-weight: 700; color: var(--green); letter-spacing: -0.5px; }
-.u-stat-card .s-badge { display: inline-flex; align-items: center; gap: 3px; margin-top: 5px; font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 99px; background: #E6F4EC; color: var(--green); }
+.u-stat-card .s-badge { display: inline-flex; align-items: center; gap: 3px; margin-top: 5px; font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 99px; background: #ffe4e1; color: var(--green); }
 
 /* ── Toolbar ── */
 .u-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; animation: uFadeUp 0.35s 0.05s ease both; }
@@ -66,7 +66,7 @@ const GLOBAL_CSS = `
   color: var(--text-sub); transition: all 0.15s; font-family: 'DM Sans', sans-serif;
 }
 .u-filter-pill:hover { border-color: var(--green); color: var(--green); }
-.u-filter-pill.active { background: var(--green); color: #fff; border-color: var(--green); }
+.u-filter-pill.active { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 .u-sort-select {
   padding: 9px 14px; border-radius: 99px; font-family: 'DM Sans', sans-serif;
   font-size: 12px; border: 1.5px solid var(--border); background: var(--card);
@@ -96,7 +96,7 @@ const GLOBAL_CSS = `
 .u-avatar {
   width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.5px;
+  font-size: 13px; font-weight: 700; color: #ffe4e1; letter-spacing: 0.5px;
 }
 .user-name-btn {
   font-size: 13.5px; font-weight: 600; color: var(--green); cursor: pointer;
@@ -115,10 +115,10 @@ const GLOBAL_CSS = `
 /* ── Badges ── */
 .u-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; white-space: nowrap; }
 .u-badge-yes { background: var(--green-pale); color: var(--green); }
-.u-badge-no { background: #F5F5F0; color: #9A9E90; }
-.u-badge-active { background: #E6F4EC; color: var(--green); }
-.u-badge-inactive { background: #F5F5F0; color: #9A9E90; }
-.u-badge-vip { background: #FEF3E2; color: #C07A20; }
+.u-badge-no { background: #ffe4e1; color: #9A9E90; }
+.u-badge-active { background: #ffe4e1; color: var(--green); }
+.u-badge-inactive { background: #ffe4e1; color: #9A9E90; }
+.u-badge-vip { background: #ffe4e1; color: #C07A20; }
 
 .orders-val { color: var(--text); font-weight: 500; }
 .orders-val.zero { color: #C0C4B8; }
@@ -146,7 +146,7 @@ const GLOBAL_CSS = `
   font-family: 'DM Sans', sans-serif; color: var(--text-sub); transition: all 0.14s;
   display: flex; align-items: center; justify-content: center;
 }
-.u-page-btn:hover, .u-page-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+.u-page-btn:hover, .u-page-btn.active { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 
 /* ── Animations ── */
 @keyframes uFadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform:translateY(0); } }
@@ -177,11 +177,11 @@ const GLOBAL_CSS = `
   background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center;
   color: var(--text-sub); transition: all 0.15s; font-size: 16px; line-height: 1;
 }
-.u-modal-close:hover { background: var(--green); color: #fff; border-color: var(--green); }
+.u-modal-close:hover { background: var(--green); color: #ffe4e1; border-color: var(--green); }
 .u-modal-avatar {
   width: 64px; height: 64px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 14px;
+  font-size: 22px; font-weight: 700; color: #ffe4e1; margin-bottom: 14px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .u-modal-name { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
@@ -195,7 +195,7 @@ const GLOBAL_CSS = `
 }
 .u-modal-section-title::after { content:''; flex:1; height:1px; background: var(--border); }
 .u-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.u-modal-stat { background: #F9F8F3; border-radius: var(--radius-sm); padding: 14px 16px; border: 1px solid var(--border); }
+.u-modal-stat { background: #ffe4e1; border-radius: var(--radius-sm); padding: 14px 16px; border: 1px solid var(--border); }
 .u-modal-stat .ms-label { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--label); margin-bottom: 4px; }
 .u-modal-stat .ms-val { font-size: 20px; font-weight: 700; color: var(--green); letter-spacing: -0.5px; }
 .u-modal-stat .ms-val.zero { color: #C0C4B8; }
@@ -204,14 +204,14 @@ const GLOBAL_CSS = `
 .u-info-row:last-child { border-bottom: none; }
 .u-info-key { font-size: 12px; color: var(--text-sub); font-weight: 500; }
 .u-info-val { font-size: 13px; font-weight: 500; color: var(--text); font-family: 'DM Mono', monospace; }
-.u-order-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 10px; background: #F9F8F3; margin-bottom: 6px; border: 1px solid var(--border); }
+.u-order-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 10px; background: #ffe4e1; margin-bottom: 6px; border: 1px solid var(--border); }
 .u-order-row:last-child { margin-bottom: 0; }
 .u-order-id { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-sub); }
 .u-order-date { font-size: 11px; color: var(--text-sub); }
 .u-order-amt { font-size: 13px; font-weight: 600; color: var(--green); }
 .u-order-status { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
-.os-delivered { background: #E6F4EC; color: var(--green); }
-.os-pending { background: #FEF3E2; color: #C07A20; }
+.os-delivered { background: #ffe4e1; color: var(--green); }
+.os-pending { background: #ffe4e1; color: #C07A20; }
 .os-cancelled { background: var(--red-soft); color: var(--red); }
 .u-modal-footer { padding: 16px 28px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
 
@@ -295,7 +295,7 @@ export default function UsersPage() {
   }, [data, search, filter, sort]);
 
   if (loading) return (
-    <div style={{ padding: '40px', fontFamily: 'DM Sans, sans-serif', color: '#7A8070' }}>
+    <div style={{ padding: '40px', fontFamily: 'DM Sans, sans-serif', color: '#bf7e81' }}>
       Loading users...
     </div>
   );
@@ -318,24 +318,24 @@ export default function UsersPage() {
             Export CSV
           </button>
           {showExport && (
-            <div style={{ position: 'absolute', top: '110%', right: 0, zIndex: 200, background: '#fff', borderRadius: 18, boxShadow: '0 12px 48px rgba(40,60,40,0.16)', border: '1px solid rgba(58,107,80,0.12)', padding: '20px 22px', minWidth: 280 }}>
-              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 14, color: '#1A1A14' }}>Export Users to CSV</div>
-              <div style={{ fontSize: 12, color: '#7A8070', marginBottom: 6 }}>Date Range (optional)</div>
+            <div style={{ position: 'absolute', top: '110%', right: 0, zIndex: 200, background: '#ffe4e1', borderRadius: 18, boxShadow: '0 12px 48px rgba(40,60,40,0.16)', border: '1px solid rgba(58,107,80,0.12)', padding: '20px 22px', minWidth: 280 }}>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 14, color: '#bf7e81' }}>Export Users to CSV</div>
+              <div style={{ fontSize: 12, color: '#bf7e81', marginBottom: 6 }}>Date Range (optional)</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16 }}>
                 <div>
-                  <div style={{ fontSize: 10, fontWeight: 600, color: '#7A8070', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.8px' }}>From</div>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: '#bf7e81', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.8px' }}>From</div>
                   <input type="date" value={exportFrom} onChange={e => setExportFrom(e.target.value)}
-                    style={{ width: '100%', padding: '8px 10px', borderRadius: 10, border: '1.5px solid rgba(58,107,80,0.15)', fontFamily: 'DM Sans, sans-serif', fontSize: 13, outline: 'none', background: '#F9F8F3' }} />
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 10, border: '1.5px solid rgba(58,107,80,0.15)', fontFamily: 'DM Sans, sans-serif', fontSize: 13, outline: 'none', background: '#ffe4e1' }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, fontWeight: 600, color: '#7A8070', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.8px' }}>To</div>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: '#bf7e81', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.8px' }}>To</div>
                   <input type="date" value={exportTo} onChange={e => setExportTo(e.target.value)}
-                    style={{ width: '100%', padding: '8px 10px', borderRadius: 10, border: '1.5px solid rgba(58,107,80,0.15)', fontFamily: 'DM Sans, sans-serif', fontSize: 13, outline: 'none', background: '#F9F8F3' }} />
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 10, border: '1.5px solid rgba(58,107,80,0.15)', fontFamily: 'DM Sans, sans-serif', fontSize: 13, outline: 'none', background: '#ffe4e1' }} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => { setExportFrom(''); setExportTo(''); }} style={{ flex: 1, padding: '9px', borderRadius: 10, border: '1.5px solid rgba(58,107,80,0.15)', background: '#F9F8F3', fontFamily: 'DM Sans, sans-serif', fontSize: 12, cursor: 'pointer', color: '#7A8070' }}>Clear</button>
-                <button onClick={handleExportUsers} style={{ flex: 2, padding: '9px', borderRadius: 10, border: 'none', background: '#3A6B50', color: '#fff', fontFamily: 'DM Sans, sans-serif', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                <button onClick={() => { setExportFrom(''); setExportTo(''); }} style={{ flex: 1, padding: '9px', borderRadius: 10, border: '1.5px solid rgba(58,107,80,0.15)', background: '#ffe4e1', fontFamily: 'DM Sans, sans-serif', fontSize: 12, cursor: 'pointer', color: '#bf7e81' }}>Clear</button>
+                <button onClick={handleExportUsers} style={{ flex: 2, padding: '9px', borderRadius: 10, border: 'none', background: '#3A6B50', color: '#ffe4e1', fontFamily: 'DM Sans, sans-serif', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                   Download CSV
                 </button>
@@ -356,14 +356,14 @@ export default function UsersPage() {
         <div className="u-stat-card">
           <div className="s-label">Active Buyers</div>
           <div className="s-val">{data.stats.activeBuyers}</div>
-          <div className="s-badge" style={data.stats.activeBuyers === 0 ? { background: '#F5F5F0', color: '#9A9E90' } : {}}>
+          <div className="s-badge" style={data.stats.activeBuyers === 0 ? { background: '#ffe4e1', color: '#9A9E90' } : {}}>
             {data.stats.activeBuyers > 0 ? '↑ Active this month' : '— no change'}
           </div>
         </div>
         <div className="u-stat-card">
           <div className="s-label">Subscribed</div>
           <div className="s-val">{data.stats.subscribedCount}</div>
-          <div className="s-badge" style={data.stats.subscribedCount === 0 ? { background: '#F5F5F0', color: '#9A9E90' } : {}}>
+          <div className="s-badge" style={data.stats.subscribedCount === 0 ? { background: '#ffe4e1', color: '#9A9E90' } : {}}>
             {data.stats.subscribedCount === 0 ? '— no change' : 'Newsletter'}
           </div>
         </div>
@@ -555,7 +555,7 @@ export default function UsersPage() {
                 <div className="u-modal-section">
                   <div className="u-modal-section-title">Saved Addresses</div>
                   {selectedUser.addresses.map((addr: any, idx: number) => (
-                    <div key={idx} style={{ padding: '12px', background: '#F9F8F3', borderRadius: '10px', border: '1px solid var(--border)', marginBottom: '8px' }}>
+                    <div key={idx} style={{ padding: '12px', background: '#ffe4e1', borderRadius: '10px', border: '1px solid var(--border)', marginBottom: '8px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                         <span style={{ fontWeight: '600', fontSize: '13px' }}>{addr.name} {addr.isDefault && <span style={{ color: 'var(--green)', fontSize: '10px' }}>(Default)</span>}</span>
                         <span style={{ fontSize: '12px', color: 'var(--text-sub)' }}>{addr.phone}</span>

@@ -109,7 +109,7 @@ export default function OrderSuccessModal({ isOpen, onClose, order }: Props) {
       t = document.createElement("div");
       t.id = "__order-toast";
       t.style.cssText =
-        "position:fixed;bottom:28px;right:24px;background:#3A6B50;color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.14);transition:all .3s;transform:translateY(20px);opacity:0;font-family:DM Sans,sans-serif;";
+        "position:fixed;bottom:28px;right:24px;background:#3A6B50;color:#ffe4e1;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.14);transition:all .3s;transform:translateY(20px);opacity:0;font-family:DM Sans,sans-serif;";
       document.body.appendChild(t);
     }
     t.textContent = msg;
